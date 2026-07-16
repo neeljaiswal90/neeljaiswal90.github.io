@@ -1,0 +1,310 @@
+---
+import CohesionLayout from '../layouts/CohesionLayout.astro';
+import { getPublishableClaim } from '../data/claims';
+import { roles } from '../data/experience';
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+import { toolProfiles } from '../data/tools';
+import { getPublishedClaim, workCases } from '../data/work';
+
+const experience = getPublishableClaim('profile.experience.years_10_plus');
+const location = getPublishableClaim('profile.location.greater_san_diego');
+const locationLabel = location.displayValue ?? location.displayLabel ?? location.statement;
+const rank = getPublishableClaim('jd_power.purchase_rank_1_value_mvno_2023');
+const score = getPublishableClaim('jd_power.purchase_score_862_1000');
+const aboveAverage = getPublishableClaim('jd_power.above_segment_average_51');
+const stackCount = getPublishableClaim('stack.public_tool_inventory_27');
+
+const heroSignals = [
+  getPublishableClaim('growth.homepage_conversion_lift_54_7'),
+  getPublishableClaim('ai.assistant.contacts_self_served_56'),
+  getPublishableClaim('mhi.customers_33_4k_to_64k_five_months'),
+];
+
+const focusAreas = [
+  {
+    number: '01',
+    kicker: 'Growth systems',
+    title: 'Find the friction. Change the system.',
+    body: 'I turn funnels into operating loops: instrument the decision, run the intervention, protect the guardrail, and compound what works.',
+    claimIds: ['growth.homepage_conversion_lift_54_7', 'growth.plans_conversion_lift_77', 'commerce.aov_lift_10_flat_conversion'],
+    tone: 'violet',
+  },
+  {
+    number: '02',
+    kicker: 'Production AI',
+    title: 'Resolve the need, not just the message.',
+    body: 'Grounded assistants become products when retrieval, tools, memory, evaluation, and safe escalation operate as one governed system.',
+    claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
+    tone: 'ink',
+  },
+  {
+    number: '03',
+    kicker: 'New business',
+    title: 'Make complexity feel like one journey.',
+    body: 'I connect eligibility, purchase, activation, hardware, operations, and lifecycle into products customers can understand and teams can run.',
+    claimIds: ['mhi.customers_33_4k_to_64k_five_months', 'mhi.promo_purchase_rate_lift_60', 'commerce.esim_purchase_mix_75'],
+    tone: 'lime',
+  },
+  {
+    number: '04',
+    kicker: 'Platforms',
+    title: 'Integration is a product surface.',
+    body: 'Data contracts, workflow changes, exception paths, ownership, and adoption belong in the product model—not in a handoff document.',
+    claimIds: ['enterprise.workday_api_program', 'bestbuy.contact_deflection_10_20', 'bestbuy.services_attach_lift_15'],
+    tone: 'coral',
+  },
+] as const;
+
+const career = roles.map((role) => ({
+  ...role,
+  period: getPublishableClaim(role.periodClaimId).displayValue,
+}));
+
+const selectedTools = [
+  'codex', 'figma', 'amplitude', 'optimizely',
+  'snowflake', 'github', 'python', 'typescript',
+  'react', 'aws', 'datadog', 'postman',
+].map((id) => toolProfiles.find((tool) => tool.id === id)).filter(Boolean);
+
+const workCards = workCases.map((workCase) => ({
+  ...workCase,
+  metrics: workCase.metricClaimIds.slice(0, 3).map((claimId) => {
+    const claim = getPublishedClaim(claimId);
+    return {
+      value: claim.displayValue ?? claim.displayLabel ?? 'Published',
+      label: claim.displayLabel ?? 'Outcome',
+    };
+  }),
+}));
+
+const title = 'Neel Jaiswal — Playful Systems Portfolio';
+const description = 'A second, interaction-led portfolio direction for Neel Jaiswal, spanning product leadership, growth, production AI, commerce, and platforms.';
+---
+
+<CohesionLayout
+  title={title}
+  description={description}
+  ogImage="/assets/social-card-cohesion.png"
+  ogImageAlt="Neel Jaiswal with the headline Make complex systems feel obvious, surrounded by playful dimensional forms"
+>
+  <header class="coh-topbar" aria-label="Portfolio navigation">
+    <a class="coh-brand" href="#home" aria-label="Neel Jaiswal, back to top">
+      <b>NJ</b><span>Neel Jaiswal<small>Product leader · builder</small></span>
+    </a>
+
+    <nav class="coh-pill-nav" aria-label="Second portfolio variation">
+      <a class="is-active" href="#home" data-coh-nav="home">Home</a>
+      <a href="#about" data-coh-nav="about">About</a>
+      <a href="#focus" data-coh-nav="focus">Focus</a>
+      <a href="#work" data-coh-nav="work">Work</a>
+      <a href="#stack" data-coh-nav="stack">Stack</a>
+      <a href="#contact" data-coh-nav="contact">Contact</a>
+    </nav>
+
+    <div class="coh-top-actions">
+      <a class="coh-version-link" href="/">View V1</a>
+      <a class="coh-talk" href={`mailto:${site.contact.email}`}>Let’s talk <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="cohesion-main">
+    <section class="coh-hero" id="home" data-coh-section="home">
+      <div class="coh-hero-intro" data-coh-reveal>
+        <h1>
+          <span>Hi, I’m <em>Neel.</em></span>
+          <span aria-hidden="true">/</span>
+          <span class="coh-role-line">I build <strong data-role-cycle>growth systems</strong></span>
+        </h1>
+      </div>
+
+      <p class="coh-hero-wordmark" aria-hidden="true"><span>NEEL</span><span>JAISWAL</span></p>
+
+      <div class="coh-portrait-wrap" data-coh-reveal>
+        <div class="coh-portrait-halo" aria-hidden="true"></div>
+        <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
+        <p><b>Senior product leader</b><span>{locationLabel}</span></p>
+      </div>
+
+      <div class="coh-shape coh-shape-a" data-coh-depth="1" aria-hidden="true"></div>
+      <div class="coh-shape coh-shape-b" data-coh-depth="2" aria-hidden="true"></div>
+      <div class="coh-shape coh-shape-c" data-coh-depth="3" aria-hidden="true"></div>
+      <div class="coh-shape coh-shape-d" data-coh-depth="2" aria-hidden="true"></div>
+      <div class="coh-shape coh-shape-e" data-coh-depth="1" aria-hidden="true"></div>
+      <div class="coh-shape coh-shape-f" data-coh-depth="3" aria-hidden="true"></div>
+
+      <div class="coh-proof-orbit" aria-label="Selected portfolio results">
+        {heroSignals.map((signal, index) => (
+          <div class={`coh-orbit-card orbit-${index + 1}`} data-coh-reveal>
+            <strong>{signal.displayValue}</strong>
+            <span>{signal.displayLabel}</span>
+          </div>
+        ))}
+      </div>
+
+      <a class="coh-hero-cta" href="#work" data-coh-reveal>
+        Explore selected work <span aria-hidden="true">↓</span>
+      </a>
+      <p class="coh-scroll-note" aria-hidden="true">Scroll to connect the system</p>
+    </section>
+
+    <section class="coh-proof-strip" aria-label="Experience and external company context">
+      <div><strong>{experience.displayValue}</strong><span>across product, AI, commerce, and platforms</span></div>
+      <div><strong>{rank.displayValue}</strong><span>{rank.displayLabel}</span></div>
+      <div><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
+      <div><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
+    </section>
+
+    <section class="coh-about" id="about" data-coh-section="about">
+      <header class="coh-section-heading" data-coh-reveal>
+        <p>01 / About</p>
+        <h2>Product leadership<br />with <em>technical gravity.</em></h2>
+        <span>I work where customer experience, system behavior, and operating reality have to agree.</span>
+      </header>
+
+      <div class="coh-about-stage">
+        <aside class="coh-about-visual" aria-hidden="true">
+          <div class="coh-orbital-system">
+            <i></i><i></i><i></i>
+            <b>OUTCOME</b>
+          </div>
+          <p>Evidence<br />→ decision<br />→ release</p>
+        </aside>
+
+        <div class="coh-story-cards">
+          <article data-coh-reveal>
+            <span>01 / Operator</span>
+            <h3>Start with the measurable ending.</h3>
+            <p>I frame the customer outcome, operating constraint, and quality guardrail before a roadmap becomes a list of features.</p>
+          </article>
+          <article data-coh-reveal>
+            <span>02 / Systems thinker</span>
+            <h3>Make the invisible dependencies visible.</h3>
+            <p>Funnel instrumentation, data contracts, fulfillment, support, policy, and adoption are part of the product—not downstream cleanup.</p>
+          </article>
+          <article data-coh-reveal>
+            <span>03 / Builder</span>
+            <h3>Prototype deeply enough to change the conversation.</h3>
+            <p>I use code, agents, analytics, and product craft to collapse ambiguity and help teams reason from a working system.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="coh-career-ribbon" data-coh-reveal>
+        {career.map((role) => (
+          <div><span>{role.period}</span><b>{role.company}</b><small>{role.signal}</small></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="coh-focus" id="focus" data-coh-section="focus">
+      <header class="coh-focus-heading" data-coh-reveal>
+        <p>02 / What I build</p>
+        <h2>Four product systems.<br /><em>One operating idea.</em></h2>
+        <span>Each chapter pins while the next system comes into view.</span>
+      </header>
+
+      <div class="coh-focus-stack">
+        {focusAreas.map((area) => (
+          <article class={`coh-focus-card tone-${area.tone}`}>
+            <span class="coh-focus-number" aria-hidden="true">{area.number}</span>
+            <div class="coh-focus-copy" data-coh-reveal>
+              <p>{area.number} / {area.kicker}</p>
+              <h3>{area.title}</h3>
+              <span>{area.body}</span>
+            </div>
+            <div class="coh-focus-metrics">
+              {area.claimIds.map((claimId) => {
+                const claim = getPublishableClaim(claimId);
+                return (
+                  <div data-coh-reveal>
+                    <strong>{claim.displayValue ?? 'Published'}</strong>
+                    <span>{claim.displayLabel ?? claim.statement}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="coh-work" id="work" data-coh-section="work">
+      <header class="coh-section-heading coh-work-heading" data-coh-reveal>
+        <p>03 / Selected work</p>
+        <h2>Six systems.<br /><em>Real measured endings.</em></h2>
+        <span>Every card opens an evidence-bounded case study.</span>
+      </header>
+
+      <div class="coh-work-grid">
+        {workCards.map((item, index) => (
+          <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal>
+            <div class="coh-work-meta"><span>{item.sequence} / {item.systemLabel}</span><i>{item.company}</i></div>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+            <div class="coh-work-metrics">
+              {item.metrics.length > 0
+                ? item.metrics.map((metric) => <b>{metric.value}<small>{metric.label}</small></b>)
+                : (item.supportingSignals ?? []).slice(0, 2).map((signal) => <b>{signal.value}<small>{signal.label}</small></b>)}
+            </div>
+            <span class="coh-card-link">Read case study <i aria-hidden="true">↗</i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="coh-stack" id="stack" data-coh-section="stack">
+      <header class="coh-stack-heading" data-coh-reveal>
+        <p>04 / Stack</p>
+        <h2>The tool follows<br /><em>the problem.</em></h2>
+        <span>{stackCount.displayValue} in the public inventory. Twelve anchors are shown here.</span>
+      </header>
+
+      <div class="coh-tool-stage">
+        <div class="coh-tool-blob" aria-hidden="true"></div>
+        <ul class="coh-tool-grid" aria-label="Selected product and technical tools">
+          {selectedTools.map((tool) => tool && (
+            <li data-coh-reveal>
+              <img src={tool.assetPath} alt="" width="56" height="56" loading="lazy" decoding="async" />
+              <b>{tool.name}</b>
+              <span>{tool.detail}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="coh-builds" data-coh-reveal>
+        <div class="coh-build-intro">
+          <p>Public builds</p>
+          <h3>I build what<br />I manage.</h3>
+          <a href={site.contact.github} target="_blank" rel="noopener">View GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+        {projects.map((project, index) => (
+          <a class={`coh-build-card build-${index + 1}`} href={project.url} target="_blank" rel="noopener">
+            <span>{String(index + 1).padStart(2, '0')} / {project.defaultBranch}</span>
+            <h3>{project.title}</h3>
+            <p>{project.summary}</p>
+            <ul>{project.technologies.map((technology) => <li>{technology}</li>)}</ul>
+            <i aria-hidden="true">↗</i>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="coh-contact" id="contact" data-coh-section="contact">
+      <div class="coh-contact-shape" aria-hidden="true"></div>
+      <p data-coh-reveal>05 / Contact · {locationLabel}</p>
+      <h2 data-coh-reveal>Let’s make the<br /><em>complex feel obvious.</em></h2>
+      <div class="coh-contact-actions" data-coh-reveal>
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
+        <a href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↓</span></a>
+        <a href={site.contact.github} target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+      <footer>
+        <span>Neel Jaiswal · Product leader / builder</span>
+        <a href="/">Return to editorial variation</a>
+        <span>© {new Date().getFullYear()}</span>
+      </footer>
+    </section>
+  </main>
+</CohesionLayout>

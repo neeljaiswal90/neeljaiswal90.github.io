@@ -1,0 +1,36 @@
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
+import { attachRuntimeGuards, expectImagesToDecode } from './helpers';
+
+test('cohesion variation is responsive, accessible, and complete', async ({ page }, testInfo) => {
+  const runtime = attachRuntimeGuards(page, testInfo);
+  const response = await page.goto('/cohesion/', { waitUntil: 'domcontentloaded' });
+
+  expect(response?.status()).toBe(200);
+  await expect(page).toHaveTitle(/Neel Jaiswal/i);
+  await expect(page.locator('#cohesion-main')).toBeVisible();
+  await expect(page.locator('h1')).toBeVisible();
+
+  for (const id of ['home', 'about', 'focus', 'work', 'stack', 'contact']) {
+    await expect(page.locator(`#${id}`), `#${id} should exist`).toHaveCount(1);
+  }
+
+  await expect(page.locator('.coh-work-card')).toHaveCount(6);
+  await expect(page.locator('.coh-tool-grid li')).toHaveCount(12);
+  await expectImagesToDecode(page);
+  await page.waitForTimeout(900);
+
+  const overflow = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
+
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
+  const blocking = results.violations.filter(({ impact }) => impact === 'serious' || impact === 'critical');
+  expect(blocking).toEqual([]);
+
+  runtime.assertClean();
+});

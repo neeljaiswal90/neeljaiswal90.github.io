@@ -1,0 +1,102 @@
+---
+import '../styles/fonts.css';
+import '../styles/cohesion.css';
+import { canonicalUrl, site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+}
+
+const {
+  title = `${site.name} — Product leadership, made tangible`,
+  description = 'An alternate, interaction-led portfolio for Neel Jaiswal: product leadership across growth, AI, commerce, and platform systems.',
+  canonical = canonicalUrl('/cohesion/'),
+  ogImage = canonicalUrl(site.socialImage.path),
+  ogImageAlt = site.socialImage.alt,
+} = Astro.props;
+
+const canonicalHref = canonicalUrl(canonical);
+const imageHref = canonicalUrl(ogImage);
+const homeHref = canonicalUrl('/');
+const personId = `${homeHref}#person`;
+const websiteId = `${homeHref}#website`;
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: site.name,
+      jobTitle: site.jobTitle,
+      image: canonicalUrl(site.profileImage.path),
+      sameAs: [site.contact.github],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: site.name,
+      url: homeHref,
+      description: site.description,
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${canonicalHref}#webpage`,
+      name: title,
+      description,
+      url: canonicalHref,
+      isPartOf: { '@id': websiteId },
+      mainEntity: { '@id': personId },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: imageHref,
+        width: 1200,
+        height: 630,
+      },
+    },
+  ],
+}).replace(/</g, '\\u003c');
+---
+
+<!doctype html>
+<html lang="en" class="cohesion-root">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#f8f7f3" />
+    <link rel="canonical" href={canonicalHref} />
+    <link rel="sitemap" type="application/xml" href={canonicalUrl(site.sitemapPath)} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageHref} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:url" content={canonicalHref} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageHref} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <script id="structured-data" is:inline type="application/ld+json" set:html={structuredData}></script>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%235f5dff'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='30' font-weight='800' text-anchor='middle' fill='white'%3ENJ%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body class="cohesion-page">
+    <a class="coh-skip" href="#cohesion-main">Skip to portfolio</a>
+    <slot />
+    <script>
+      import '../scripts/cohesion';
+    </script>
+  </body>
+</html>

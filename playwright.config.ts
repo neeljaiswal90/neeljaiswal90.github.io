@@ -34,6 +34,7 @@ export default defineConfig({
         '**/accessibility.spec.ts',
         '**/case-studies.spec.ts',
         '**/seo.spec.ts',
+        '**/cohesion.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],
@@ -42,14 +43,14 @@ export default defineConfig({
     },
     {
       name: 'mobile-chromium',
-      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts'],
+      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts', '**/cohesion.spec.ts'],
       use: {
         ...devices['Pixel 7'],
       },
     },
     {
       name: 'reduced-motion',
-      testMatch: ['**/smoke.spec.ts', '**/reduced-motion.spec.ts', '**/case-studies-motion.spec.ts'],
+      testMatch: ['**/smoke.spec.ts', '**/reduced-motion.spec.ts', '**/case-studies-motion.spec.ts', '**/cohesion.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },

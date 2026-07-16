@@ -3,11 +3,26 @@ import { canonicalUrl, site } from '../src/data/site';
 import { workCaseSlugs } from '../src/data/work';
 
 const contentRoutes = [
-  { path: '/', canonical: canonicalUrl('/'), kind: 'home' },
+  {
+    path: '/',
+    canonical: canonicalUrl('/'),
+    kind: 'home',
+    image: canonicalUrl(site.socialImage.path),
+    imageAlt: site.socialImage.alt,
+  },
+  {
+    path: '/cohesion/',
+    canonical: canonicalUrl('/cohesion/'),
+    kind: 'variation',
+    image: canonicalUrl('/assets/social-card-cohesion.png'),
+    imageAlt: 'Neel Jaiswal with the headline Make complex systems feel obvious, surrounded by playful dimensional forms',
+  },
   ...workCaseSlugs.map((slug) => ({
     path: `/work/${slug}/`,
     canonical: canonicalUrl(`/work/${slug}/`),
     kind: 'case',
+    image: canonicalUrl(site.socialImage.path),
+    imageAlt: site.socialImage.alt,
   })),
 ] as const;
 
@@ -15,7 +30,7 @@ function xmlLocations(xml: string): string[] {
   return Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1] ?? '');
 }
 
-test('sitemap contains exactly the seven canonical content routes', async ({ request }) => {
+test('sitemap contains exactly the eight canonical content routes', async ({ request }) => {
   const indexResponse = await request.get('/sitemap-index.xml');
   expect(indexResponse.status()).toBe(200);
   expect(indexResponse.headers()['content-type']).toContain('xml');
@@ -62,11 +77,11 @@ test('every content route has aligned canonical metadata and valid JSON-LD', asy
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index, follow/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       'content',
-      canonicalUrl(site.socialImage.path),
+      route.image,
     );
     await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
       'content',
-      site.socialImage.alt,
+      route.imageAlt,
     );
 
     const structuredDataText = await page.locator('#structured-data').textContent();
