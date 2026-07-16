@@ -87,6 +87,38 @@ experienceItems.forEach((item) => {
   });
 });
 
+const toolFilterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-coh-tool-filter]'));
+const toolCards = Array.from(document.querySelectorAll<HTMLElement>('[data-coh-tool]'));
+const toolCount = document.querySelector<HTMLElement>('#coh-tool-count');
+const toolAnnouncement = document.querySelector<HTMLElement>('#coh-tool-announcement');
+
+const setToolFilter = (filter: string, label: string) => {
+  let visibleCount = 0;
+  toolCards.forEach((card) => {
+    const groups = (card.dataset.cohToolGroups ?? '').trim().split(/\s+/);
+    const visible = filter === 'all' || groups.includes(filter);
+    card.hidden = !visible;
+    if (visible) visibleCount += 1;
+  });
+
+  toolFilterButtons.forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.cohToolFilter === filter));
+  });
+
+  if (toolCount) toolCount.textContent = `${visibleCount} / ${toolCards.length} tools`;
+  if (toolAnnouncement) {
+    toolAnnouncement.textContent = filter === 'all'
+      ? `Showing all ${toolCards.length} public tools.`
+      : `Showing ${visibleCount} of ${toolCards.length} public tools in ${label}.`;
+  }
+};
+
+toolFilterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setToolFilter(button.dataset.cohToolFilter ?? 'all', button.textContent?.trim() ?? 'all tools');
+  });
+});
+
 if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   document.querySelectorAll<HTMLElement>('[data-coh-tilt]').forEach((card) => {
     card.addEventListener('pointermove', (event) => {

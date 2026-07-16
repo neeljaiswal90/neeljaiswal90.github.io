@@ -17,9 +17,20 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
-  await expect(page.locator('.coh-tool-grid li')).toHaveCount(12);
-  await expect(page.locator('.coh-award-seal')).toContainText('J.D. POWER');
-  await expect(page.locator('.coh-award-seal')).toHaveAttribute('href', /jdpower\.com/);
+  await expect(page.locator('.coh-tool-grid li')).toHaveCount(27);
+  await expect(page.locator('.coh-tool-grid li:visible')).toHaveCount(27);
+  await expect(page.locator('[data-coh-tool-filter]')).toHaveCount(7);
+  await expect(page.locator('#coh-tool-count')).toHaveText('27 / 27 tools');
+  await expect(page.locator('.coh-tool-blob')).toHaveCount(0);
+  await page.locator('[data-coh-tool-filter="ai"]').click();
+  await expect(page.locator('#coh-tool-count')).toHaveText('5 / 27 tools');
+  await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(5);
+  await page.locator('[data-coh-tool-filter="all"]').click();
+  await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(27);
+  await expect(page.locator('.coh-award-record')).toContainText('Mint Mobile');
+  await expect(page.locator('.coh-award-record')).toContainText('#1');
+  await expect(page.locator('.coh-award-record')).toHaveAttribute('href', /jdpower\.com/);
+  await expect(page.locator('.coh-orbit-card')).toHaveCount(6);
   await expect(page.locator('.coh-release-loop li')).toHaveCount(4);
   await expect(page.locator('.coh-loop-header')).toContainText('Human governed');
   await expect(page.locator('.coh-focus-cue')).toContainText('Scroll through four connected systems');
@@ -63,6 +74,19 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
     expect(Math.abs(center - heroAlignment.portrait), `${element} should share the portrait center axis`).toBeLessThanOrEqual(2);
   }
 
+  const portraitFraming = await page.locator('.coh-portrait-wrap').evaluate((portrait) => {
+    const image = portrait.querySelector('img');
+    if (!(image instanceof HTMLImageElement)) throw new Error('Hero portrait image is missing');
+    const rect = portrait.getBoundingClientRect();
+    return {
+      ratio: rect.height / rect.width,
+      objectPosition: getComputedStyle(image).objectPosition,
+    };
+  });
+  expect(portraitFraming.ratio).toBeGreaterThan(1.15);
+  expect(portraitFraming.ratio).toBeLessThan(1.38);
+  expect(portraitFraming.objectPosition).toBe('50% 43%');
+
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();
@@ -91,24 +115,29 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     return phrases.map((phrase) => {
       role.textContent = phrase;
       const containerRect = container.getBoundingClientRect();
-      const headingRect = heading.getBoundingClientRect();
       const greetingRect = greeting.getBoundingClientRect();
       const roleRect = role.getBoundingClientRect();
       return {
         phrase,
         inlineOverflow: roleLine.scrollWidth - roleLine.clientWidth,
         rightInset: containerRect.right - roleRect.right,
-        whitespaceDelta: Math.abs(
-          (greetingRect.left - headingRect.left) - (headingRect.right - roleRect.right),
-        ),
+        greetingLeft: greetingRect.left,
+        greetingRight: greetingRect.right,
+        roleLineLeft: roleLine.getBoundingClientRect().left,
       };
     });
   });
 
+  const greetingLefts = heroContainment.map(({ greetingLeft }) => greetingLeft);
+  const greetingRights = heroContainment.map(({ greetingRight }) => greetingRight);
+  const roleLineLefts = heroContainment.map(({ roleLineLeft }) => roleLineLeft);
+  expect(Math.max(...greetingLefts) - Math.min(...greetingLefts), 'the greeting must not move when the role changes').toBeLessThanOrEqual(1);
+  expect(Math.max(...greetingRights) - Math.min(...greetingRights), 'the divider axis must remain fixed').toBeLessThanOrEqual(1);
+  expect(Math.max(...roleLineLefts) - Math.min(...roleLineLefts), 'the rotating role slot must stay anchored').toBeLessThanOrEqual(1);
+
   for (const measurement of heroContainment) {
     expect(measurement.inlineOverflow, `${measurement.phrase} should fit its grid area`).toBeLessThanOrEqual(1);
     expect(measurement.rightInset, `${measurement.phrase} should retain right-side breathing room`).toBeGreaterThanOrEqual(18);
-    expect(measurement.whitespaceDelta, `${measurement.phrase} should be visually centered as one group`).toBeLessThanOrEqual(10);
   }
 
   const focusTransition = await page.evaluate(() => {

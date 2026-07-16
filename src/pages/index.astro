@@ -6,7 +6,7 @@ import CompanyLogo from '../components/CompanyLogo.astro';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
 import { sources } from '../data/sources';
-import { toolProfiles } from '../data/tools';
+import { toolFilters, toolProfiles } from '../data/tools';
 import { getPublishedClaim, workCases } from '../data/work';
 
 const experience = getPublishableClaim('profile.experience.years_10_plus');
@@ -20,10 +20,13 @@ const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purch
 if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 
 const heroSignals = [
-  getPublishableClaim('growth.homepage_conversion_lift_54_7'),
-  getPublishableClaim('ai.assistant.contacts_self_served_56'),
-  getPublishableClaim('mhi.customers_33_4k_to_64k_five_months'),
-];
+  { category: 'Funnel growth', claim: getPublishableClaim('growth.homepage_conversion_lift_54_7') },
+  { category: 'Business growth', claim: getPublishableClaim('mhi.customers_33_4k_to_64k_five_months') },
+  { category: 'Plan conversion', claim: getPublishableClaim('growth.plans_conversion_lift_77') },
+  { category: 'AI resolution', claim: getPublishableClaim('ai.assistant.contacts_self_served_56') },
+  { category: 'Order economics', claim: getPublishableClaim('commerce.aov_lift_10_flat_conversion') },
+  { category: 'Service efficiency', claim: getPublishableClaim('ai.assistant.escalations_reduced_34') },
+] as const;
 
 const focusAreas = [
   {
@@ -65,12 +68,6 @@ const career = roles.map((role) => ({
   period: getPublishableClaim(role.periodClaimId).displayValue,
   summary: getPublishableClaim(role.summaryClaimId).statement,
 }));
-
-const selectedTools = [
-  'codex', 'figma', 'amplitude', 'optimizely',
-  'snowflake', 'github', 'python', 'typescript',
-  'react', 'aws', 'datadog', 'postman',
-].map((id) => toolProfiles.find((tool) => tool.id === id)).filter(Boolean);
 
 const workCards = workCases.map((workCase) => ({
   ...workCase,
@@ -117,8 +114,8 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
     <section class="coh-hero" id="home" data-coh-section="home">
       <div class="coh-hero-intro" data-coh-reveal>
         <h1>
-          <span>Hi, I’m <em>Neel.</em></span>
-          <span aria-hidden="true">/</span>
+          <span class="coh-intro-greeting">Hi, I’m <em>Neel.</em></span>
+          <span class="coh-intro-divider" aria-hidden="true">/</span>
           <span class="coh-role-line">I build <strong data-role-cycle>ecommerce growth systems</strong></span>
         </h1>
       </div>
@@ -141,8 +138,9 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-proof-orbit" aria-label="Selected portfolio results">
         {heroSignals.map((signal, index) => (
           <div class={`coh-orbit-card orbit-${index + 1}`} data-coh-reveal>
-            <strong>{signal.displayValue}</strong>
-            <span>{signal.displayLabel}</span>
+            <small>{signal.category}</small>
+            <strong>{signal.claim.displayValue}</strong>
+            <span>{signal.claim.displayLabel}</span>
           </div>
         ))}
       </div>
@@ -155,11 +153,17 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
 
     <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition">
       <div class="coh-award-panel" data-coh-reveal>
-        <a class="coh-award-seal" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
-          <span>J.D. POWER</span>
-          <strong>{rank.displayValue}</strong>
-          <small>2023 PURCHASE<br />EXPERIENCE</small>
-          <i aria-hidden="true"></i>
+        <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
+          <span class="coh-award-brand">
+            <CompanyLogo company="Mint Mobile" class="coh-award-logo" />
+            <small>Mint Mobile</small>
+          </span>
+          <span class="coh-award-rank">
+            <small>2023 purchase experience</small>
+            <strong>{rank.displayValue}</strong>
+            <span>Value MVNO segment</span>
+          </span>
+          <span class="coh-award-verify"><i aria-hidden="true"></i> Verified official result <b aria-hidden="true">↗</b></span>
         </a>
         <div class="coh-award-copy">
           <span>Independent commerce signal</span>
@@ -353,14 +357,22 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <header class="coh-stack-heading" data-coh-reveal>
         <p>04 / Stack</p>
         <h2>Build with the stack<br /><em>the outcome requires.</em></h2>
-        <span>{stackCount.displayValue} across experimentation, commerce, agents, data, and release. Twelve anchors are shown here.</span>
+        <span>{stackCount.displayValue} across experimentation, commerce, agents, data, and release. The complete public inventory is shown below.</span>
       </header>
 
       <div class="coh-tool-stage">
-        <div class="coh-tool-blob" aria-hidden="true"></div>
-        <ul class="coh-tool-grid" aria-label="Selected product and technical tools">
-          {selectedTools.map((tool) => tool && (
-            <li data-coh-reveal>
+        <div class="coh-tool-toolbar" data-coh-reveal>
+          <div class="coh-tool-filters" role="group" aria-label="Filter the public tool inventory">
+            {toolFilters.map((filter, index) => (
+              <button type="button" data-coh-tool-filter={filter.id} aria-pressed={index === 0 ? 'true' : 'false'}>{filter.label}</button>
+            ))}
+          </div>
+          <span id="coh-tool-count">{toolProfiles.length} / {toolProfiles.length} tools</span>
+        </div>
+        <p class="coh-sr-only" id="coh-tool-announcement" aria-live="polite"></p>
+        <ul class="coh-tool-grid" aria-label="Public product and technical tools">
+          {toolProfiles.map((tool) => (
+            <li data-coh-reveal data-coh-tool data-coh-tool-groups={tool.groups.join(' ')}>
               <img src={tool.assetPath} alt="" width="56" height="56" loading="lazy" decoding="async" />
               <b>{tool.name}</b>
               <span>{tool.detail}</span>
