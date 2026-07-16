@@ -4,6 +4,7 @@ import { getPublishableClaim } from '../data/claims';
 import { roles } from '../data/experience';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
+import { sources } from '../data/sources';
 import { toolProfiles } from '../data/tools';
 import { getPublishedClaim, workCases } from '../data/work';
 
@@ -14,6 +15,8 @@ const rank = getPublishableClaim('jd_power.purchase_rank_1_value_mvno_2023');
 const score = getPublishableClaim('jd_power.purchase_score_862_1000');
 const aboveAverage = getPublishableClaim('jd_power.above_segment_average_51');
 const stackCount = getPublishableClaim('stack.public_tool_inventory_27');
+const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purchase_2023');
+if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 
 const heroSignals = [
   getPublishableClaim('growth.homepage_conversion_lift_54_7'),
@@ -24,33 +27,33 @@ const heroSignals = [
 const focusAreas = [
   {
     number: '01',
-    kicker: 'Growth systems',
-    title: 'Find the friction. Change the system.',
-    body: 'I turn funnels into operating loops: instrument the decision, run the intervention, protect the guardrail, and compound what works.',
+    kicker: 'Ecommerce growth',
+    title: 'Turn friction into compounding growth.',
+    body: 'I connect funnel diagnosis, experimentation, merchandising, checkout, payments, and lifecycle into one measurable growth system.',
     claimIds: ['growth.homepage_conversion_lift_54_7', 'growth.plans_conversion_lift_77', 'commerce.aov_lift_10_flat_conversion'],
     tone: 'violet',
   },
   {
     number: '02',
-    kicker: 'Production AI',
-    title: 'Resolve the need, not just the message.',
-    body: 'Grounded assistants become products when retrieval, tools, memory, evaluation, and safe escalation operate as one governed system.',
+    kicker: 'Agentic workflows',
+    title: 'Give AI evidence, tools, and boundaries.',
+    body: 'I design retrieval, memory, tool use, evaluation, and human approval as one governed workflow—so agents can act without losing control.',
     claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
     tone: 'ink',
   },
   {
     number: '03',
-    kicker: 'New business',
-    title: 'Make complexity feel like one journey.',
-    body: 'I connect eligibility, purchase, activation, hardware, operations, and lifecycle into products customers can understand and teams can run.',
+    kicker: 'Commerce expansion',
+    title: 'Launch the operating model, not just the page.',
+    body: 'I connect eligibility, catalog, purchase, activation, fulfillment, support, and returns into new revenue products customers can understand and teams can run.',
     claimIds: ['mhi.customers_33_4k_to_64k_five_months', 'mhi.promo_purchase_rate_lift_60', 'commerce.esim_purchase_mix_75'],
     tone: 'lime',
   },
   {
     number: '04',
-    kicker: 'Platforms',
-    title: 'Integration is a product surface.',
-    body: 'Data contracts, workflow changes, exception paths, ownership, and adoption belong in the product model—not in a handoff document.',
+    kicker: 'Enabling platforms',
+    title: 'Make every dependency part of the product.',
+    body: 'APIs, data contracts, payment rails, observability, exception paths, ownership, and adoption belong in the product model—not in a handoff document.',
     claimIds: ['enterprise.workday_api_program', 'bestbuy.contact_deflection_10_20', 'bestbuy.services_attach_lift_15'],
     tone: 'coral',
   },
@@ -78,8 +81,8 @@ const workCards = workCases.map((workCase) => ({
   }),
 }));
 
-const title = 'Neel Jaiswal — Playful Systems Portfolio';
-const description = 'A second, interaction-led portfolio direction for Neel Jaiswal, spanning product leadership, growth, production AI, commerce, and platforms.';
+const title = 'Neel Jaiswal — Ecommerce Growth & Agentic AI Product Leader';
+const description = 'Ecommerce growth systems, agentic AI workflows, and evidence-bounded product leadership from Neel Jaiswal.';
 ---
 
 <CohesionLayout
@@ -90,7 +93,7 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
 >
   <header class="coh-topbar" aria-label="Portfolio navigation">
     <a class="coh-brand" href="#home" aria-label="Neel Jaiswal, back to top">
-      <b>NJ</b><span>Neel Jaiswal<small>Product leader · builder</small></span>
+      <b>NJ</b><span>Neel Jaiswal<small>Ecommerce · AI product leader</small></span>
     </a>
 
     <nav class="coh-pill-nav" aria-label="Second portfolio variation">
@@ -114,7 +117,7 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
         <h1>
           <span>Hi, I’m <em>Neel.</em></span>
           <span aria-hidden="true">/</span>
-          <span class="coh-role-line">I build <strong data-role-cycle>growth systems</strong></span>
+          <span class="coh-role-line">I build <strong data-role-cycle>ecommerce growth systems</strong></span>
         </h1>
       </div>
 
@@ -143,49 +146,68 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
       </div>
 
       <a class="coh-hero-cta" href="#work" data-coh-reveal>
-        Explore selected work <span aria-hidden="true">↓</span>
+        See ecommerce + AI work <span aria-hidden="true">↓</span>
       </a>
       <p class="coh-scroll-note" aria-hidden="true">Scroll to connect the system</p>
     </section>
 
-    <section class="coh-proof-strip" aria-label="Experience and external company context">
-      <div><strong>{experience.displayValue}</strong><span>across product, AI, commerce, and platforms</span></div>
-      <div><strong>{rank.displayValue}</strong><span>{rank.displayLabel}</span></div>
-      <div><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
-      <div><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
+    <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition">
+      <div class="coh-award-panel" data-coh-reveal>
+        <a class="coh-award-seal" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
+          <span>J.D. POWER</span>
+          <strong>{rank.displayValue}</strong>
+          <small>2023 PURCHASE<br />EXPERIENCE</small>
+          <i aria-hidden="true"></i>
+        </a>
+        <div class="coh-award-copy">
+          <span>Independent commerce signal</span>
+          <h2>Purchase experience ranked highest in its segment.</h2>
+          <p>{rank.statement} Company-level recognition provides market context—not causal credit for one experiment.</p>
+          <a href={jdPowerSource.url} target="_blank" rel="noopener">Official study <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="coh-proof-stat" data-coh-reveal><small>Study score</small><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
+      <div class="coh-proof-stat" data-coh-reveal><small>Segment delta</small><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
+      <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
     </section>
 
     <section class="coh-about" id="about" data-coh-section="about">
       <header class="coh-section-heading" data-coh-reveal>
         <p>01 / About</p>
-        <h2>Product leadership<br />with <em>technical gravity.</em></h2>
-        <span>I work where customer experience, system behavior, and operating reality have to agree.</span>
+        <h2>Commerce growth<br />meets <em>agentic execution.</em></h2>
+        <span>I connect customer economics to the AI and platform workflows that have to deliver the outcome safely.</span>
       </header>
 
       <div class="coh-about-stage">
-        <aside class="coh-about-visual" aria-hidden="true">
-          <div class="coh-orbital-system">
-            <i></i><i></i><i></i>
-            <b>OUTCOME</b>
-          </div>
-          <p>Evidence<br />→ decision<br />→ release</p>
+        <aside class="coh-about-visual" aria-label="Human-governed agentic operating loop from evidence to release">
+          <header class="coh-loop-header">
+            <span>Commerce × AI operating loop</span>
+            <b><i aria-hidden="true"></i> Human governed</b>
+          </header>
+          <ol class="coh-release-loop">
+            <li><span>01</span><div><small>Evidence</small><strong>Read the system</strong><p>Funnel · intent · service · operations</p></div></li>
+            <li><span>02</span><div><small>Decision</small><strong>Choose the next best action</strong><p>Hypothesis · confidence · guardrail</p></div></li>
+            <li><span>03</span><div><small>Human gate</small><strong>Approve consequential change</strong><p>Owner · policy · rollback</p></div></li>
+            <li><span>04</span><div><small>Release</small><strong>Ship, measure, and learn</strong><p>Outcome · exception · next cycle</p></div></li>
+          </ol>
+          <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
         </aside>
 
         <div class="coh-story-cards">
           <article data-coh-reveal>
-            <span>01 / Operator</span>
-            <h3>Start with the measurable ending.</h3>
-            <p>I frame the customer outcome, operating constraint, and quality guardrail before a roadmap becomes a list of features.</p>
+            <span>01 / Growth operator</span>
+            <h3>Diagnose the commercial constraint.</h3>
+            <p>I frame the customer behavior, economic outcome, and quality guardrail before a roadmap becomes a queue of page requests.</p>
           </article>
           <article data-coh-reveal>
-            <span>02 / Systems thinker</span>
-            <h3>Make the invisible dependencies visible.</h3>
-            <p>Funnel instrumentation, data contracts, fulfillment, support, policy, and adoption are part of the product—not downstream cleanup.</p>
+            <span>02 / Agentic systems designer</span>
+            <h3>Give every action evidence and a gate.</h3>
+            <p>Retrieval, memory, tools, evaluation, policy, and human approval are part of the agentic product—not downstream governance.</p>
           </article>
           <article data-coh-reveal>
-            <span>03 / Builder</span>
-            <h3>Prototype deeply enough to change the conversation.</h3>
-            <p>I use code, agents, analytics, and product craft to collapse ambiguity and help teams reason from a working system.</p>
+            <span>03 / Builder + operator</span>
+            <h3>Release, measure, and compound.</h3>
+            <p>I use code, agents, analytics, and product craft to shorten the path from customer evidence to a governed release and the next learning cycle.</p>
           </article>
         </div>
       </div>
@@ -200,8 +222,8 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
     <section class="coh-focus" id="focus" data-coh-section="focus">
       <header class="coh-focus-heading" data-coh-reveal>
         <p>02 / What I build</p>
-        <h2>Four product systems.<br /><em>One operating idea.</em></h2>
-        <span>Each chapter pins while the next system comes into view.</span>
+        <h2>Commerce growth.<br /><em>Agentic execution.</em></h2>
+        <span>Four connected systems for finding value, acting safely, and compounding what works.</span>
       </header>
 
       <div class="coh-focus-stack">
@@ -232,8 +254,8 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
     <section class="coh-work" id="work" data-coh-section="work">
       <header class="coh-section-heading coh-work-heading" data-coh-reveal>
         <p>03 / Selected work</p>
-        <h2>Six systems.<br /><em>Real measured endings.</em></h2>
-        <span>Every card opens an evidence-bounded case study.</span>
+        <h2>Six systems.<br /><em>One growth thesis.</em></h2>
+        <span>Conversion, AI resolution, new-business launches, and enabling platforms—each with an explicit evidence boundary.</span>
       </header>
 
       <div class="coh-work-grid">
@@ -256,8 +278,8 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
     <section class="coh-stack" id="stack" data-coh-section="stack">
       <header class="coh-stack-heading" data-coh-reveal>
         <p>04 / Stack</p>
-        <h2>The tool follows<br /><em>the problem.</em></h2>
-        <span>{stackCount.displayValue} in the public inventory. Twelve anchors are shown here.</span>
+        <h2>Build with the stack<br /><em>the outcome requires.</em></h2>
+        <span>{stackCount.displayValue} across experimentation, commerce, agents, data, and release. Twelve anchors are shown here.</span>
       </header>
 
       <div class="coh-tool-stage">
@@ -294,7 +316,7 @@ const description = 'A second, interaction-led portfolio direction for Neel Jais
     <section class="coh-contact" id="contact" data-coh-section="contact">
       <div class="coh-contact-shape" aria-hidden="true"></div>
       <p data-coh-reveal>05 / Contact · {locationLabel}</p>
-      <h2 data-coh-reveal>Let’s make the<br /><em>complex feel obvious.</em></h2>
+      <h2 data-coh-reveal>Let’s build commerce<br /><em>that learns and acts.</em></h2>
       <div class="coh-contact-actions" data-coh-reveal>
         <a href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
         <a href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↓</span></a>

@@ -17,6 +17,10 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(12);
+  await expect(page.locator('.coh-award-seal')).toContainText('J.D. POWER');
+  await expect(page.locator('.coh-award-seal')).toHaveAttribute('href', /jdpower\.com/);
+  await expect(page.locator('.coh-release-loop li')).toHaveCount(4);
+  await expect(page.locator('.coh-loop-header')).toContainText('Human governed');
   await expectImagesToDecode(page);
   await page.waitForTimeout(900);
 
