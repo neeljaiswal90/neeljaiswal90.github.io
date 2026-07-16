@@ -77,6 +77,36 @@ if (roleTarget && !reducedMotion) {
   }, 2400);
 }
 
+const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
+const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
+if (portraitFlip) {
+  const completeIntroFlip = () => {
+    portraitFlip.dataset.introFlip = 'complete';
+  };
+
+  if (reducedMotion) {
+    completeIntroFlip();
+  } else {
+    window.setTimeout(() => {
+      if (portraitFlip.dataset.introFlip === 'pending') completeIntroFlip();
+    }, 850);
+  }
+
+  portraitFlip.addEventListener('click', () => {
+    const wasIntroPending = portraitFlip.dataset.introFlip === 'pending';
+    completeIntroFlip();
+    const showBack = wasIntroPending ? false : !portraitFlip.classList.contains('is-flipped');
+    portraitFlip.classList.toggle('is-flipped', showBack);
+    portraitFlip.setAttribute('aria-pressed', String(showBack));
+    portraitFlip.setAttribute('aria-label', showBack
+      ? 'Flip Neel’s portrait card to show his photo'
+      : 'Flip Neel’s portrait card to see what he builds');
+    if (portraitStatus) portraitStatus.textContent = showBack
+      ? 'Showing what Neel builds.'
+      : 'Showing Neel’s portrait.';
+  });
+}
+
 const experienceItems = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-coh-experience]'));
 experienceItems.forEach((item) => {
   item.addEventListener('toggle', () => {

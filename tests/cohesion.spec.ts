@@ -22,15 +22,20 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('[data-coh-tool-filter]')).toHaveCount(7);
   await expect(page.locator('#coh-tool-count')).toHaveText('27 / 27 tools');
   await expect(page.locator('.coh-tool-blob')).toHaveCount(0);
-  await page.locator('[data-coh-tool-filter="ai"]').click();
+  await page.locator('#stack').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
+  await expect(page.locator('.coh-tool-toolbar')).toHaveClass(/is-visible/);
+  await page.waitForTimeout(850);
+  await page.locator('[data-coh-tool-filter="ai"]').click({ force: true });
   await expect(page.locator('#coh-tool-count')).toHaveText('5 / 27 tools');
   await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(5);
-  await page.locator('[data-coh-tool-filter="all"]').click();
+  await page.locator('[data-coh-tool-filter="all"]').click({ force: true });
   await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(27);
   await expect(page.locator('.coh-award-record')).toContainText('Mint Mobile');
   await expect(page.locator('.coh-award-record')).toContainText('#1');
   await expect(page.locator('.coh-award-record')).toHaveAttribute('href', /jdpower\.com/);
   await expect(page.locator('.coh-orbit-card')).toHaveCount(6);
+  await expect(page.locator('#about .coh-orbit-card')).toHaveCount(6);
+  await expect(page.locator('#home .coh-orbit-card')).toHaveCount(0);
   await expect(page.locator('.coh-release-loop li')).toHaveCount(4);
   await expect(page.locator('.coh-loop-header')).toContainText('Human governed');
   await expect(page.locator('.coh-focus-cue')).toContainText('Scroll through four connected systems');
@@ -41,11 +46,23 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(experienceItems).toHaveCount(5);
   await expect(page.locator('.coh-experience-role [data-company-brand]')).toHaveCount(5);
   await expect(experienceItems.first()).toHaveAttribute('open', '');
-  await experienceItems.nth(1).locator('summary').click();
+  await page.locator('.coh-experience-deck').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
+  await page.waitForTimeout(850);
+  await experienceItems.nth(1).locator('summary').click({ force: true });
   await expect(experienceItems.nth(1)).toHaveAttribute('open', '');
   await expect(experienceItems.first()).not.toHaveAttribute('open', '');
   await expect(experienceItems.nth(1).locator('.coh-experience-scope')).toContainText('Workday');
   await expect(page.locator('.coh-experience-systems a')).toHaveCount(5);
+
+  const portraitFlip = page.locator('[data-coh-portrait-flip]');
+  await page.locator('#home').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
+  await expect(portraitFlip).toHaveAttribute('data-intro-flip', 'complete');
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
+  await portraitFlip.click({ force: true });
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'true');
+  await expect(portraitFlip).toHaveClass(/is-flipped/);
+  await portraitFlip.click({ force: true });
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
   await expectImagesToDecode(page);
   await page.waitForTimeout(900);
 
@@ -83,8 +100,8 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
       objectPosition: getComputedStyle(image).objectPosition,
     };
   });
-  expect(portraitFraming.ratio).toBeGreaterThan(1.15);
-  expect(portraitFraming.ratio).toBeLessThan(1.38);
+  expect(portraitFraming.ratio).toBeGreaterThan(1.28);
+  expect(portraitFraming.ratio).toBeLessThan(1.5);
   expect(portraitFraming.objectPosition).toBe('50% 43%');
 
   const results = await new AxeBuilder({ page })

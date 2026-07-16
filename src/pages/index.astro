@@ -115,18 +115,38 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-hero-intro" data-coh-reveal>
         <h1>
           <span class="coh-intro-greeting">Hi, I’m <em>Neel.</em></span>
-          <span class="coh-intro-divider" aria-hidden="true">/</span>
+          <span class="coh-intro-divider" aria-hidden="true">—</span>
           <span class="coh-role-line">I build <strong data-role-cycle>ecommerce growth systems</strong></span>
         </h1>
       </div>
 
       <p class="coh-hero-wordmark" aria-hidden="true"><span>NEEL</span><span>JAISWAL</span></p>
 
-      <div class="coh-portrait-wrap" data-coh-reveal>
-        <div class="coh-portrait-halo" aria-hidden="true"></div>
-        <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
-        <p><b>Senior product leader</b><span>{locationLabel}</span></p>
-      </div>
+      <button
+        class="coh-portrait-wrap"
+        type="button"
+        data-coh-reveal
+        data-coh-portrait-flip
+        data-intro-flip="pending"
+        aria-pressed="false"
+        aria-label="Flip Neel’s portrait card to see what he builds"
+        aria-describedby="coh-portrait-flip-hint"
+      >
+        <span class="coh-portrait-flipper">
+          <span class="coh-portrait-face coh-portrait-front">
+            <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
+            <span class="coh-portrait-caption"><b>Senior product leader</b><small>{locationLabel}</small></span>
+          </span>
+          <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
+            <small>What I build</small>
+            <strong>Growth systems + agentic workflows.</strong>
+            <span>Evidence · human gates · release loops</span>
+            <b aria-hidden="true">NJ</b>
+          </span>
+        </span>
+      </button>
+      <p class="coh-portrait-flip-hint" id="coh-portrait-flip-hint">Click portrait to flip <span aria-hidden="true">↻</span></p>
+      <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
 
       <div class="coh-shape coh-shape-a" data-coh-depth="1" aria-hidden="true"></div>
       <div class="coh-shape coh-shape-b" data-coh-depth="2" aria-hidden="true"></div>
@@ -135,88 +155,94 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-shape coh-shape-e" data-coh-depth="1" aria-hidden="true"></div>
       <div class="coh-shape coh-shape-f" data-coh-depth="3" aria-hidden="true"></div>
 
-      <div class="coh-proof-orbit" aria-label="Selected portfolio results">
-        {heroSignals.map((signal, index) => (
-          <div class={`coh-orbit-card orbit-${index + 1}`} data-coh-reveal>
-            <small>{signal.category}</small>
-            <strong>{signal.claim.displayValue}</strong>
-            <span>{signal.claim.displayLabel}</span>
-          </div>
-        ))}
+      <div class="coh-hero-trust" data-coh-reveal>
+        <span class="coh-hero-trust-logos" aria-hidden="true">
+          <CompanyLogo company="Mint Mobile" />
+          <CompanyLogo company="Best Buy" />
+          <CompanyLogo company="Target" />
+        </span>
+        <p><strong>{experience.displayValue} building customer-facing products</strong><span>Commerce · AI · platforms</span></p>
       </div>
 
-      <a class="coh-hero-cta" href="#work" data-coh-reveal>
-        See ecommerce + AI work <span aria-hidden="true">↓</span>
+      <a class="coh-hero-cta" href="#about">
+        Meet the operator behind the work <span aria-hidden="true">↓</span>
       </a>
-      <p class="coh-scroll-note" aria-hidden="true">Scroll to connect the system</p>
-    </section>
-
-    <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition">
-      <div class="coh-award-panel" data-coh-reveal>
-        <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
-          <span class="coh-award-brand">
-            <CompanyLogo company="Mint Mobile" class="coh-award-logo" />
-            <small>Mint Mobile</small>
-          </span>
-          <span class="coh-award-rank">
-            <small>2023 purchase experience</small>
-            <strong>{rank.displayValue}</strong>
-            <span>Value MVNO segment</span>
-          </span>
-          <span class="coh-award-verify"><i aria-hidden="true"></i> Verified official result <b aria-hidden="true">↗</b></span>
-        </a>
-        <div class="coh-award-copy">
-          <span>Independent commerce signal</span>
-          <h2>Purchase experience ranked highest in its segment.</h2>
-          <p>{rank.statement} Company-level recognition provides market context—not causal credit for one experiment.</p>
-          <a href={jdPowerSource.url} target="_blank" rel="noopener">Official study <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-      <div class="coh-proof-stat" data-coh-reveal><small>Study score</small><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
-      <div class="coh-proof-stat" data-coh-reveal><small>Segment delta</small><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
-      <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
+      <p class="coh-scroll-note" aria-hidden="true">Scroll to meet Neel</p>
     </section>
 
     <section class="coh-about" id="about" data-coh-section="about">
-      <header class="coh-section-heading" data-coh-reveal>
+      <header class="coh-section-heading coh-about-heading" data-coh-reveal>
         <p>01 / About</p>
-        <h2>Commerce growth<br />meets <em>agentic execution.</em></h2>
+        <h2>About <em>me.</em></h2>
         <span>I connect customer economics to the AI and platform workflows that have to deliver the outcome safely.</span>
       </header>
 
       <div class="coh-about-stage">
-        <aside class="coh-about-visual" aria-label="Human-governed agentic operating loop from evidence to release">
-          <header class="coh-loop-header">
-            <span>Commerce × AI operating loop</span>
-            <b><i aria-hidden="true"></i> Human governed</b>
-          </header>
-          <ol class="coh-release-loop">
-            <li><span>01</span><div><small>Evidence</small><strong>Read the system</strong><p>Funnel · intent · service · operations</p></div></li>
-            <li><span>02</span><div><small>Decision</small><strong>Choose the next best action</strong><p>Hypothesis · confidence · guardrail</p></div></li>
-            <li><span>03</span><div><small>Human gate</small><strong>Approve consequential change</strong><p>Owner · policy · rollback</p></div></li>
-            <li><span>04</span><div><small>Release</small><strong>Ship, measure, and learn</strong><p>Outcome · exception · next cycle</p></div></li>
-          </ol>
-          <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
-        </aside>
+        <div class="coh-about-metrics" aria-label="Selected growth and business impact">
+          {heroSignals.map((signal, index) => (
+            <aside class={`coh-orbit-card coh-about-metric metric-${index + 1}`} data-coh-reveal>
+              <small>{signal.category}</small>
+              <strong>{signal.claim.displayValue}</strong>
+              <span>{signal.claim.displayLabel}</span>
+            </aside>
+          ))}
+        </div>
 
         <div class="coh-story-cards">
-          <article data-coh-reveal>
+          <article class="coh-story-card" data-coh-reveal>
             <span>01 / Growth operator</span>
-            <h3>Diagnose the commercial constraint.</h3>
-            <p>I frame the customer behavior, economic outcome, and quality guardrail before a roadmap becomes a queue of page requests.</p>
+            <h3>I turn customer behavior into commercial growth systems.</h3>
+            <p>I frame the customer behavior, economic outcome, and quality guardrail before a roadmap becomes a queue of page requests. The work connects diagnosis, experimentation, merchandising, checkout, service, and the operating model behind them.</p>
           </article>
-          <article data-coh-reveal>
+          <article class="coh-story-card is-system" data-coh-reveal>
             <span>02 / Agentic systems designer</span>
-            <h3>Give every action evidence and a gate.</h3>
+            <h3>I give every consequential action evidence and a gate.</h3>
             <p>Retrieval, memory, tools, evaluation, policy, and human approval are part of the agentic product—not downstream governance.</p>
+            <header class="coh-loop-header">
+              <span>Commerce × AI operating loop</span>
+              <b><i aria-hidden="true"></i> Human governed</b>
+            </header>
+            <ol class="coh-release-loop">
+              <li><span>01</span><div><small>Evidence</small><strong>Read the system</strong><p>Funnel · intent · service · operations</p></div></li>
+              <li><span>02</span><div><small>Decision</small><strong>Choose the next action</strong><p>Hypothesis · confidence · guardrail</p></div></li>
+              <li><span>03</span><div><small>Human gate</small><strong>Approve consequential change</strong><p>Owner · policy · rollback</p></div></li>
+              <li><span>04</span><div><small>Release</small><strong>Ship, measure, and learn</strong><p>Outcome · exception · next cycle</p></div></li>
+            </ol>
+            <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
           </article>
-          <article data-coh-reveal>
+          <article class="coh-story-card" data-coh-reveal>
             <span>03 / Builder + operator</span>
-            <h3>Release, measure, and compound.</h3>
-            <p>I use code, agents, analytics, and product craft to shorten the path from customer evidence to a governed release and the next learning cycle.</p>
+            <h3>I shorten the path from evidence to a governed release.</h3>
+            <p>I use code, agents, analytics, and product craft to release, measure, and compound what works—without separating the experience from the systems teams need to run it.</p>
           </article>
         </div>
       </div>
+
+      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition">
+        <div class="coh-award-panel" data-coh-reveal>
+          <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
+            <span class="coh-award-brand">
+              <CompanyLogo company="Mint Mobile" class="coh-award-logo" />
+              <small>Mint Mobile</small>
+            </span>
+            <span class="coh-award-rank">
+              <small>2023 purchase experience</small>
+              <strong>{rank.displayValue}</strong>
+              <span>Value MVNO segment</span>
+            </span>
+            <span class="coh-award-verify"><i aria-hidden="true"></i> Verified official result <b aria-hidden="true">↗</b></span>
+          </a>
+          <div class="coh-award-copy">
+            <span>Independent commerce signal</span>
+            <h2>Purchase experience ranked highest in its segment.</h2>
+            <p>{rank.statement} Company-level recognition provides market context—not causal credit for one experiment.</p>
+            <a href={jdPowerSource.url} target="_blank" rel="noopener">Official study <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="coh-proof-stat" data-coh-reveal><small>Study score</small><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
+        <div class="coh-proof-stat" data-coh-reveal><small>Segment delta</small><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
+        <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
+      </section>
 
       <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal>
         <header class="coh-experience-heading">
