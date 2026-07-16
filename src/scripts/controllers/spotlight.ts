@@ -27,8 +27,14 @@ export const createSpotlightController: MotionControllerFactory = (root, { windo
       const position = positions.get(card);
       if (!rect || !position || rect.width <= 0 || rect.height <= 0) continue;
 
-      card.style.setProperty('--mx', `${(((position.x - rect.left) / rect.width) * 100).toFixed(1)}%`);
-      card.style.setProperty('--my', `${(((position.y - rect.top) / rect.height) * 100).toFixed(1)}%`);
+      const normalizedX = (position.x - rect.left) / rect.width;
+      const normalizedY = (position.y - rect.top) / rect.height;
+      card.style.setProperty('--mx', `${(normalizedX * 100).toFixed(1)}%`);
+      card.style.setProperty('--my', `${(normalizedY * 100).toFixed(1)}%`);
+      if (card.classList.contains('work-card')) {
+        card.style.setProperty('--card-ry', `${((normalizedX - .5) * 3.2).toFixed(2)}deg`);
+        card.style.setProperty('--card-rx', `${((.5 - normalizedY) * 2.4).toFixed(2)}deg`);
+      }
     }
   };
 
@@ -47,6 +53,8 @@ export const createSpotlightController: MotionControllerFactory = (root, { windo
       rects.delete(card);
       card.style.removeProperty('--mx');
       card.style.removeProperty('--my');
+      card.style.removeProperty('--card-rx');
+      card.style.removeProperty('--card-ry');
     }
   };
 

@@ -8,7 +8,7 @@ A recruiter-facing portfolio for a senior product leader working across AI, grow
 - **Publishing runbook:** [docs/PUBLISHING.md](docs/PUBLISHING.md)
 - **Architecture and implementation record:** [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md)
 
-![Portfolio introduction with Neel Jaiswal's portrait and product leadership headline](public/assets/social-card.jpg)
+![Portfolio introduction with Neel Jaiswal's portrait and product leadership headline](public/assets/social-card-v2.png)
 
 ## What ships
 
