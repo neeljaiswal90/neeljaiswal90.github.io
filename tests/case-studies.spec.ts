@@ -17,8 +17,35 @@ const caseStudies = [
     title: 'From eligibility to recurring revenue.',
     company: 'Mint Home Internet',
     brand: 'mint-mobile',
-    metrics: ['33.4K → 64K', '+60%', '+9.3%'],
+    metrics: ['29K+', '+60%', '+25%'],
     previous: 'growth-system',
+    next: 'esim-growth',
+  },
+  {
+    slug: 'esim-growth',
+    title: 'Make the faster path clear.',
+    company: 'Mint Mobile',
+    brand: 'mint-mobile',
+    metrics: ['67–77%', '+7%'],
+    previous: 'home-internet',
+    next: 'mint-kids',
+  },
+  {
+    slug: 'mint-kids',
+    title: 'Launch a safer first phone.',
+    company: 'Mint Mobile',
+    brand: 'mint-mobile',
+    metrics: ['14K', '0.16%'],
+    previous: 'esim-growth',
+    next: 'device-commerce',
+  },
+  {
+    slug: 'device-commerce',
+    title: 'A device business, not a product page.',
+    company: 'Mint Mobile',
+    brand: 'mint-mobile',
+    metrics: ['22,752', '100+', '406', '9–10%'],
+    previous: 'mint-kids',
     next: 'production-ai',
   },
   {
@@ -27,16 +54,7 @@ const caseStudies = [
     company: 'Mint Mobile',
     brand: 'mint-mobile',
     metrics: ['56%', '3.1 → 4.44', '−34%'],
-    previous: 'home-internet',
-    next: 'device-commerce',
-  },
-  {
-    slug: 'device-commerce',
-    title: 'A device business, not a product page.',
-    company: 'Mint Mobile',
-    brand: 'mint-mobile',
-    metrics: ['75%'],
-    previous: 'production-ai',
+    previous: 'device-commerce',
     next: 'enterprise-integration',
   },
   {
@@ -45,7 +63,7 @@ const caseStudies = [
     company: 'Inspire Brands',
     brand: 'inspire-brands',
     metrics: [],
-    previous: 'device-commerce',
+    previous: 'production-ai',
     next: 'retail-self-service',
   },
   {
@@ -59,7 +77,7 @@ const caseStudies = [
   },
 ] as const;
 
-const expectedSections = ['overview', 'system', 'problem', 'decisions', 'tradeoffs', 'evidence'];
+const expectedSections = ['overview', 'system', 'problem', 'mandate', 'decisions', 'shipped', 'tradeoffs', 'learning', 'evidence'];
 
 for (const caseStudy of caseStudies) {
   test(`${caseStudy.slug} renders a complete claim-backed case study`, async ({ page }, testInfo) => {
@@ -85,6 +103,10 @@ for (const caseStudy of caseStudies) {
     await expect(page.locator('#system ol > li')).toHaveCount(4);
     await expect(page.locator('.case-company-lockup [data-company-brand]')).toHaveAttribute('data-company-brand', caseStudy.brand);
     await expect(page.locator('.case-evidence-boundary p')).not.toBeEmpty();
+    await expect(page.locator('.case-at-glance dd')).toHaveCount(5);
+    await expect(page.locator('#mandate .case-mandate-copy')).not.toBeEmpty();
+    await expect(page.locator('#shipped li')).toHaveCount(4);
+    await expect(page.locator('#learning .case-learning-copy')).not.toBeEmpty();
 
     const processContainment = await page.locator('.case-process li > strong').evaluateAll((titles) =>
       titles.map((title) => ({ clientWidth: title.clientWidth, scrollWidth: title.scrollWidth })),

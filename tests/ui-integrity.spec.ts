@@ -5,6 +5,8 @@ const routes = [
   '/',
   '/work/growth-system/',
   '/work/home-internet/',
+  '/work/esim-growth/',
+  '/work/mint-kids/',
   '/work/production-ai/',
   '/work/device-commerce/',
   '/work/enterprise-integration/',

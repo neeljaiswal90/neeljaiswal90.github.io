@@ -14,8 +14,10 @@ export interface WorkContextCue {
 export const workCaseSlugs = [
   'growth-system',
   'home-internet',
-  'production-ai',
+  'esim-growth',
+  'mint-kids',
   'device-commerce',
+  'production-ai',
   'enterprise-integration',
   'retail-self-service',
 ] as const;
@@ -26,6 +28,7 @@ export interface WorkCase {
   slug: WorkCaseSlug;
   outcomeId: string;
   sequence: string;
+  featured: boolean;
   systemLabel: string;
   company: string;
   indexTitle: string;
@@ -33,6 +36,15 @@ export interface WorkCase {
   summary: string;
   metricClaimIds: readonly string[];
   evidenceClaimIds?: readonly string[];
+  role: string;
+  period: string;
+  team: string;
+  customer: string;
+  surface: string;
+  mandate: string;
+  shipped: readonly string[];
+  learning: string;
+  measurementNote?: string;
   /** Compatibility name for qualitative context cues; values are not metrics. */
   supportingSignals?: readonly WorkContextCue[];
   flowLabel: string;
@@ -66,10 +78,19 @@ export interface WorkCaseViewModel {
 
 export const workCases: readonly WorkCase[] = [
   {
-    slug: 'growth-system', outcomeId: 'outcome-01', sequence: '01', systemLabel: 'Growth system', company: 'Mint Mobile',
+    slug: 'growth-system', outcomeId: 'outcome-01', sequence: '01', featured: true, systemLabel: 'Ecommerce growth', company: 'Mint Mobile',
     indexTitle: 'Conversion, compounded.', title: 'Conversion, compounded.',
-    summary: 'Turned the purchase funnel into a disciplined operating system: diagnose the leak, intervene with a controlled test, protect conversion, then scale the winner.',
+    summary: 'Turned Mint Mobile’s purchase funnel into a disciplined operating system: diagnose the leak, test one intervention, protect the customer and business, then scale the winner.',
     metricClaimIds: ['growth.homepage_conversion_lift_54_7', 'growth.plans_conversion_lift_77', 'commerce.aov_lift_10_flat_conversion'],
+    role: 'Senior Product Manager',
+    period: 'Jul 2020—Present',
+    team: 'Ecommerce product portfolio',
+    customer: 'Wireless shoppers',
+    surface: 'Homepage → checkout',
+    mandate: 'Set the conversion strategy across acquisition and checkout, align the roadmap to measured customer friction, and create a repeatable way for the team to learn without trading away quality.',
+    shipped: ['A shared funnel measurement spine across homepage, plans, and checkout.', 'A sequenced experimentation backlog tied to explicit customer and business hypotheses.', 'Upsell and merchandising interventions with conversion guardrails.', 'A review cadence that moved validated learning into the next roadmap decision.'],
+    learning: 'Growth compounds when instrumentation and guardrails are designed before the interface—not added after launch.',
+    measurementNote: 'Portfolio-level relative changes over the measured tenure. The AOV result came from a controlled upsell with overall conversion held flat; confidential baselines and windows are retained off-site.',
     flowLabel: 'Conversion operating loop',
     steps: [
       { title: 'Observe', description: 'Instrument homepage and plans-page drop-off.' },
@@ -80,13 +101,22 @@ export const workCases: readonly WorkCase[] = [
     problem: 'The purchase journey had multiple conversion surfaces, competing hypotheses, and no single operating loop connecting diagnosis to scale.',
     decisions: ['Treat the funnel as a product system, not a queue of page requests.', 'Instrument the decision before designing the intervention.', 'Require a conversion and quality guardrail before scaling a winner.'],
     tradeoffs: ['Incremental tests improve attribution but slow broad redesign.', 'A shared measurement spine adds up-front instrumentation work.'],
-    evidenceBoundary: 'The displayed results are owner-supplied portfolio outcomes and describe measured changes over the stated tenure; they do not attribute every point of lift to one experiment.',
+    evidenceBoundary: 'Owner-reported portfolio outcomes. The tenure-level conversion changes are not attributed to one experiment or one contributor.',
   },
   {
-    slug: 'home-internet', outcomeId: 'outcome-02', sequence: '02', systemLabel: 'New business', company: 'Mint Home Internet',
+    slug: 'home-internet', outcomeId: 'outcome-02', sequence: '02', featured: true, systemLabel: 'New-business launch', company: 'Mint Home Internet',
     indexTitle: 'Eligibility to recurring revenue.', title: 'From eligibility to recurring revenue.',
-    summary: 'Owned product detail, eligibility, activation, and lifecycle experimentation for a hardware-plus-service journey, then instrumented the full funnel.',
-    metricClaimIds: ['mhi.customers_33_4k_to_64k_five_months', 'mhi.promo_purchase_rate_lift_60', 'mhi.conversion_test_lift_9_3'],
+    summary: 'Connected product detail, address eligibility, checkout, hardware, activation, and lifecycle growth into one measurable service journey.',
+    metricClaimIds: ['mhi.active_customers_29k_jan_2026', 'mhi.promo_purchase_rate_lift_60', 'mhi.promo_purchase_rate_lift_25'],
+    role: 'Senior Product Manager · Ecommerce workstream',
+    period: 'Mint tenure',
+    team: '30+ cross-functional partners',
+    customer: 'Eligible households',
+    surface: 'Eligibility → activation',
+    mandate: 'Build the digital purchase and activation path for a hardware-plus-service business while coordinating the operational dependencies hidden behind a simple customer promise.',
+    shipped: ['Address eligibility as an early confidence and routing decision.', 'A connected product-detail and checkout journey for hardware plus service.', 'Activation instrumentation across digital and operational handoffs.', 'Cohort-based offers and lifecycle experiments tied to purchase behavior.'],
+    learning: 'For a new business, the customer journey is only as strong as the least visible handoff between digital product and operations.',
+    measurementNote: 'Active-customer count is a January 2026 snapshot. Promotion results are relative purchase-rate lifts from separate measured cohorts; one moved from 0.20 to 0.32.',
     flowLabel: 'Home internet customer journey',
     steps: [
       { title: 'Qualify', description: 'Confirm service and address eligibility.' },
@@ -97,14 +127,103 @@ export const workCases: readonly WorkCase[] = [
     problem: 'A new recurring-revenue product had to make service eligibility, hardware fulfillment, activation, and lifecycle value feel like one customer journey.',
     decisions: ['Make eligibility the first confidence-building moment.', 'Instrument the complete path from offer view through activation.', 'Use lifecycle signals as product inputs, not only marketing triggers.'],
     tradeoffs: ['Earlier eligibility checks reduce dead-end checkout but add friction.', 'Hardware and service ownership creates more operational dependencies than a pure digital plan.'],
-    evidenceBoundary: 'Customer and test results are owner-supplied portfolio outcomes. The derived growth rate is stored separately and is not repeated here.',
+    evidenceBoundary: 'Owner-reported portfolio outcomes. Cohorts, statistical detail, and internal dashboards remain confidential.',
   },
   {
-    slug: 'production-ai', outcomeId: 'outcome-03', sequence: '03', systemLabel: 'Conversational AI', company: 'Mint Mobile',
+    slug: 'esim-growth', outcomeId: 'outcome-03', sequence: '03', featured: true, systemLabel: 'Activation growth', company: 'Mint Mobile',
+    indexTitle: 'Make the faster path clear.', title: 'Make the faster path clear.',
+    summary: 'Made eSIM easier to understand and choose while protecting overall conversion and preserving the right path for customers who still needed a physical SIM.',
+    metricClaimIds: ['esim.eligible_purchase_mix_67_77', 'esim.default_selection_lift_7_flat_conversion'],
+    role: 'Senior Product Manager',
+    period: 'Mint tenure',
+    team: 'Ecommerce, activation, Care, and analytics',
+    customer: 'eSIM-eligible shoppers',
+    surface: 'Plan selection → activation',
+    mandate: 'Increase adoption of the fastest activation path without creating confusion, dead ends, or a conversion penalty for customers with different device needs.',
+    shipped: ['Eligibility-aware choice architecture.', 'Clearer education at the decision point.', 'A default-selection experiment with an overall conversion guardrail.', 'Segment reporting that separated eligible customers from the full purchase mix.'],
+    learning: 'Defaults can accelerate a customer decision, but only when eligibility, explanation, and escape paths are designed together.',
+    measurementNote: 'Purchase mix reflects recent measured eligible segments, not all orders. The +7% result is selection lift from a default experiment; overall conversion remained flat.',
+    flowLabel: 'eSIM adoption loop',
+    steps: [
+      { title: 'Qualify', description: 'Identify device and customer eligibility.' },
+      { title: 'Explain', description: 'Make the activation tradeoff legible.' },
+      { title: 'Default', description: 'Test the faster path with an escape route.' },
+      { title: 'Guardrail', description: 'Track selection and total conversion.' },
+    ],
+    problem: 'The faster activation path was available, but customers had to interpret device compatibility and activation tradeoffs during a high-intent purchase decision.',
+    decisions: ['Measure eSIM adoption only within eligible populations.', 'Use a reversible default instead of removing customer choice.', 'Keep total conversion as the primary safety guardrail.'],
+    tradeoffs: ['More education can improve confidence while adding decision time.', 'A strong default lifts adoption but can obscure valid exceptions.'],
+    evidenceBoundary: 'Owner-reported portfolio outcomes. Segment definitions and experiment windows remain confidential.',
+  },
+  {
+    slug: 'mint-kids', outcomeId: 'outcome-04', sequence: '04', featured: true, systemLabel: '0-to-1 launch', company: 'Mint Mobile',
+    indexTitle: 'A safer first phone.', title: 'Launch a safer first phone.',
+    summary: 'Built the ecommerce path for a parent-led wireless product, balancing launch growth with the clarity and consent signals a family decision required.',
+    metricClaimIds: ['kids.activations_14k_90_days', 'kids.accidental_selection_rate_0_16'],
+    role: 'Senior Product Manager · Ecommerce launch',
+    period: 'First 90 days measured',
+    team: 'Ecommerce, activation, Care, legal, and analytics',
+    customer: 'Parents adding a child line',
+    surface: 'Discovery → child activation',
+    mandate: 'Translate a new family-oriented wireless proposition into a clear purchase and activation journey while detecting accidental selection early.',
+    shipped: ['Parent-centered product education and choice architecture.', 'A dedicated purchase path with clear plan differentiation.', 'Activation handoffs designed for the parent-and-child context.', 'Post-launch monitoring for accidental selection and support signals.'],
+    learning: 'A healthy launch metric combines adoption with a measure of customer intent; volume alone cannot show whether the proposition was understood.',
+    measurementNote: 'Launch-period owner-reported data: 14,000 activations in 90 days and 22 accidental selections, equal to 0.16% of activations.',
+    flowLabel: 'Mint Kids launch loop',
+    steps: [
+      { title: 'Frame', description: 'Explain the product through a parent’s job.' },
+      { title: 'Choose', description: 'Make plan differences and intent explicit.' },
+      { title: 'Activate', description: 'Connect purchase to the child-line setup.' },
+      { title: 'Monitor', description: 'Track adoption and accidental selection.' },
+    ],
+    problem: 'A new family proposition needed to feel simple enough to buy while remaining explicit about who the product was for and how activation would work.',
+    decisions: ['Design the journey around the parent’s decision, not a generic line add.', 'Track accidental selection as a launch-quality signal.', 'Coordinate education, checkout, activation, and Care as one launch system.'],
+    tradeoffs: ['Additional clarity can add friction to a fast checkout.', 'A specialized path improves comprehension but increases operational branching.'],
+    evidenceBoundary: 'Owner-reported launch outcomes. The public case omits internal segmentation and operational detail.',
+  },
+  {
+    slug: 'device-commerce', outcomeId: 'outcome-05', sequence: '05', featured: true, systemLabel: '0-to-1 commerce', company: 'Mint Mobile',
+    indexTitle: 'A device business.', title: 'A device business, not a product page.',
+    summary: 'Helped build a zero-to-one device-commerce operation spanning merchandising, purchase, activation, inventory, fulfillment, support, lifecycle growth, and returns.',
+    metricClaimIds: ['device.pixel_units_22_752', 'device.offer_configurations_100_plus', 'device.lifecycle_purchases_406', 'device.refund_rate_9_10'],
+    evidenceClaimIds: ['commerce.device_business_zero_to_one'],
+    role: 'Product Manager · 0-to-1 DTC',
+    period: 'Mint tenure',
+    team: 'Ecommerce, engineering, finance, fraud, operations, Care, and OEM partners',
+    customer: 'Device shoppers and existing subscribers',
+    surface: 'Discovery → return',
+    mandate: 'Create the product and operating model required to sell hardware directly—then turn partner offers and lifecycle signals into repeatable growth.',
+    shipped: ['Catalog, pricing, inventory, and offer-configuration foundations.', 'Checkout, payment-risk, order, and fulfillment integrations.', 'Activation, support, return, and refund journeys.', 'OEM-funded launch and lifecycle programs tied to customer behavior.'],
+    learning: 'In physical commerce, the interface is the visible edge of a much larger product: policy, inventory, money movement, operations, and support must all agree.',
+    measurementNote: 'Pixel units are cumulative through November 6, 2023. Lifecycle purchases and seven-day share refer to one measured program. Refund rate is a measured range, not a target.',
+    supportingSignals: [{ value: '0→1', label: 'device operation' }, { value: 'Full loop', label: 'discovery to return' }],
+    flowLabel: 'Device commerce operating model',
+    steps: [
+      { title: 'Merchandise', description: 'Unify catalog, pricing, offers, and inventory.' },
+      { title: 'Checkout', description: 'Connect payment, risk, and order creation.' },
+      { title: 'Fulfill', description: 'Orchestrate delivery and activation.' },
+      { title: 'Lifecycle', description: 'Support, grow, return, and learn.' },
+    ],
+    problem: 'Selling hardware required an operating model spanning merchandising, payment risk, inventory, fulfillment, activation, returns, partner funding, and customer support.',
+    decisions: ['Model the device lifecycle end to end.', 'Treat payment and fulfillment integrations as product surfaces.', 'Build configurable offers instead of one-off launch logic.'],
+    tradeoffs: ['A broader offer system increases commercial flexibility and governance needs.', 'Faster launches require stronger configuration controls and operational readiness.'],
+    evidenceBoundary: 'Owner-reported portfolio outcomes. Commercial terms, partner funding totals, and internal operational definitions remain confidential.',
+  },
+  {
+    slug: 'production-ai', outcomeId: 'outcome-06', sequence: '06', featured: true, systemLabel: 'AI-enabled execution', company: 'Mint Mobile',
     indexTitle: 'Resolve the need.', title: 'Resolve the need, not just the message.',
-    summary: 'Shipped a GPT-based sales and support assistant with retrieval, memory, and tool skills, measured on resolution, customer satisfaction, and escalation — not demo quality.',
+    summary: 'Shipped a GPT-based sales and support assistant with retrieval, memory, and tool skills—measured on resolution, satisfaction, and safe escalation rather than demo quality.',
     metricClaimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
     evidenceClaimIds: ['ai.assistant.rag_memory_tools'],
+    role: 'Senior Product Manager',
+    period: 'Mint tenure',
+    team: 'Product, Care, engineering, analytics, and operations',
+    customer: 'Sales and support customers',
+    surface: 'Conversation → resolution',
+    mandate: 'Move an assistant from persuasive demo to governed production product, with explicit grounding, actions, escalation, and outcome measurement.',
+    shipped: ['Retrieval grounded in approved knowledge.', 'Memory and tool skills treated as governed capabilities.', 'Escalation paths for unsupported or higher-risk needs.', 'An evaluation loop spanning self-service, CSAT, and escalation.'],
+    learning: 'AI becomes a product when the team defines what the system may know, do, escalate, and measure—not when the model simply sounds fluent.',
+    measurementNote: 'Owner-reported production portfolio outcomes. Definitions, evaluation sets, and internal architecture remain confidential.',
     flowLabel: 'Conversational AI resolution loop',
     steps: [
       { title: 'Intent', description: 'Classify the customer need and urgency.' },
@@ -118,30 +237,19 @@ export const workCases: readonly WorkCase[] = [
     evidenceBoundary: 'AI performance metrics are owner-supplied portfolio outcomes. Architecture references describe the system pattern without disclosing internal domains or implementation details.',
   },
   {
-    slug: 'device-commerce', outcomeId: 'outcome-04', sequence: '04', systemLabel: '0-to-1 commerce', company: 'Mint Mobile',
-    indexTitle: 'A device business.', title: 'A device business, not a product page.',
-    summary: 'Helped build a zero-to-one device-commerce operation spanning purchase, activation, inventory, fulfillment, support, and returns.',
-    metricClaimIds: ['commerce.esim_purchase_mix_75'],
-    evidenceClaimIds: ['commerce.device_business_zero_to_one'],
-    supportingSignals: [{ value: '0→1', label: 'device operation' }, { value: 'Full loop', label: 'purchase to return' }],
-    flowLabel: 'Device commerce operating model',
-    steps: [
-      { title: 'Merchandise', description: 'Unify catalog, pricing, and inventory.' },
-      { title: 'Checkout', description: 'Connect pricing, payment, and order creation.' },
-      { title: 'Fulfill', description: 'Orchestrate the order and delivery path.' },
-      { title: 'Support', description: 'Close the loop through customer support and returns.' },
-    ],
-    problem: 'Selling hardware required an operating model spanning merchandising, payment risk, inventory, fulfillment, activation, returns, and customer support.',
-    decisions: ['Model the device lifecycle end to end.', 'Treat payment and fulfillment integrations as product surfaces.', 'Prefer instant digital activation where customer and device eligibility allow it.'],
-    tradeoffs: ['A broader catalog increases choice and operational complexity.', 'Faster activation requires more eligibility and exception handling.'],
-    evidenceBoundary: 'Only the published eSIM result is quantified. Payment-rail and system-count claims remain under review and are intentionally omitted.',
-  },
-  {
-    slug: 'enterprise-integration', outcomeId: 'outcome-05', sequence: '05', systemLabel: 'Enterprise platform', company: 'Inspire Brands',
+    slug: 'enterprise-integration', outcomeId: 'outcome-07', sequence: '07', featured: false, systemLabel: 'Enterprise platform', company: 'Inspire Brands',
     indexTitle: 'Integration is a product.', title: 'Integration is a product.',
     summary: 'Led a Workday rollout as an end-to-end data and workflow experience across HR, payroll, operations, and legacy systems.',
     metricClaimIds: [],
     evidenceClaimIds: ['enterprise.workday_api_program'],
+    role: 'Product Manager',
+    period: '2019—2020',
+    team: 'Enterprise platform and business teams',
+    customer: 'Internal operators',
+    surface: 'Workflow → system of record',
+    mandate: 'Treat the Workday rollout as an operating-model change spanning workflows, ownership, integrations, migration, and adoption.',
+    shipped: ['Workflow and owner maps.', 'Integration and data contracts.', 'Migration controls and exception paths.', 'Adoption and operational-readiness support.'],
+    learning: 'Enterprise integration succeeds when the contract between people and systems is as explicit as the API contract.',
     supportingSignals: [{ value: 'Workday', label: 'enterprise core' }, { value: 'APIs', label: 'integration contracts' }, { value: 'Adoption', label: 'operating outcome' }],
     flowLabel: 'Enterprise integration delivery loop',
     steps: [
@@ -156,11 +264,19 @@ export const workCases: readonly WorkCase[] = [
     evidenceBoundary: 'The Workday and API program is resume-supported. Numeric system-count and efficiency claims remain under review and are not published.',
   },
   {
-    slug: 'retail-self-service', outcomeId: 'outcome-06', sequence: '06', systemLabel: 'Digital self-service', company: 'Best Buy',
+    slug: 'retail-self-service', outcomeId: 'outcome-08', sequence: '08', featured: false, systemLabel: 'Digital self-service', company: 'Best Buy',
     indexTitle: 'Self-service that resolves.', title: 'Help customers help themselves.',
     summary: 'Connected purchase and ownership: online device diagnostics reduced avoidable support demand, while attached installation services completed the customer job.',
     metricClaimIds: ['bestbuy.contact_deflection_10_20', 'bestbuy.services_attach_lift_15'],
     evidenceClaimIds: ['bestbuy.digital_diagnostics'],
+    role: 'Product Manager',
+    period: '2016—2019',
+    team: 'Digital product, services, and support',
+    customer: 'Device owners',
+    surface: 'Diagnosis → resolution',
+    mandate: 'Help customers solve post-purchase problems digitally while connecting the right service when self-resolution was not enough.',
+    shipped: ['Online device diagnosis.', 'Contextual troubleshooting guidance.', 'Relevant installation-service offers.', 'A feedback path from unresolved needs into product planning.'],
+    learning: 'Deflection is only a healthy metric when the customer’s problem is actually resolved.',
     supportingSignals: [{ value: 'Resolve', label: 'first-contact intent' }],
     flowLabel: 'Digital self-service resolution loop',
     steps: [

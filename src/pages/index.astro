@@ -20,13 +20,15 @@ const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purch
 if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 
 const heroSignals = [
-  { category: 'Funnel growth', claim: getPublishableClaim('growth.homepage_conversion_lift_54_7') },
-  { category: 'Business growth', claim: getPublishableClaim('mhi.customers_33_4k_to_64k_five_months') },
-  { category: 'Plan conversion', claim: getPublishableClaim('growth.plans_conversion_lift_77') },
-  { category: 'AI resolution', claim: getPublishableClaim('ai.assistant.contacts_self_served_56') },
+  { category: 'Product leadership', claim: getPublishableClaim('career.mint.direct_reports_four_pm') },
+  { category: 'Homepage growth', claim: getPublishableClaim('growth.homepage_conversion_lift_54_7') },
+  { category: 'Plans growth', claim: getPublishableClaim('growth.plans_conversion_lift_77') },
   { category: 'Order economics', claim: getPublishableClaim('commerce.aov_lift_10_flat_conversion') },
-  { category: 'Service efficiency', claim: getPublishableClaim('ai.assistant.escalations_reduced_34') },
+  { category: 'Activation choice', claim: getPublishableClaim('esim.default_selection_lift_7_flat_conversion') },
+  { category: 'New-business launch', claim: getPublishableClaim('kids.activations_14k_90_days') },
 ] as const;
+
+const heroProof = heroSignals.slice(0, 4);
 
 const focusAreas = [
   {
@@ -39,27 +41,27 @@ const focusAreas = [
   },
   {
     number: '02',
-    kicker: 'Agentic workflows',
-    title: 'Give AI evidence, tools, and boundaries.',
-    body: 'I design retrieval, memory, tool use, evaluation, and human approval as one governed workflow—so agents can act without losing control.',
-    claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
-    tone: 'ink',
-  },
-  {
-    number: '03',
-    kicker: 'Commerce expansion',
-    title: 'Launch the operating model, not just the page.',
-    body: 'I connect eligibility, catalog, purchase, activation, fulfillment, support, and returns into new revenue products customers can understand and teams can run.',
-    claimIds: ['mhi.customers_33_4k_to_64k_five_months', 'mhi.promo_purchase_rate_lift_60', 'commerce.esim_purchase_mix_75'],
+    kicker: 'New-business launches',
+    title: 'Build the journey and the operating model.',
+    body: 'I connect eligibility, purchase, activation, service, and lifecycle into launches customers can understand and teams can operate.',
+    claimIds: ['mhi.active_customers_29k_jan_2026', 'mhi.promo_purchase_rate_lift_60', 'kids.activations_14k_90_days'],
     tone: 'lime',
   },
   {
-    number: '04',
-    kicker: 'Enabling platforms',
+    number: '03',
+    kicker: 'Commerce operating model',
     title: 'Make every dependency part of the product.',
-    body: 'APIs, data contracts, payment rails, observability, exception paths, ownership, and adoption belong in the product model—not in a handoff document.',
-    claimIds: ['enterprise.workday_api_program', 'bestbuy.contact_deflection_10_20', 'bestbuy.services_attach_lift_15'],
+    body: 'I design catalog, offers, checkout, payment risk, fulfillment, activation, support, and returns as one end-to-end product system.',
+    claimIds: ['device.pixel_units_22_752', 'device.offer_configurations_100_plus', 'esim.eligible_purchase_mix_67_77'],
     tone: 'coral',
+  },
+  {
+    number: '04',
+    kicker: 'AI-enabled execution',
+    title: 'Give AI evidence, tools, and boundaries.',
+    body: 'I use AI to improve product and service execution, with retrieval, evaluation, escalation, and human approval designed into the workflow.',
+    claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
+    tone: 'ink',
   },
 ] as const;
 
@@ -69,7 +71,7 @@ const career = roles.map((role) => ({
   summary: getPublishableClaim(role.summaryClaimId).statement,
 }));
 
-const workCards = workCases.map((workCase) => ({
+const workCards = workCases.filter((workCase) => workCase.featured).map((workCase) => ({
   ...workCase,
   metrics: workCase.metricClaimIds.slice(0, 3).map((claimId) => {
     const claim = getPublishedClaim(claimId);
@@ -80,8 +82,12 @@ const workCards = workCases.map((workCase) => ({
   }),
 }));
 
-const title = 'Neel Jaiswal — Ecommerce Growth & Agentic AI Product Leader';
-const description = 'Ecommerce growth systems, agentic AI workflows, and evidence-bounded product leadership from Neel Jaiswal.';
+const featuredToolIds = new Set(['amplitude', 'optimizely', 'figma', 'jira', 'snowflake', 'looker', 'codex', 'github', 'woocommerce', 'datadog']);
+const featuredTools = toolProfiles.filter((tool) => featuredToolIds.has(tool.id));
+const additionalTools = toolProfiles.filter((tool) => !featuredToolIds.has(tool.id));
+
+const title = site.title;
+const description = site.description;
 ---
 
 <CohesionLayout
@@ -92,7 +98,7 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
 >
   <header class="coh-topbar" aria-label="Portfolio navigation">
     <a class="coh-brand" href="#home" aria-label="Neel Jaiswal, back to top">
-      <b>NJ</b><span>Neel Jaiswal<small>Ecommerce · AI product leader</small></span>
+      <b>NJ</b><span>Neel Jaiswal<small>Senior Product Manager · Mint Mobile</small></span>
     </a>
 
     <nav class="coh-pill-nav" aria-label="Portfolio sections">
@@ -112,11 +118,9 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
   <main id="cohesion-main">
     <section class="coh-hero" id="home" data-coh-section="home">
       <div class="coh-hero-intro" data-coh-reveal>
-        <h1>
-          <span class="coh-intro-greeting">Hi, I’m <em>Neel.</em></span>
-          <span class="coh-intro-divider" aria-hidden="true">—</span>
-          <span class="coh-role-line">I build <strong data-role-cycle>ecommerce growth systems</strong></span>
-        </h1>
+        <p class="coh-hero-eyebrow">Senior Product Manager · Mint Mobile · Since July 2020</p>
+        <h1>I lead the ecommerce systems behind <em>Mint Mobile’s growth.</em></h1>
+        <p class="coh-hero-summary">I own the portfolio from acquisition through post-purchase growth and directly manage four product managers.</p>
       </div>
 
       <p class="coh-hero-wordmark" aria-hidden="true"><span>NEEL</span><span>JAISWAL</span></p>
@@ -134,12 +138,12 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
         <span class="coh-portrait-flipper">
           <span class="coh-portrait-face coh-portrait-front">
             <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
-            <span class="coh-portrait-caption"><b>Senior product leader</b><small>{locationLabel}</small></span>
+            <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Mint Mobile · Since Jul 2020</small></span>
           </span>
           <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
-            <small>What I build</small>
-            <strong>Growth systems + agentic workflows.</strong>
-            <span>Evidence · human gates · release loops</span>
+            <small>What I lead</small>
+            <strong>Mint Mobile’s ecommerce portfolio.</strong>
+            <span>{heroSignals[0].claim.displayValue} · acquisition to post-purchase</span>
             <b aria-hidden="true">NJ</b>
           </span>
         </span>
@@ -158,26 +162,24 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-shape coh-shape-e" data-coh-depth="1" aria-hidden="true"></div>
       <div class="coh-shape coh-shape-f" data-coh-depth="3" aria-hidden="true"></div>
 
-      <div class="coh-hero-trust" data-coh-reveal>
-        <span class="coh-hero-trust-logos" aria-hidden="true">
-          <CompanyLogo company="Mint Mobile" />
-          <CompanyLogo company="Best Buy" />
-          <CompanyLogo company="Target" />
-        </span>
-        <p><strong>{experience.displayValue} building customer-facing products</strong><span>Commerce · AI · platforms</span></p>
+      <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Selected Mint Mobile portfolio evidence">
+        {heroProof.map((signal) => (
+          <span><strong>{signal.claim.displayValue}</strong><small>{signal.claim.displayLabel}</small></span>
+        ))}
       </div>
 
-      <a class="coh-hero-cta" href="#about">
-        Meet the operator behind the work <span aria-hidden="true">↓</span>
-      </a>
+      <div class="coh-hero-actions">
+        <a class="coh-hero-cta" href="#work">View Mint impact <span aria-hidden="true">↓</span></a>
+        <a class="coh-hero-secondary" href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↗</span></a>
+      </div>
       <p class="coh-scroll-note" aria-hidden="true">Scroll to meet Neel</p>
     </section>
 
     <section class="coh-about" id="about" data-coh-section="about">
       <header class="coh-section-heading coh-about-heading" data-coh-reveal>
         <p>01 / About</p>
-        <h2>About <em>me.</em></h2>
-        <span>I connect customer economics to the AI and platform workflows that have to deliver the outcome safely.</span>
+        <h2>Portfolio leadership,<br /><em>made measurable.</em></h2>
+        <span>I turn customer behavior into roadmap choices, launch systems, and evidence-qualified business outcomes.</span>
       </header>
 
       <div class="coh-about-stage">
@@ -193,16 +195,16 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
 
         <div class="coh-story-cards">
           <article class="coh-story-card" data-coh-reveal>
-            <span>01 / Growth operator</span>
-            <h3>I turn customer behavior into commercial growth systems.</h3>
-            <p>I frame the customer behavior, economic outcome, and quality guardrail before a roadmap becomes a queue of page requests. The work connects diagnosis, experimentation, merchandising, checkout, service, and the operating model behind them.</p>
+            <span>01 / Portfolio leader</span>
+            <h3>I lead from acquisition through post-purchase growth.</h3>
+            <p>At Mint Mobile, I own the ecommerce portfolio and directly manage four product managers. I align customer problems, commercial outcomes, operating dependencies, and team accountability before the roadmap becomes a queue of page requests.</p>
           </article>
           <article class="coh-story-card is-system" data-coh-reveal>
-            <span>02 / Agentic systems designer</span>
-            <h3>I give every consequential action evidence and a gate.</h3>
-            <p>Retrieval, memory, tools, evaluation, policy, and human approval are part of the agentic product—not downstream governance.</p>
+            <span>02 / Growth operating model</span>
+            <h3>I give every roadmap decision evidence and a guardrail.</h3>
+            <p>Instrumentation, experimentation, quality thresholds, and explicit ownership turn isolated launches into a system that compounds learning.</p>
             <header class="coh-loop-header">
-              <span>Commerce × AI operating loop</span>
+              <span>Portfolio operating loop</span>
               <b><i aria-hidden="true"></i> Human governed</b>
             </header>
             <ol class="coh-release-loop">
@@ -214,9 +216,9 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
             <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
           </article>
           <article class="coh-story-card" data-coh-reveal>
-            <span>03 / Builder + operator</span>
-            <h3>I shorten the path from evidence to a governed release.</h3>
-            <p>I use code, agents, analytics, and product craft to release, measure, and compound what works—without separating the experience from the systems teams need to run it.</p>
+            <span>03 / AI as a multiplier</span>
+            <h3>I use AI to improve execution—not replace product judgment.</h3>
+            <p>I apply retrieval, evaluation, tools, and human approval where they shorten the path from evidence to a safe release. The customer and business outcome stays primary.</p>
           </article>
         </div>
       </div>
@@ -250,7 +252,7 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal>
         <header class="coh-experience-heading">
           <p>Career depth</p>
-          <h2 id="coh-experience-title">From regulated delivery<br />to <em>commerce + agentic AI.</em></h2>
+          <h2 id="coh-experience-title">Senior Product Manager.<br /><em>Mint Mobile, Jul 2020—Present.</em></h2>
           <span>Open a role to inspect its scope, selected systems, capabilities, and linked case studies.</span>
         </header>
 
@@ -312,8 +314,8 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <header class="coh-focus-heading" data-coh-reveal>
         <div class="coh-focus-heading-copy">
           <p>02 / What I build</p>
-          <h2>Commerce growth.<br /><em>Agentic execution.</em></h2>
-          <span>Four connected systems for finding value, acting safely, and compounding what works.</span>
+          <h2>Mint ecommerce growth.<br /><em>From portfolio to launch.</em></h2>
+          <span>Four connected systems for finding value, launching the operating model, and compounding what works.</span>
         </div>
 
         <a class="coh-focus-cue" href="#focus-system-01">
@@ -359,7 +361,7 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <header class="coh-section-heading coh-work-heading" data-coh-reveal>
         <p>03 / Selected work</p>
         <h2>Six systems.<br /><em>One growth thesis.</em></h2>
-        <span>Conversion, AI resolution, new-business launches, and enabling platforms—each with an explicit evidence boundary.</span>
+        <span>Growth, Home Internet, eSIM, Mint Kids, device commerce, and production AI—each with role, mandate, shipped work, impact, and evidence context.</span>
       </header>
 
       <div class="coh-work-grid">
@@ -385,8 +387,8 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
     <section class="coh-stack" id="stack" data-coh-section="stack">
       <header class="coh-stack-heading" data-coh-reveal>
         <p>04 / Stack</p>
-        <h2>Build with the stack<br /><em>the outcome requires.</em></h2>
-        <span>{stackCount.displayValue} across experimentation, commerce, agents, data, and release. The complete public inventory is shown below.</span>
+        <h2>A focused operating stack.<br /><em>Depth before logo count.</em></h2>
+        <span>Ten core tools support product decisions and delivery. The full {stackCount.displayValue} inventory is available on demand.</span>
       </header>
 
       <div class="coh-tool-stage">
@@ -396,18 +398,30 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
               <button type="button" data-coh-tool-filter={filter.id} aria-pressed={index === 0 ? 'true' : 'false'}>{filter.label}</button>
             ))}
           </div>
-          <span id="coh-tool-count">{toolProfiles.length} / {toolProfiles.length} tools</span>
+          <span id="coh-tool-count">{featuredTools.length} featured · {toolProfiles.length} total</span>
         </div>
         <p class="coh-sr-only" id="coh-tool-announcement" aria-live="polite"></p>
-        <ul class="coh-tool-grid" aria-label="Public product and technical tools">
-          {toolProfiles.map((tool) => (
-            <li data-coh-reveal data-coh-tool data-coh-tool-groups={tool.groups.join(' ')}>
+        <ul class="coh-tool-grid coh-tool-grid-featured" aria-label="Featured product and technical tools">
+          {featuredTools.map((tool) => (
+            <li data-coh-reveal data-coh-tool data-coh-tool-featured data-coh-tool-groups={tool.groups.join(' ')}>
               <img src={tool.assetPath} alt="" width="56" height="56" loading="lazy" decoding="async" />
               <b>{tool.name}</b>
               <span>{tool.detail}</span>
             </li>
           ))}
         </ul>
+        <details class="coh-tool-library" data-coh-tool-library>
+          <summary>View full stack <span>{additionalTools.length} additional tools</span></summary>
+          <ul class="coh-tool-grid coh-tool-grid-more" aria-label="Additional product and technical tools">
+            {additionalTools.map((tool) => (
+              <li data-coh-reveal data-coh-tool data-coh-tool-groups={tool.groups.join(' ')}>
+                <img src={tool.assetPath} alt="" width="56" height="56" decoding="async" />
+                <b>{tool.name}</b>
+                <span>{tool.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
       </div>
 
       <div class="coh-builds" data-coh-reveal>
@@ -435,10 +449,11 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-contact-actions" data-coh-reveal>
         <a href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
         <a href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↓</span></a>
+        <a href={site.contact.linkedin} target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
         <a href={site.contact.github} target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </div>
       <footer>
-        <span>Neel Jaiswal · Product leader / builder</span>
+        <span>Neel Jaiswal · Senior Product Manager, Mint Mobile</span>
         <a href="#home">Back to top</a>
         <span>© {new Date().getFullYear()}</span>
       </footer>

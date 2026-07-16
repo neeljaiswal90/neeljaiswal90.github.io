@@ -258,8 +258,10 @@ const selectedWorkSection = productionSections.find((section) => section.id === 
 const expectedWorkCaseSlugs = [
   'growth-system',
   'home-internet',
-  'production-ai',
+  'esim-growth',
+  'mint-kids',
   'device-commerce',
+  'production-ai',
   'enterprise-integration',
   'retail-self-service',
 ];

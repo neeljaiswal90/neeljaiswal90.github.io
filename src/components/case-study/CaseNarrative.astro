@@ -16,9 +16,17 @@ const { caseStudy } = Astro.props;
   <p class="case-statement">{caseStudy.problem}</p>
 </section>
 
+<section class="case-section case-mandate" id="mandate" data-case-scene data-case-section="mandate">
+  <header class="case-section-heading">
+    <p>04 / Mandate</p>
+    <h2>What I was accountable for.</h2>
+  </header>
+  <p class="case-mandate-copy">{caseStudy.mandate}</p>
+</section>
+
 <section class="case-section case-decisions" id="decisions" data-case-scene data-case-section="decisions">
   <header class="case-section-heading">
-    <p>04 / Decisions</p>
+    <p>05 / Decisions</p>
     <h2>The product choices that shaped the system.</h2>
   </header>
   <ol>
@@ -28,12 +36,30 @@ const { caseStudy } = Astro.props;
   </ol>
 </section>
 
+<section class="case-section case-shipped" id="shipped" data-case-scene data-case-section="shipped">
+  <header class="case-section-heading">
+    <p>06 / What shipped</p>
+    <h2>The product and operating system delivered.</h2>
+  </header>
+  <ul>
+    {caseStudy.shipped.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
 <section class="case-section case-tradeoffs" id="tradeoffs" data-case-scene data-case-section="tradeoffs">
   <header class="case-section-heading">
-    <p>05 / Tradeoffs</p>
+    <p>07 / Tradeoffs</p>
     <h2>The boundaries that made it operable.</h2>
   </header>
   <ul>
     {caseStudy.tradeoffs.map((tradeoff) => <li>{tradeoff}</li>)}
   </ul>
+</section>
+
+<section class="case-section case-learning" id="learning" data-case-scene data-case-section="learning">
+  <header class="case-section-heading">
+    <p>08 / Learning</p>
+    <h2>The principle I carried forward.</h2>
+  </header>
+  <p class="case-learning-copy">{caseStudy.learning}</p>
 </section>

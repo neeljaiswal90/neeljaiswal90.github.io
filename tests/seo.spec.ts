@@ -23,7 +23,7 @@ function xmlLocations(xml: string): string[] {
   return Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1] ?? '');
 }
 
-test('sitemap contains exactly the seven canonical content routes', async ({ request }) => {
+test('sitemap contains exactly the canonical home and case-study routes', async ({ request }) => {
   const indexResponse = await request.get('/sitemap-index.xml');
   expect(indexResponse.status()).toBe(200);
   expect(indexResponse.headers()['content-type']).toContain('xml');

@@ -20,9 +20,10 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(27);
-  await expect(page.locator('.coh-tool-grid li:visible')).toHaveCount(27);
+  await expect(page.locator('.coh-tool-grid li:visible')).toHaveCount(10);
   await expect(page.locator('[data-coh-tool-filter]')).toHaveCount(7);
-  await expect(page.locator('#coh-tool-count')).toHaveText('27 / 27 tools');
+  await expect(page.locator('#coh-tool-count')).toHaveText('10 featured · 27 total');
+  await expect(page.locator('[data-coh-tool-library]')).not.toHaveAttribute('open', '');
   await expect(page.locator('.coh-tool-blob')).toHaveCount(0);
   await page.locator('#stack').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
   await expect(page.locator('.coh-tool-toolbar')).toHaveClass(/is-visible/);
@@ -30,8 +31,11 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await page.locator('[data-coh-tool-filter="ai"]').click({ force: true });
   await expect(page.locator('#coh-tool-count')).toHaveText('5 / 27 tools');
   await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(5);
+  await expect(page.locator('[data-coh-tool-library]')).toHaveAttribute('open', '');
   await page.locator('[data-coh-tool-filter="all"]').click({ force: true });
-  await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(27);
+  await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(10);
+  await expect(page.locator('#coh-tool-count')).toHaveText('10 featured · 27 total');
+  await expect(page.locator('[data-coh-tool-library]')).not.toHaveAttribute('open', '');
   await expect(page.locator('.coh-award-record')).toContainText('Mint Mobile');
   await expect(page.locator('.coh-award-record')).toContainText('#1');
   await expect(page.locator('.coh-award-record')).toHaveAttribute('href', /jdpower\.com/);
@@ -94,7 +98,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
       intro: center('.coh-hero-intro'),
       wordmark: center('.coh-hero-wordmark'),
       portrait: center('.coh-portrait-wrap'),
-      cta: center('.coh-hero-cta'),
+      actions: center('.coh-hero-actions'),
     };
   });
   for (const [element, center] of Object.entries(heroAlignment)) {
@@ -130,41 +134,29 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   const heroContainment = await page.evaluate(() => {
     const container = document.querySelector('.coh-hero-intro');
     const heading = document.querySelector('.coh-hero-intro h1');
-    const greeting = document.querySelector('.coh-hero-intro h1 > span:first-child');
-    const roleLine = document.querySelector('.coh-role-line');
-    const role = document.querySelector('[data-role-cycle]');
-    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(greeting instanceof HTMLElement) || !(roleLine instanceof HTMLElement) || !(role instanceof HTMLElement)) {
-      throw new Error('Hero role elements are missing');
+    const eyebrow = document.querySelector('.coh-hero-eyebrow');
+    const summary = document.querySelector('.coh-hero-summary');
+    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(eyebrow instanceof HTMLElement) || !(summary instanceof HTMLElement)) {
+      throw new Error('Hero positioning elements are missing');
     }
-
-    role.getAnimations().forEach((animation) => animation.cancel());
-    const phrases = ['ecommerce growth systems', 'agentic AI workflows', 'conversion engines', 'AI resolution products'];
-    return phrases.map((phrase) => {
-      role.textContent = phrase;
-      const containerRect = container.getBoundingClientRect();
-      const greetingRect = greeting.getBoundingClientRect();
-      const roleRect = role.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const measurements = [eyebrow, heading, summary].map((element) => {
+      const rect = element.getBoundingClientRect();
       return {
-        phrase,
-        inlineOverflow: roleLine.scrollWidth - roleLine.clientWidth,
-        rightInset: containerRect.right - roleRect.right,
-        greetingLeft: greetingRect.left,
-        greetingRight: greetingRect.right,
-        roleLineLeft: roleLine.getBoundingClientRect().left,
+        leftInset: rect.left - containerRect.left,
+        rightInset: containerRect.right - rect.right,
+        inlineOverflow: element.scrollWidth - element.clientWidth,
       };
     });
+    return { measurements, top: containerRect.top, bottom: containerRect.bottom };
   });
 
-  const greetingLefts = heroContainment.map(({ greetingLeft }) => greetingLeft);
-  const greetingRights = heroContainment.map(({ greetingRight }) => greetingRight);
-  const roleLineLefts = heroContainment.map(({ roleLineLeft }) => roleLineLeft);
-  expect(Math.max(...greetingLefts) - Math.min(...greetingLefts), 'the greeting must not move when the role changes').toBeLessThanOrEqual(1);
-  expect(Math.max(...greetingRights) - Math.min(...greetingRights), 'the divider axis must remain fixed').toBeLessThanOrEqual(1);
-  expect(Math.max(...roleLineLefts) - Math.min(...roleLineLefts), 'the rotating role slot must stay anchored').toBeLessThanOrEqual(1);
-
-  for (const measurement of heroContainment) {
-    expect(measurement.inlineOverflow, `${measurement.phrase} should fit its grid area`).toBeLessThanOrEqual(1);
-    expect(measurement.rightInset, `${measurement.phrase} should retain right-side breathing room`).toBeGreaterThanOrEqual(18);
+  expect(heroContainment.top).toBeGreaterThanOrEqual(70);
+  expect(heroContainment.bottom).toBeLessThanOrEqual(340);
+  for (const measurement of heroContainment.measurements) {
+    expect(measurement.inlineOverflow, 'hero copy should not overflow its own box').toBeLessThanOrEqual(1);
+    expect(measurement.leftInset, 'hero copy should stay inside the left edge').toBeGreaterThanOrEqual(-1);
+    expect(measurement.rightInset, 'hero copy should stay inside the right edge').toBeGreaterThanOrEqual(-1);
   }
 
   const focusTransition = await page.evaluate(() => {

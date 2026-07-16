@@ -58,25 +58,6 @@ if (hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-const roleTarget = document.querySelector<HTMLElement>('[data-role-cycle]');
-const roles = ['ecommerce growth systems', 'agentic AI workflows', 'conversion engines', 'AI resolution products'];
-if (roleTarget && !reducedMotion) {
-  let roleIndex = 0;
-  window.setInterval(() => {
-    roleIndex = (roleIndex + 1) % roles.length;
-    roleTarget.animate(
-      [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-0.5em)' }],
-      { duration: 180, fill: 'forwards' },
-    ).finished.then(() => {
-      roleTarget.textContent = roles[roleIndex] ?? roles[0] ?? '';
-      roleTarget.animate(
-        [{ opacity: 0, transform: 'translateY(0.5em)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { duration: 260, fill: 'forwards' },
-      );
-    }).catch(() => undefined);
-  }, 2400);
-}
-
 const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {
@@ -138,6 +119,8 @@ const toolFilterButtons = Array.from(document.querySelectorAll<HTMLButtonElement
 const toolCards = Array.from(document.querySelectorAll<HTMLElement>('[data-coh-tool]'));
 const toolCount = document.querySelector<HTMLElement>('#coh-tool-count');
 const toolAnnouncement = document.querySelector<HTMLElement>('#coh-tool-announcement');
+const toolLibrary = document.querySelector<HTMLDetailsElement>('[data-coh-tool-library]');
+const featuredToolCount = toolCards.filter((card) => card.hasAttribute('data-coh-tool-featured')).length;
 
 const setToolFilter = (filter: string, label: string) => {
   let visibleCount = 0;
@@ -148,14 +131,18 @@ const setToolFilter = (filter: string, label: string) => {
     if (visible) visibleCount += 1;
   });
 
+  if (toolLibrary) toolLibrary.open = filter !== 'all';
+
   toolFilterButtons.forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.cohToolFilter === filter));
   });
 
-  if (toolCount) toolCount.textContent = `${visibleCount} / ${toolCards.length} tools`;
+  if (toolCount) toolCount.textContent = filter === 'all'
+    ? `${featuredToolCount} featured · ${toolCards.length} total`
+    : `${visibleCount} / ${toolCards.length} tools`;
   if (toolAnnouncement) {
     toolAnnouncement.textContent = filter === 'all'
-      ? `Showing all ${toolCards.length} public tools.`
+      ? `Showing ${featuredToolCount} featured tools. The complete ${toolCards.length}-tool inventory is available on demand.`
       : `Showing ${visibleCount} of ${toolCards.length} public tools in ${label}.`;
   }
 };

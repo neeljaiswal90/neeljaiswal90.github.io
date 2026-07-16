@@ -25,8 +25,11 @@ const sectionLinks = [
   ['overview', 'Overview'],
   ['system', 'System'],
   ['problem', 'Problem'],
+  ['mandate', 'Mandate'],
   ['decisions', 'Decisions'],
+  ['shipped', 'Shipped'],
   ['tradeoffs', 'Tradeoffs'],
+  ['learning', 'Learning'],
   ['evidence', 'Evidence'],
 ] as const;
 ---
@@ -52,7 +55,7 @@ const sectionLinks = [
     <div class="case-story">
       <CaseProcess caseStudy={caseStudy} />
       <CaseNarrative caseStudy={caseStudy} />
-      <EvidenceBoundary claims={allEvidence} boundary={caseStudy.evidenceBoundary} />
+      <EvidenceBoundary claims={allEvidence} boundary={caseStudy.evidenceBoundary} measurementNote={caseStudy.measurementNote} />
     </div>
   </div>
 </CaseStudyLayout>

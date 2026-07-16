@@ -24,6 +24,16 @@ const { caseStudy, metrics, contextCues } = Astro.props;
   </div>
   <h1 data-case-title>{caseStudy.title}</h1>
   <p class="case-hero-summary">{caseStudy.summary}</p>
+  <div class="case-at-glance" aria-label="Case study at a glance">
+    <span>At a glance</span>
+    <dl>
+      <div><dt>Role</dt><dd>{caseStudy.role}</dd></div>
+      <div><dt>Period</dt><dd>{caseStudy.period}</dd></div>
+      <div><dt>Team</dt><dd>{caseStudy.team}</dd></div>
+      <div><dt>Customer</dt><dd>{caseStudy.customer}</dd></div>
+      <div><dt>Surface</dt><dd>{caseStudy.surface}</dd></div>
+    </dl>
+  </div>
   <CaseMetricStrip metrics={metrics} />
   {contextCues.length > 0 && (
     <div class="case-scope" aria-label="Case scope cues">

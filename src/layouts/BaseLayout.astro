@@ -58,7 +58,11 @@ const structuredDataDocument = {
         height: site.profileImage.height,
       },
       jobTitle: site.jobTitle,
-      sameAs: [site.contact.github],
+      worksFor: {
+        '@type': 'Organization',
+        name: site.worksFor,
+      },
+      sameAs: [site.contact.linkedin, site.contact.github],
       knowsAbout: site.expertise,
     },
     {

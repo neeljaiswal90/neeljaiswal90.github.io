@@ -32,8 +32,12 @@ const structuredData = JSON.stringify({
       '@id': personId,
       name: site.name,
       jobTitle: site.jobTitle,
+      worksFor: {
+        '@type': 'Organization',
+        name: site.worksFor,
+      },
       image: canonicalUrl(site.profileImage.path),
-      sameAs: [site.contact.github],
+      sameAs: [site.contact.linkedin, site.contact.github],
     },
     {
       '@type': 'WebSite',

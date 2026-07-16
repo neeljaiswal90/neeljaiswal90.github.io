@@ -4,6 +4,8 @@ test('all case-study routes remain complete and readable without JavaScript', as
   for (const slug of [
     'growth-system',
     'home-internet',
+    'esim-growth',
+    'mint-kids',
     'production-ai',
     'device-commerce',
     'enterprise-integration',
@@ -12,7 +14,7 @@ test('all case-study routes remain complete and readable without JavaScript', as
     const response = await page.goto(`/work/${slug}/`, { waitUntil: 'load' });
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('[data-case-section]')).toHaveCount(6);
+    await expect(page.locator('[data-case-section]')).toHaveCount(9);
     await expect(page.locator('#system ol > li')).toHaveCount(4);
     await expect(page.locator('.case-evidence-boundary')).toBeVisible();
   }

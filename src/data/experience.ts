@@ -11,13 +11,14 @@ export interface RoleRecord {
 
 export const roles: readonly RoleRecord[] = [
   {
-    id: 'mint', periodClaimId: 'career.mint.role_dates', summaryClaimId: 'career.mint.scope', company: 'Mint Mobile', title: 'Senior Product Manager · T-Mobile company', signal: 'AI + commerce at scale',
+    id: 'mint', periodClaimId: 'career.mint.role_dates', summaryClaimId: 'career.mint.scope', company: 'Mint Mobile', title: 'Senior Product Manager', signal: 'Ecommerce portfolio · 4 direct reports',
     achievements: [
       { title: 'Growth system', description: 'Built a repeatable funnel operating loop across homepage, plans, checkout, and lifecycle.', href: '/work/growth-system/' },
-      { title: 'New businesses', description: 'Connected eligibility, purchase, activation, hardware, and operations for Home Internet and device commerce.', href: '/work/home-internet/' },
+      { title: 'New-business launches', description: 'Connected eligibility, purchase, activation, hardware, and operations for Home Internet, Mint Kids, eSIM, and device commerce.', href: '/work/home-internet/' },
+      { title: 'Product leadership', description: 'Directly manage four product managers across acquisition, checkout, activation, devices, and post-purchase growth.' },
       { title: 'Production AI', description: 'Shipped a grounded assistant measured on resolution, customer satisfaction, and safe escalation.', href: '/work/production-ai/' },
     ],
-    tags: ['Experimentation', 'GenAI', 'Home Internet', 'Device commerce', 'Payments', 'People leadership'],
+    tags: ['Ecommerce', 'Experimentation', 'Home Internet', 'Mint Kids', 'eSIM', 'Device commerce', 'People leadership'],
   },
   {
     id: 'inspire', periodClaimId: 'career.inspire.role_dates', summaryClaimId: 'enterprise.workday_api_program', company: 'Inspire Brands', title: 'Product Manager', signal: 'Enterprise integration',
