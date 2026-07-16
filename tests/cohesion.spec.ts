@@ -15,6 +15,8 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
     await expect(page.locator(`#${id}`), `#${id} should exist`).toHaveCount(1);
   }
 
+  await expect(page.locator('.coh-talk')).toHaveAttribute('href', '#contact');
+
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(27);
