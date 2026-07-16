@@ -56,13 +56,21 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
 
   const portraitFlip = page.locator('[data-coh-portrait-flip]');
   await page.locator('#home').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
+  await page.mouse.move(0, 0);
   await expect(portraitFlip).toHaveAttribute('data-intro-flip', 'complete');
-  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
-  await portraitFlip.click({ force: true });
-  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'true');
-  await expect(portraitFlip).toHaveClass(/is-flipped/);
-  await portraitFlip.click({ force: true });
-  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
+  await expect(portraitFlip).toHaveAttribute('aria-expanded', 'false');
+  if (testInfo.project.name === 'mobile-chromium') {
+    await portraitFlip.click({ force: true });
+    await expect(portraitFlip).toHaveAttribute('aria-expanded', 'true');
+    await expect(portraitFlip).toHaveClass(/is-flipped/);
+    await portraitFlip.click({ force: true });
+  } else {
+    await portraitFlip.hover({ force: true });
+    await expect(portraitFlip).toHaveAttribute('aria-expanded', 'true');
+    await expect(portraitFlip).toHaveClass(/is-flipped/);
+    await page.mouse.move(0, 0);
+  }
+  await expect(portraitFlip).toHaveAttribute('aria-expanded', 'false');
   await expectImagesToDecode(page);
   await page.waitForTimeout(900);
 

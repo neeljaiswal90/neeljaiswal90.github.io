@@ -80,8 +80,22 @@ if (roleTarget && !reducedMotion) {
 const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {
+  const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const portraitBack = portraitFlip.querySelector<HTMLElement>('.coh-portrait-back');
   const completeIntroFlip = () => {
     portraitFlip.dataset.introFlip = 'complete';
+  };
+  const showPortraitBack = (showBack: boolean) => {
+    completeIntroFlip();
+    portraitFlip.classList.toggle('is-flipped', showBack);
+    portraitFlip.setAttribute('aria-expanded', String(showBack));
+    portraitFlip.setAttribute('aria-label', showBack
+      ? 'Show Neel’s portrait'
+      : 'Reveal what Neel builds');
+    portraitBack?.setAttribute('aria-hidden', String(!showBack));
+    if (portraitStatus) portraitStatus.textContent = showBack
+      ? 'Showing what Neel builds.'
+      : 'Showing Neel’s portrait.';
   };
 
   if (reducedMotion) {
@@ -92,18 +106,21 @@ if (portraitFlip) {
     }, 850);
   }
 
+  portraitFlip.addEventListener('mouseenter', () => {
+    if (hoverCapable.matches) showPortraitBack(true);
+  });
+  portraitFlip.addEventListener('mouseleave', () => {
+    if (hoverCapable.matches) showPortraitBack(false);
+  });
+  portraitFlip.addEventListener('focus', () => {
+    if (hoverCapable.matches) showPortraitBack(true);
+  });
+  portraitFlip.addEventListener('blur', () => {
+    if (hoverCapable.matches) showPortraitBack(false);
+  });
   portraitFlip.addEventListener('click', () => {
-    const wasIntroPending = portraitFlip.dataset.introFlip === 'pending';
-    completeIntroFlip();
-    const showBack = wasIntroPending ? false : !portraitFlip.classList.contains('is-flipped');
-    portraitFlip.classList.toggle('is-flipped', showBack);
-    portraitFlip.setAttribute('aria-pressed', String(showBack));
-    portraitFlip.setAttribute('aria-label', showBack
-      ? 'Flip Neel’s portrait card to show his photo'
-      : 'Flip Neel’s portrait card to see what he builds');
-    if (portraitStatus) portraitStatus.textContent = showBack
-      ? 'Showing what Neel builds.'
-      : 'Showing Neel’s portrait.';
+    if (hoverCapable.matches) return;
+    showPortraitBack(!portraitFlip.classList.contains('is-flipped'));
   });
 }
 

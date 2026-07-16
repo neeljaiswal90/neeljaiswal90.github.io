@@ -365,6 +365,13 @@ img {
   transform: rotateY(180deg);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .coh-portrait-wrap:hover .coh-portrait-flipper,
+  .coh-portrait-wrap:focus-visible .coh-portrait-flipper {
+    transform: rotateY(180deg);
+  }
+}
+
 .coh-portrait-face {
   position: absolute;
   inset: 0;
@@ -478,7 +485,17 @@ img {
 
 .js .coh-portrait-flip-hint { display: flex; }
 
-.coh-portrait-flip-hint span { color: var(--coh-violet); font-size: 16px; }
+.coh-flip-hint-touch { display: none; }
+
+.coh-portrait-flip-hint b {
+  color: var(--coh-violet);
+  font-size: 16px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .coh-flip-hint-hover { display: none; }
+  .coh-flip-hint-touch { display: inline; }
+}
 
 .coh-shape {
   --depth: 1;
@@ -1785,6 +1802,11 @@ img {
 .work-tone-4 { background: #f4f7c7; }
 .work-tone-5 { background: #ffd9cc; }
 .work-tone-6 { background: #e6f4df; }
+
+.work-tone-5 .coh-work-meta,
+.coh-work-card.work-tone-5 > p {
+  color: #3f3a40;
+}
 
 .coh-work-meta {
   display: flex;

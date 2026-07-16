@@ -128,8 +128,8 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
         data-coh-reveal
         data-coh-portrait-flip
         data-intro-flip="pending"
-        aria-pressed="false"
-        aria-label="Flip Neel’s portrait card to see what he builds"
+        aria-expanded="false"
+        aria-label="Reveal what Neel builds"
         aria-describedby="coh-portrait-flip-hint"
       >
         <span class="coh-portrait-flipper">
@@ -145,7 +145,11 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
           </span>
         </span>
       </button>
-      <p class="coh-portrait-flip-hint" id="coh-portrait-flip-hint">Click portrait to flip <span aria-hidden="true">↻</span></p>
+      <p class="coh-portrait-flip-hint" id="coh-portrait-flip-hint">
+        <span class="coh-flip-hint-hover">Hover portrait to flip</span>
+        <span class="coh-flip-hint-touch">Tap portrait to flip</span>
+        <b aria-hidden="true">↻</b>
+      </p>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
 
       <div class="coh-shape coh-shape-a" data-coh-depth="1" aria-hidden="true"></div>
