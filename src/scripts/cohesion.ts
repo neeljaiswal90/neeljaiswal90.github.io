@@ -59,7 +59,7 @@ if (hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
 }
 
 const roleTarget = document.querySelector<HTMLElement>('[data-role-cycle]');
-const roles = ['growth systems', 'production AI', 'commerce journeys', 'platform products'];
+const roles = ['growth systems', 'production AI', 'commerce products', 'platform systems'];
 if (roleTarget && !reducedMotion) {
   let roleIndex = 0;
   window.setInterval(() => {

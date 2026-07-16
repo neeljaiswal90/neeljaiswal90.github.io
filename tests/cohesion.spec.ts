@@ -26,6 +26,31 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
   }));
   expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
 
+  const heroAlignment = await page.evaluate(() => {
+    const center = (selector: string) => {
+      const element = document.querySelector(selector);
+      if (!(element instanceof HTMLElement)) throw new Error(`Missing ${selector}`);
+      const rect = element.getBoundingClientRect();
+      return rect.left + rect.width / 2;
+    };
+
+    const divider = document.querySelector('.coh-hero-intro h1 > span:nth-child(2)');
+    const dividerCenter = divider instanceof HTMLElement && getComputedStyle(divider).display !== 'none'
+      ? center('.coh-hero-intro h1 > span:nth-child(2)')
+      : center('.coh-hero-intro');
+
+    return {
+      intro: center('.coh-hero-intro'),
+      divider: dividerCenter,
+      wordmark: center('.coh-hero-wordmark'),
+      portrait: center('.coh-portrait-wrap'),
+      cta: center('.coh-hero-cta'),
+    };
+  });
+  for (const [element, center] of Object.entries(heroAlignment)) {
+    expect(Math.abs(center - heroAlignment.portrait), `${element} should share the portrait center axis`).toBeLessThanOrEqual(2);
+  }
+
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();
