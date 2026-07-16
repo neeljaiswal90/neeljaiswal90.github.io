@@ -247,8 +247,9 @@ img {
 
 .coh-hero-intro h1 {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: max-content auto max-content;
   align-items: center;
+  justify-content: center;
   gap: 18px;
   width: 100%;
   margin: 0;
@@ -266,7 +267,7 @@ img {
 .coh-hero-intro p {
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(15px, 1.35vw, 22px);
+  font-size: clamp(16px, 1.35vw, 22px);
   font-weight: 540;
   letter-spacing: -0.03em;
   white-space: nowrap;
@@ -1339,10 +1340,10 @@ img {
 .coh-focus-cue {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(190px, 0.6fr) minmax(420px, 1.9fr) 52px;
+  grid-template-columns: minmax(250px, 0.65fr) minmax(520px, 1.8fr) 68px;
   align-items: center;
-  gap: 40px;
-  padding-top: 20px;
+  gap: clamp(24px, 3vw, 48px);
+  padding: 28px 0 34px;
   border-top: 1px solid rgb(255 255 255 / 15%);
   transition: border-color 180ms ease;
 }
@@ -1359,33 +1360,35 @@ img {
 
 .coh-focus-cue-copy {
   display: grid;
-  gap: 4px;
+  gap: 7px;
 }
 
 .coh-focus-cue-copy small {
   color: var(--coh-cyan);
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .coh-focus-cue-copy strong {
-  font: 620 14px/1.25 "Space Grotesk", sans-serif;
+  font: 620 clamp(20px, 1.4vw, 24px)/1.2 "Space Grotesk", sans-serif;
 }
 
 .coh-focus-cue-steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 12px;
 }
 
 .coh-focus-cue-steps > i {
   min-width: 0;
   display: grid;
-  gap: 4px;
-  padding-top: 10px;
-  border-top: 2px solid rgb(255 255 255 / 18%);
+  gap: 7px;
+  padding: 14px 12px 13px;
+  background: rgb(255 255 255 / 3%);
+  border-top: 3px solid rgb(255 255 255 / 20%);
+  border-radius: 0 0 14px 14px;
   font-style: normal;
 }
 
@@ -1395,21 +1398,18 @@ img {
 
 .coh-focus-cue-steps b {
   color: var(--coh-white);
-  font: 760 10px/1 "Space Grotesk", sans-serif;
+  font: 760 14px/1 "Space Grotesk", sans-serif;
 }
 
 .coh-focus-cue-steps span {
-  overflow: hidden;
-  color: #8e8b96;
-  font-size: 8px;
+  color: #b4b1bc;
+  font-size: 12px;
   font-weight: 720;
-  line-height: 1.25;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
 .coh-focus-cue-arrow {
-  width: 48px;
+  width: 64px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -1417,7 +1417,7 @@ img {
   color: var(--coh-ink);
   background: var(--coh-cyan);
   border-radius: 50%;
-  font-size: 18px;
+  font-size: 22px;
   animation: coh-focus-cue 1.8s ease-in-out infinite;
 }
 
@@ -2057,7 +2057,7 @@ img {
   }
 
   .coh-focus-cue {
-    grid-template-columns: minmax(0, 1fr) 48px;
+    grid-template-columns: minmax(0, 1fr) 64px;
     gap: 16px 24px;
   }
 
@@ -2380,7 +2380,20 @@ img {
   }
 
   .coh-focus-cue {
-    padding-top: 15px;
+    grid-template-columns: minmax(0, 1fr) 56px;
+    padding: 18px 0 20px;
+  }
+
+  .coh-focus-cue-copy strong {
+    font-size: 16px;
+  }
+
+  .coh-focus-cue-steps > i {
+    padding: 11px 7px 10px;
+  }
+
+  .coh-focus-cue-arrow {
+    width: 56px;
   }
 
   .coh-focus-cue-steps span {

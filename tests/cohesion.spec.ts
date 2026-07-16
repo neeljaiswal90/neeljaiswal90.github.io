@@ -50,14 +50,8 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
       return rect.left + rect.width / 2;
     };
 
-    const divider = document.querySelector('.coh-hero-intro h1 > span:nth-child(2)');
-    const dividerCenter = divider instanceof HTMLElement && getComputedStyle(divider).display !== 'none'
-      ? center('.coh-hero-intro h1 > span:nth-child(2)')
-      : center('.coh-hero-intro');
-
     return {
       intro: center('.coh-hero-intro'),
-      divider: dividerCenter,
       wordmark: center('.coh-hero-wordmark'),
       portrait: center('.coh-portrait-wrap'),
       cta: center('.coh-hero-cta'),
@@ -82,9 +76,11 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
 
   const heroContainment = await page.evaluate(() => {
     const container = document.querySelector('.coh-hero-intro');
+    const heading = document.querySelector('.coh-hero-intro h1');
+    const greeting = document.querySelector('.coh-hero-intro h1 > span:first-child');
     const roleLine = document.querySelector('.coh-role-line');
     const role = document.querySelector('[data-role-cycle]');
-    if (!(container instanceof HTMLElement) || !(roleLine instanceof HTMLElement) || !(role instanceof HTMLElement)) {
+    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(greeting instanceof HTMLElement) || !(roleLine instanceof HTMLElement) || !(role instanceof HTMLElement)) {
       throw new Error('Hero role elements are missing');
     }
 
@@ -93,11 +89,16 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     return phrases.map((phrase) => {
       role.textContent = phrase;
       const containerRect = container.getBoundingClientRect();
+      const headingRect = heading.getBoundingClientRect();
+      const greetingRect = greeting.getBoundingClientRect();
       const roleRect = role.getBoundingClientRect();
       return {
         phrase,
         inlineOverflow: roleLine.scrollWidth - roleLine.clientWidth,
         rightInset: containerRect.right - roleRect.right,
+        whitespaceDelta: Math.abs(
+          (greetingRect.left - headingRect.left) - (headingRect.right - roleRect.right),
+        ),
       };
     });
   });
@@ -105,6 +106,7 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   for (const measurement of heroContainment) {
     expect(measurement.inlineOverflow, `${measurement.phrase} should fit its grid area`).toBeLessThanOrEqual(1);
     expect(measurement.rightInset, `${measurement.phrase} should retain right-side breathing room`).toBeGreaterThanOrEqual(18);
+    expect(measurement.whitespaceDelta, `${measurement.phrase} should be visually centered as one group`).toBeLessThanOrEqual(10);
   }
 
   const focusTransition = await page.evaluate(() => {
@@ -119,12 +121,24 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     const headingRect = heading.getBoundingClientRect();
     const cueRect = cue.getBoundingClientRect();
     const cardRect = firstCard.getBoundingClientRect();
+    const cueTitle = cue.querySelector('.coh-focus-cue-copy strong');
+    const stepLabel = cue.querySelector('.coh-focus-cue-steps span');
+    const cueArrow = cue.querySelector('.coh-focus-cue-arrow');
+    if (!(cueTitle instanceof HTMLElement) || !(stepLabel instanceof HTMLElement) || !(cueArrow instanceof HTMLElement)) {
+      throw new Error('Focus cue typography is missing');
+    }
     return {
       cueInsideHeading: cueRect.bottom <= headingRect.bottom + 1,
       visibleCardDepth: window.innerHeight - cardRect.top,
+      cueTitleSize: Number.parseFloat(getComputedStyle(cueTitle).fontSize),
+      stepLabelSize: Number.parseFloat(getComputedStyle(stepLabel).fontSize),
+      arrowSize: cueArrow.getBoundingClientRect().width,
     };
   });
 
   expect(focusTransition.cueInsideHeading).toBe(true);
   expect(focusTransition.visibleCardDepth).toBeGreaterThanOrEqual(80);
+  expect(focusTransition.cueTitleSize).toBeGreaterThanOrEqual(20);
+  expect(focusTransition.stepLabelSize).toBeGreaterThanOrEqual(12);
+  expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
 });
