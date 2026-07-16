@@ -1,0 +1,20 @@
+---
+import type { ClaimRecord } from '../../data/claims';
+
+interface Props {
+  metrics: readonly ClaimRecord[];
+}
+
+const { metrics } = Astro.props;
+---
+
+{metrics.length > 0 && (
+  <ul class:list={['case-metric-strip', { 'case-metric-strip-compact': metrics.length < 3 }]} aria-label="Published case outcomes">
+    {metrics.map((metric) => (
+      <li data-case-metric>
+        <strong>{metric.displayValue ?? metric.displayLabel ?? metric.statement}</strong>
+        <span>{metric.displayLabel ?? 'Published outcome'}</span>
+      </li>
+    ))}
+  </ul>
+)}

@@ -1,0 +1,22 @@
+---
+import { getProductionSection, site } from '../data/site';
+import { getPublishableClaim } from '../data/claims';
+
+const section = getProductionSection('contact');
+const location = getPublishableClaim('profile.location.greater_san_diego');
+---
+
+<section class="chapter contact-section" id="contact" data-section="contact" data-controller="copy-email">
+  <p class="section-number reveal">{section.sequence} / {section.eyebrow}</p>
+  <h2 class="reveal">Have a hard product<br>problem? <span>Good.</span></h2>
+  <p class="contact-lead reveal">I’m exploring senior and staff product roles where growth, AI, commerce, and platform thinking meet real customer outcomes.</p>
+  <div class="contact-actions reveal">
+    <a class="contact-primary" href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
+    <button type="button" id="copy-email" data-email={site.contact.email}>Copy email</button>
+  </div>
+  <div class="contact-footer reveal">
+    <span>{location.displayValue}</span>
+    <span>© 2026 Neel Jaiswal</span>
+    <a href="#intro">Back to top ↑</a>
+  </div>
+</section>

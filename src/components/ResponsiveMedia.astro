@@ -1,0 +1,35 @@
+---
+import type { MediaRecord } from '../data/media';
+
+interface Props {
+  media: MediaRecord & { assetPath: string };
+  width: number;
+  height: number;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  media,
+  width,
+  height,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+} = Astro.props;
+const srcset = (items: readonly { src: string; width: number }[]) =>
+  items.map((item) => `${item.src} ${item.width}w`).join(', ');
+---
+
+<picture>
+  {media.responsive && <source type="image/avif" srcset={srcset(media.responsive.avif)} sizes={media.responsive.sizes} />}
+  {media.responsive && <source type="image/webp" srcset={srcset(media.responsive.webp)} sizes={media.responsive.sizes} />}
+  <img
+    src={media.assetPath}
+    alt={media.alt ?? ''}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+  />
+</picture>

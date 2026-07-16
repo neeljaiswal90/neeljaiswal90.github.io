@@ -1,0 +1,39 @@
+{
+  "name": "neel-jaiswal-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.14 <25",
+    "npm": ">=11.11"
+  },
+  "packageManager": "npm@11.11.0",
+  "scripts": {
+    "dev": "astro dev",
+    "validate:content": "node scripts/validate-content.mjs",
+    "check": "npm run validate:content && astro check",
+    "build": "npm run validate:content && astro build",
+    "build:sites": "npm run build && node scripts/prepare-sites-dist.mjs",
+    "preview": "astro preview",
+    "test:e2e": "playwright test",
+    "test:lhci": "lhci autorun",
+    "test:ci": "npm run check && npm run build && npm run test:e2e && npm run test:lhci"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "7.0.9",
+    "motion": "12.42.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "@axe-core/playwright": "4.12.1",
+    "@lhci/cli": "0.15.1",
+    "@playwright/test": "1.61.1",
+    "sharp": "0.35.3",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "tmp": "0.2.7",
+    "uuid": "11.1.1"
+  }
+}

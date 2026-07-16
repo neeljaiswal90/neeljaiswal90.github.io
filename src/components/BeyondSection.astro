@@ -1,0 +1,60 @@
+---
+import { getPublishableClaim } from '../data/claims';
+import { getPublishableMedia } from '../data/media';
+import { getProductionSection } from '../data/site';
+import ResponsiveMedia from './ResponsiveMedia.astro';
+
+const section = getProductionSection('beyond');
+const wcgYear = getPublishableClaim('athletics.wcg_year_2007');
+const medals = getPublishableClaim('athletics.weightlifting_medals_10_plus');
+const placing = getPublishableClaim('athletics.american_open_placing_4');
+const appearances = getPublishableClaim('athletics.american_open_appearances_2021_2022');
+const asset = (id: string) => getPublishableMedia(id);
+const podium = asset('media.achievement.weightlifting_podium');
+const wcg = asset('media.achievement.wcg_2007');
+const medal = asset('media.achievement.meet_medal_tshirt_edit');
+const silver = asset('media.achievement.weightlifting_silver');
+const medalCount = medals.displayValue?.replace(/\s*medals?$/i, '');
+---
+
+<section class="chapter beyond-section" id="beyond" data-section="beyond">
+  <header class="section-header reveal">
+    <div>
+      <p class="section-number">{section.sequence} / {section.eyebrow}</p>
+      <h2>Pressure makes<br />the feedback honest.</h2>
+    </div>
+    <p>A compact competition archive: real frames, cropped details, and the scoreboard. Two arenas; one practice loop.</p>
+  </header>
+
+  <div class="competition-archive reveal">
+    <div class="archive-masthead"><span>NJ / Competition archive</span><strong>Train · Review · Return</strong><span>02 disciplines / 01 loop</span></div>
+
+    <figure class="archive-photo archive-photo-lift">
+      <ResponsiveMedia media={podium} width={1134} height={2016} />
+      <figcaption><span>01 / Weightlifting podium</span><button type="button" data-photo-open data-photo-full={podium.assetPath} data-photo-title={podium.title}>View full frame ↗</button></figcaption>
+    </figure>
+
+    <figure class="archive-photo archive-photo-wcg">
+      <ResponsiveMedia media={wcg} width={500} height={335} />
+      <figcaption><span>02 / WCG archive · {wcgYear.displayValue}</span><button type="button" data-photo-open data-photo-full={wcg.assetPath} data-photo-title={wcg.title}>View full frame ↗</button></figcaption>
+    </figure>
+
+    <div class="archive-ledger" aria-label={medals.statement}>
+      <span>Podium ledger · owner reported</span><strong>{medalCount}</strong><p>Gold / silver / bronze</p><div aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+
+    <figure class="archive-photo archive-photo-medal">
+      <ResponsiveMedia media={medal} width={1122} height={1402} />
+      <figcaption><span>03 / Meet medal</span><button type="button" data-photo-open data-photo-full={medal.assetPath} data-photo-title={medal.title}>View full frame ↗</button></figcaption>
+    </figure>
+
+    <figure class="archive-photo archive-photo-silver">
+      <ResponsiveMedia media={silver} width={1200} height={1600} />
+      <figcaption><span>04 / Silver podium</span><button type="button" data-photo-open data-photo-full={silver.assetPath} data-photo-title={silver.title}>View full frame ↗</button></figcaption>
+    </figure>
+
+    <div class="archive-result archive-result-usaw">
+      <span>{placing.displayLabel}</span><strong>{placing.displayValue}</strong><small>{appearances.displayLabel} · {appearances.displayValue}</small>
+    </div>
+  </div>
+</section>

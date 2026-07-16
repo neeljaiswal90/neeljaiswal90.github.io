@@ -1,0 +1,34 @@
+---
+import type { ClaimRecord } from '../../data/claims';
+import type { WorkCase, WorkContextCue } from '../../data/work';
+import CaseMetricStrip from './CaseMetricStrip.astro';
+
+interface Props {
+  caseStudy: WorkCase;
+  metrics: readonly ClaimRecord[];
+  contextCues: readonly WorkContextCue[];
+}
+
+const { caseStudy, metrics, contextCues } = Astro.props;
+---
+
+<header class="case-hero" id="overview" data-case-scene data-case-section="overview">
+  <div class="case-hero-grid" aria-hidden="true"></div>
+  <div class="case-hero-meta">
+    <span>{caseStudy.sequence} / {caseStudy.systemLabel}</span>
+    <span>{caseStudy.company}</span>
+  </div>
+  <h1 data-case-title>{caseStudy.title}</h1>
+  <p class="case-hero-summary">{caseStudy.summary}</p>
+  <CaseMetricStrip metrics={metrics} />
+  {contextCues.length > 0 && (
+    <div class="case-scope" aria-label="Case scope cues">
+      <span>Scope cues</span>
+      <ul>
+        {contextCues.map((signal) => (
+          <li><strong>{signal.value}</strong><small>{signal.label}</small></li>
+        ))}
+      </ul>
+    </div>
+  )}
+</header>

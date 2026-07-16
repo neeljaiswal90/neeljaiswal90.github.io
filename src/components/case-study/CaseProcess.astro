@@ -1,0 +1,25 @@
+---
+import type { WorkCase } from '../../data/work';
+
+interface Props {
+  caseStudy: WorkCase;
+}
+
+const { caseStudy } = Astro.props;
+---
+
+<section class="case-section case-process" id="system" data-case-scene data-case-section="system">
+  <header class="case-section-heading">
+    <p>02 / System</p>
+    <h2>{caseStudy.flowLabel}</h2>
+  </header>
+  <ol aria-label={caseStudy.flowLabel}>
+    {caseStudy.steps.map((step, index) => (
+      <li>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{step.title}</strong>
+        <p>{step.description}</p>
+      </li>
+    ))}
+  </ol>
+</section>

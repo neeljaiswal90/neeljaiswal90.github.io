@@ -1,0 +1,58 @@
+---
+import { getPublishableClaim } from '../data/claims';
+import { getProductionSection } from '../data/site';
+import '../styles/scenes/ai.css';
+
+const section = getProductionSection('ai-system');
+const cycle = getPublishableClaim('toolkit.delivery_week_to_hour');
+const toolkit = getPublishableClaim('toolkit.production_solo_build');
+const assistant = getPublishableClaim('ai.assistant.rag_memory_tools');
+const humanGate = getPublishableClaim('toolkit.evidence_to_release_human_gate');
+const reference = getPublishableClaim('ai.gpt_oss.reference_architecture');
+const toolkitStats = [
+  getPublishableClaim('toolkit.delivery_acceleration_100x'),
+  getPublishableClaim('toolkit.planning_accuracy_gain_30'),
+  getPublishableClaim('toolkit.research_cycle_speed_10x'),
+];
+---
+
+<section class="chapter ai-section" id="ai-system" data-section="ai-system" data-controller="ai-system-scene">
+  <header class="section-header inverse reveal">
+    <div>
+      <p class="section-number">{section.sequence} / {section.eyebrow}</p>
+      <h2>AI that retrieves,<br />reasons, and acts.</h2>
+    </div>
+      <p>{assistant.statement} This compact view shows the operating pattern behind it and the separate open-weight reference design.</p>
+  </header>
+
+  <div class="ai-compact-grid reveal">
+    <article class="ai-proof-card spotlight-card">
+      <span class="scope-pill deployed">Production · built solo</span>
+      <h3>Product Toolkit</h3>
+      <p>{toolkit.statement} Owner-reported operating estimate: the issue-to-deployment loop moved from <strong>{cycle.displayValue}</strong>, with faster planning and research feedback.</p>
+      <div class="ai-proof-stats" aria-label="Owner-reported Product Toolkit operating estimates">
+        {toolkitStats.map((claim) => <b data-ai-stat>{claim.displayValue}<small>{claim.displayLabel}</small></b>)}
+      </div>
+      <p class="ai-guardrail"><span aria-hidden="true">✓</span> {humanGate.displayLabel}</p>
+    </article>
+
+    <article class="ai-reference-card">
+      <header>
+        <span class="scope-pill reference">Reference architecture</span>
+        <p>{reference.displayLabel}</p>
+      </header>
+      <div class="ai-flow-scene">
+        <svg class="ai-flow-path" data-ai-path-svg viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path data-ai-path pathLength="1" d="M 40 20 H 960"></path>
+        </svg>
+        <ol class="ai-flow" aria-label="Open-weight AI reference flow">
+          <li data-ai-step><small>01 / Evidence</small><b>Retrieve</b><span>ACLs · lineage</span></li>
+          <li data-ai-step><small>02 / Context</small><b>Structure</b><span>ontology · memory</span></li>
+          <li data-ai-step><small>03 / Reason</small><b>Route</b><span>gpt-oss models</span></li>
+          <li data-ai-step><small>04 / Act</small><b>Approve</b><span>typed tools · evals</span></li>
+        </ol>
+      </div>
+      <p class="sr-only">{reference.statement}</p>
+    </article>
+  </div>
+</section>

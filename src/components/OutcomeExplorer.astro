@@ -1,0 +1,77 @@
+---
+import { getPublishedClaim, workCases } from '../data/work';
+import { getProductionSection } from '../data/site';
+
+const section = getProductionSection('selected-work');
+
+const doodlesBySlug: Readonly<Record<string, string>> = {
+  'growth-system': '<path d="M19 111c25-34 56-51 98-54"/><path d="m104 39 18 17-22 10"/><path d="M39 34l7 11 13-4"/>',
+  'home-internet': '<path d="M25 117c41 1 71-17 92-55"/><path d="m98 58 23-3 3 22"/><circle cx="43" cy="49" r="10"/>',
+  'production-ai': '<path d="M32 53c18-21 62-19 82 4 19 22 9 55-20 64-14 4-29 2-39-6l-22 8 7-23c-15-14-17-32-8-47Z"/><path d="M58 78h47M58 94h31"/>',
+  'device-commerce': '<rect x="47" y="24" width="67" height="112" rx="16"/><path d="M71 39h20M73 119h16"/><path d="m28 79 13 7-12 8"/>',
+  'enterprise-integration': '<circle cx="43" cy="80" r="17"/><circle cx="117" cy="48" r="17"/><circle cx="113" cy="116" r="17"/><path d="m58 72 43-18M58 88l39 20"/>',
+  'retail-self-service': '<path d="M34 79a46 46 0 1 1 14 33"/><path d="m48 112-21 2 6-20"/><path d="m62 80 14 14 28-33"/>',
+};
+
+for (const item of workCases) {
+  if (!doodlesBySlug[item.slug]) throw new Error(`Missing outcome illustration for ${item.slug}`);
+}
+---
+
+<section class="chapter work-section" id="selected-work" data-section="selected-work" data-controller="outcome-explorer">
+  <header class="section-header reveal">
+    <div>
+      <p class="section-number">{section.sequence} / {section.eyebrow}</p>
+      <h2>Products are stories<br />with a measured ending.</h2>
+    </div>
+    <p>Move through six customer problems, the systems built around them, and the measured result. Swipe, use the index, or step with the arrow controls.</p>
+  </header>
+
+  <div class="work-shell">
+    <nav class="work-index reveal" aria-label="Choose a product outcome">
+      {workCases.map((item, index) => (
+        <a href={`#${item.outcomeId}`} data-work-go={index} aria-current={index === 0 ? 'true' : undefined}>
+          <span>{item.sequence}</span><b>{item.indexTitle}</b><small>{item.company} · {item.systemLabel}</small>
+        </a>
+      ))}
+    </nav>
+
+    <div class="work-stage reveal">
+      <div class="work-stage-toolbar">
+        <div><strong id="work-count">01 / {String(workCases.length).padStart(2, '0')}</strong><span>Outcome navigator</span></div>
+        <div class="work-controls" aria-label="Outcome controls">
+          <button type="button" data-work-prev aria-label="Previous outcome">←</button>
+          <button type="button" data-work-next aria-label="Next outcome">→</button>
+        </div>
+      </div>
+      <p class="sr-only" id="work-announcement" aria-live="polite"></p>
+
+      <div class="work-track" id="work-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Selected product outcomes">
+        {workCases.map((item, index) => {
+          const metrics = [
+            ...item.metricClaimIds.map((claimId) => {
+              const claim = getPublishedClaim(claimId);
+              return { value: claim.displayValue ?? claim.displayLabel ?? claim.statement, label: claim.displayLabel ?? 'Published outcome' };
+            }),
+            ...(item.supportingSignals ?? []),
+          ];
+          return (
+            <article class:list={['work-card', 'spotlight-card', { 'is-active': index === 0 }]} id={item.outcomeId} data-work-slide aria-roledescription="slide" aria-label={`${index + 1} of ${workCases.length}: ${item.title}`}>
+              <svg class="work-doodle" viewBox="0 0 160 160" aria-hidden="true" set:html={doodlesBySlug[item.slug]}></svg>
+              <div class="work-card-top"><span>{item.sequence} · {item.systemLabel}</span><i>{item.company}</i></div>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              <div class:list={['work-metrics', { compact: metrics.length < 3 }]}>
+                {metrics.map((metric) => <b>{metric.value}<small>{metric.label}</small></b>)}
+              </div>
+              <ol class="story-flow" aria-label={item.flowLabel}>
+                {item.steps.map((step, stepIndex) => <li><span>{String(stepIndex + 1).padStart(2, '0')}</span><b>{step.title}</b><small>{step.description}</small></li>)}
+              </ol>
+              <a class="work-case-link" href={`/work/${item.slug}/`}>Read the case study <span aria-hidden="true">↗</span></a>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>

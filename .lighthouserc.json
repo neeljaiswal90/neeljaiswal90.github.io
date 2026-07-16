@@ -1,0 +1,181 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npm run preview -- --host 127.0.0.1 --port 4321",
+      "startServerReadyPattern": "Local",
+      "startServerReadyTimeout": 30000,
+      "url": [
+        "http://127.0.0.1:4321/",
+        "http://127.0.0.1:4321/work/growth-system/"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "chromeFlags": "--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage"
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "categories:performance": [
+          "error",
+          {
+            "minScore": 0.9,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 1,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "categories:best-practices": [
+          "error",
+          {
+            "minScore": 1,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 1,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "first-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 3000,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 3000,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "speed-index": [
+          "error",
+          {
+            "maxNumericValue": 3500,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "total-blocking-time": [
+          "error",
+          {
+            "maxNumericValue": 200,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "interactive": [
+          "error",
+          {
+            "maxNumericValue": 4000,
+            "aggregationMethod": "median-run"
+          }
+        ],
+        "dom-size": [
+          "error",
+          {
+            "maxNumericValue": 1200,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:document:size": [
+          "error",
+          {
+            "maxNumericValue": 32768,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:script:size": [
+          "error",
+          {
+            "maxNumericValue": 65536,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:stylesheet:size": [
+          "error",
+          {
+            "maxNumericValue": 65536,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:image:size": [
+          "error",
+          {
+            "maxNumericValue": 786432,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:font:size": [
+          "error",
+          {
+            "maxNumericValue": 98304,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:total:size": [
+          "error",
+          {
+            "maxNumericValue": 1048576,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:total:count": [
+          "error",
+          {
+            "maxNumericValue": 20,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:script:count": [
+          "error",
+          {
+            "maxNumericValue": 2,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:font:count": [
+          "error",
+          {
+            "maxNumericValue": 2,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "resource-summary:third-party:count": [
+          "error",
+          {
+            "maxNumericValue": 0,
+            "aggregationMethod": "pessimistic"
+          }
+        ],
+        "image-delivery-insight": "warn",
+        "uses-optimized-images": "warn",
+        "uses-responsive-images": "warn",
+        "unused-css-rules": "warn",
+        "dom-size-insight": "off",
+        "forced-reflow-insight": "warn",
+        "network-dependency-tree-insight": "off",
+        "render-blocking-insight": "off"
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

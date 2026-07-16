@@ -1,0 +1,70 @@
+/* Hero scene enhancements. The visible base state is intentional: if
+   JavaScript is unavailable, every word and card remains readable. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-block: .07em;
+  margin-block: -.07em;
+}
+
+.hero-title .hero-line__inner,
+.hero-title .hero-word {
+  display: inline-block;
+}
+
+.js.motion-ready .hero:not(.hero-motion-active):not(.hero-motion-complete) [data-hero-kicker],
+.js.motion-ready .hero:not(.hero-motion-active):not(.hero-motion-complete) [data-hero-line-inner],
+.js.motion-ready .hero:not(.hero-motion-active):not(.hero-motion-complete) [data-hero-lower],
+.js.motion-ready .hero:not(.hero-motion-active):not(.hero-motion-complete) [data-hero-signal-content] {
+  opacity: 0;
+}
+
+.hero-motion-active:not(.hero-motion-complete) .hero-line__inner,
+.hero-motion-active:not(.hero-motion-complete) .hero-word,
+.hero-motion-active:not(.hero-motion-complete) [data-hero-kicker],
+.hero-motion-active:not(.hero-motion-complete) [data-hero-lower],
+.hero-motion-active:not(.hero-motion-complete) [data-hero-signal-content] {
+  will-change: transform, opacity;
+}
+
+.signal-card__content {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.hero-orbit {
+  --hero-pointer-x: 0px;
+  --hero-pointer-y: 0px;
+  --hero-scroll-shift: 0px;
+  transform: translate3d(
+    var(--hero-pointer-x),
+    calc(var(--hero-pointer-y) + var(--hero-scroll-shift)),
+    0
+  );
+  transition: transform .7s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform;
+}
+
+.hero-orbit[data-hero-orbit="secondary"] {
+  transition-duration: .9s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line__inner,
+  .hero-word,
+  [data-hero-kicker],
+  [data-hero-lower],
+  [data-hero-signal-content],
+  .hero-orbit {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

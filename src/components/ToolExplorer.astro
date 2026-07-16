@@ -1,0 +1,47 @@
+---
+import { toolFilters, toolProfiles } from '../data/tools';
+import { getPublishableClaim } from '../data/claims';
+import { getProductionSection } from '../data/site';
+
+const section = getProductionSection('stack');
+const inventory = getPublishableClaim('stack.public_tool_inventory_27');
+const familiarity = getPublishableClaim('stack.public_tool_familiarity');
+---
+
+<section class="chapter stack-section" id="stack" data-section="stack" data-controller="tool-filter">
+  <svg class="stack-doodle stack-doodle-arrow" viewBox="0 0 220 150" aria-hidden="true"><path d="M18 111c47-62 99-83 168-67"/><path d="m167 24 25 22-31 12"/></svg>
+  <svg class="stack-doodle stack-doodle-burst" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 10v23M60 87v23M10 60h23M87 60h23M25 25l16 16M79 79l16 16M95 25 79 41M41 79 25 95"/></svg>
+
+  <header class="section-header reveal">
+    <div>
+      <p class="section-number">{section.sequence} / {section.eyebrow}</p>
+      <h2>The tool follows<br />the problem.</h2>
+    </div>
+    <p>{inventory.displayValue} across product, commerce, AI, data, and engineering. {familiarity.statement} Internal brand-specific environments remain out.</p>
+  </header>
+
+  <div class="stack-marquee" aria-hidden="true">
+    <div class="stack-marquee-track">
+      <span>PRODUCT · AI · DATA · COMMERCE · ENGINEERING · </span>
+      <span>PRODUCT · AI · DATA · COMMERCE · ENGINEERING · </span>
+    </div>
+  </div>
+
+  <div class="tool-filters reveal" role="group" aria-label="Filter public tools">
+    {toolFilters.map((filter, index) => (
+      <button type="button" data-tool-filter={filter.id} aria-controls="tool-grid" aria-pressed={index === 0 ? 'true' : 'false'}>{filter.label}</button>
+    ))}
+    <span class="tool-count" id="tool-count" aria-hidden="true">{toolProfiles.length} / {toolProfiles.length}</span>
+  </div>
+  <p class="sr-only" id="tool-announcement" aria-live="polite"></p>
+
+  <ul class="tool-symbol-grid" id="tool-grid" aria-label="Public product and technical tools">
+    {toolProfiles.map((tool, index) => (
+      <li class:list={['tool-tile', 'reveal', { 'tool-tile-pattern': tool.id === 'ontology', 'tool-tile-capability': tool.id === 'payment-gateways' }]} data-tool-groups={tool.groups.join(' ')}>
+        <span class="tool-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <span class="tool-symbol"><img src={tool.assetPath} alt="" width="42" height="42" loading="lazy" decoding="async" /></span>
+        <h3>{tool.name}</h3><small>{tool.detail}</small>
+      </li>
+    ))}
+  </ul>
+</section>

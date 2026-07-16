@@ -1,0 +1,10 @@
+---
+import { productionSections } from '../data/site';
+---
+
+<nav class="chapter-nav" aria-label="Portfolio sections" data-controller="page-navigation">
+  <i class="chapter-nav-indicator" aria-hidden="true"></i>
+  {productionSections.map((section) => (
+    <a href={section.hash} data-nav={section.id}><span>{section.sequence}</span>{section.navLabel}</a>
+  ))}
+</nav>

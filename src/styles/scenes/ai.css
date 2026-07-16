@@ -1,0 +1,37 @@
+.ai-flow-scene {
+  position: relative;
+  isolation: isolate;
+}
+
+.ai-flow-path {
+  position: absolute;
+  z-index: 0;
+  top: calc(50% + 12px);
+  left: 5%;
+  width: 90%;
+  height: 40px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ai-flow-path path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: .58;
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), .22));
+}
+
+.ai-flow-scene .ai-flow {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 760px) {
+  .ai-flow-path { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-flow-path path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+}

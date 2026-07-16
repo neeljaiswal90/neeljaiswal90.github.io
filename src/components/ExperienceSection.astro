@@ -1,0 +1,41 @@
+---
+import { getPublishableClaim } from '../data/claims';
+import { roles } from '../data/experience';
+import { getProductionSection } from '../data/site';
+
+const section = getProductionSection('experience');
+---
+
+<section class="chapter experience-section" id="experience" data-section="experience" data-controller="experience-scene">
+  <header class="section-header reveal">
+    <div><p class="section-number">{section.sequence} / {section.eyebrow}</p><h2>Every chapter<br />built a new muscle.</h2></div>
+    <p>Not a one-company portfolio. The work moves from regulated delivery to discovery, retail self-service, enterprise systems, and consumer growth at scale.</p>
+  </header>
+
+  <div class="experience-list">
+    {roles.map((role, index) => {
+      const period = getPublishableClaim(role.periodClaimId);
+      const summary = getPublishableClaim(role.summaryClaimId);
+      return (
+        <details class="role-card reveal" open={index === 0} data-experience-item>
+          <summary>
+            <span class="role-year">{period.displayValue}</span>
+            <span class="role-main"><strong>{role.company}</strong><em>{role.title}</em></span>
+            <span class="role-signal">{role.signal}</span><span class="role-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="role-body" data-experience-panel>
+            <p class="role-summary">{summary.statement}</p>
+            {role.achievements.length > 0 && (
+              <div class:list={['role-achievements', { 'two-up': role.achievements.length === 2 }]}>
+                {role.achievements.map((achievement) => (
+                  <article><b>{achievement.title}</b><p>{achievement.description}</p>{achievement.href && <a href={achievement.href}>Open case ↗</a>}</article>
+                ))}
+              </div>
+            )}
+            <div class="tag-row">{role.tags.map((tag) => <span>{tag}</span>)}</div>
+          </div>
+        </details>
+      );
+    })}
+  </div>
+</section>

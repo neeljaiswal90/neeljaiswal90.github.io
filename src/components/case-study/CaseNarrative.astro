@@ -1,0 +1,39 @@
+---
+import type { WorkCase } from '../../data/work';
+
+interface Props {
+  caseStudy: WorkCase;
+}
+
+const { caseStudy } = Astro.props;
+---
+
+<section class="case-section case-problem" id="problem" data-case-scene data-case-section="problem">
+  <header class="case-section-heading">
+    <p>03 / Problem</p>
+    <h2>The customer and operating problem.</h2>
+  </header>
+  <p class="case-statement">{caseStudy.problem}</p>
+</section>
+
+<section class="case-section case-decisions" id="decisions" data-case-scene data-case-section="decisions">
+  <header class="case-section-heading">
+    <p>04 / Decisions</p>
+    <h2>The choices that shaped the system.</h2>
+  </header>
+  <ol>
+    {caseStudy.decisions.map((decision, index) => (
+      <li><span>{String(index + 1).padStart(2, '0')}</span><p>{decision}</p></li>
+    ))}
+  </ol>
+</section>
+
+<section class="case-section case-tradeoffs" id="tradeoffs" data-case-scene data-case-section="tradeoffs">
+  <header class="case-section-heading">
+    <p>05 / Tradeoffs</p>
+    <h2>What the approach makes explicit.</h2>
+  </header>
+  <ul>
+    {caseStudy.tradeoffs.map((tradeoff) => <li>{tradeoff}</li>)}
+  </ul>
+</section>

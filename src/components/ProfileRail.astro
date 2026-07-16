@@ -1,0 +1,71 @@
+---
+import { site } from '../data/site';
+import { getPublishableClaim } from '../data/claims';
+import { getPublishableMedia } from '../data/media';
+import ResponsiveMedia from './ResponsiveMedia.astro';
+
+const experience = getPublishableClaim('profile.experience.years_10_plus');
+const location = getPublishableClaim('profile.location.greater_san_diego');
+const headshot = getPublishableMedia('media.profile.headshot');
+---
+
+<aside class="profile-rail" aria-label="Profile" data-controller="theme">
+  <div class="profile-rail-inner">
+    <div class="profile-topline">
+      <a class="monogram" href="#intro" aria-label="NJ — Neel Jaiswal home">NJ</a>
+      <span class="availability"><i aria-hidden="true"></i> Open to the right role</span>
+    </div>
+
+    <div class="portrait-wrap">
+      <ResponsiveMedia media={headshot} width={870} height={827} loading="eager" fetchpriority="high" />
+    </div>
+
+    <div class="profile-copy">
+      <p class="eyebrow dark">Senior product leader</p>
+      <h1>Neelesh <span>(Neel)</span><br>Jaiswal</h1>
+      <p class="profile-role">Growth · eCommerce · AI · Platforms</p>
+      <p class="profile-intro">I build products that make complex systems feel obvious — and I stay close enough to the technology to ship.</p>
+    </div>
+
+    <div class="profile-facts" aria-label="Profile facts">
+      <div><span>{location.displayLabel}</span><strong>{location.displayValue}</strong></div>
+      <div><span>Experience</span><strong>{experience.displayValue}</strong></div>
+    </div>
+
+    <div class="theme-lab" aria-label="Color theme explorer">
+      <span class="theme-label">Color mood</span>
+      <div class="theme-options" role="group" aria-label="Choose a color mood">
+        <button type="button" data-theme-option="studio" aria-pressed="true" style="--swatch-a:#f7f9fc;--swatch-b:#4059c7;--swatch-c:#0f7c83">
+          <i aria-hidden="true"></i><span>Light studio</span>
+        </button>
+        <button type="button" data-theme-option="cinema" aria-pressed="false" style="--swatch-a:#171a24;--swatch-b:#6f83d9;--swatch-c:#3f8f92">
+          <i aria-hidden="true"></i><span>Cinema</span>
+        </button>
+        <button type="button" data-theme-option="navy" aria-pressed="false" style="--swatch-a:#0b1220;--swatch-b:#d6aa52;--swatch-c:#f3eee4">
+          <i aria-hidden="true"></i><span>Executive</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="social-links" aria-label="Contact and social links">
+      <a href={`mailto:${site.contact.email}`} aria-label="Email Neel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18v13H3zM4 7l8 6 8-6"/></svg>
+        <span>Email</span>
+      </a>
+      <a href="https://linkedin.com/in/neelesh-jaiswal" target="_blank" rel="noopener" aria-label="Neel on LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5v9M6.5 5.5v.1M10.5 17.5v-5c0-2 1.1-3.2 2.8-3.2 1.8 0 2.7 1.2 2.7 3.2v5M10.5 9.5v8M3.5 3.5h17v17h-17z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href={site.contact.github} target="_blank" rel="noopener" aria-label="Neel on GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.5 1.4-4.5-2.4-6-3m12 6v-3.5c0-1 .1-1.5-.5-2.1 3.1-.3 6.4-1.5 6.4-6.8a5.3 5.3 0 0 0-1.4-3.7 5 5 0 0 0-.1-3.7s-1.1-.4-3.9 1.4a13.5 13.5 0 0 0-7 0C5.7 1.8 4.6 2.2 4.6 2.2a5 5 0 0 0-.1 3.7 5.3 5.3 0 0 0-1.4 3.7c0 5.3 3.3 6.5 6.4 6.8-.5.5-.7 1.1-.6 2.1V22"/></svg>
+        <span>GitHub</span>
+      </a>
+      <a href="/Neelesh_Jaiswal_Resume_Master.pdf" download aria-label="Download Neel's resume">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 20h16"/></svg>
+        <span>Resume</span>
+      </a>
+    </nav>
+
+    <a class="rail-cta" href="#contact">Start a conversation <span aria-hidden="true">↗</span></a>
+  </div>
+</aside>

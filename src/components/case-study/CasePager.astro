@@ -1,0 +1,29 @@
+---
+import type { WorkCase } from '../../data/work';
+
+interface Props {
+  current: WorkCase;
+  previous: WorkCase | null;
+  next: WorkCase | null;
+}
+
+const { current, previous, next } = Astro.props;
+---
+
+<footer class="case-pager" aria-label={`More selected work after ${current.title}`}>
+  <a class="case-pager-all" href="/#selected-work"><span aria-hidden="true">←</span> All selected work</a>
+  <nav aria-label="Adjacent case studies">
+    {previous ? (
+      <a href={`/work/${previous.slug}/`} rel="prev">
+        <span>Previous / {previous.sequence}</span>
+        <strong>{previous.indexTitle}</strong>
+      </a>
+    ) : <span class="case-pager-empty" aria-hidden="true"></span>}
+    {next ? (
+      <a href={`/work/${next.slug}/`} rel="next">
+        <span>Next / {next.sequence}</span>
+        <strong>{next.indexTitle}</strong>
+      </a>
+    ) : <span class="case-pager-empty" aria-hidden="true"></span>}
+  </nav>
+</footer>

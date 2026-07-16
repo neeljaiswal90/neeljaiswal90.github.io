@@ -1,0 +1,4 @@
+/* Reveal system */
+.reveal { opacity: 1; transform: none; }
+.js.motion-ready .reveal { opacity: 0; transform: translateY(24px); }
+.js.motion-ready .reveal.is-visible { opacity: 1; transform: none; }

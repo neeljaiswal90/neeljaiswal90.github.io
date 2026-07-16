@@ -1,0 +1,58 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import CaseStudyHero from '../../components/case-study/CaseStudyHero.astro';
+import CaseProcess from '../../components/case-study/CaseProcess.astro';
+import CaseNarrative from '../../components/case-study/CaseNarrative.astro';
+import EvidenceBoundary from '../../components/case-study/EvidenceBoundary.astro';
+import { getWorkCaseViewModels, type WorkCaseViewModel } from '../../data/work';
+
+interface Props {
+  viewModel: WorkCaseViewModel;
+}
+
+export function getStaticPaths() {
+  return getWorkCaseViewModels().map((viewModel) => ({
+    params: { slug: viewModel.workCase.slug },
+    props: { viewModel },
+  }));
+}
+
+const { workCase: caseStudy, claims, contextCues, adjacent } = Astro.props.viewModel;
+const allEvidence = [...claims.metrics, ...claims.evidence].filter(
+  (claim, index, list) => list.findIndex((candidate) => candidate.id === claim.id) === index,
+);
+const sectionLinks = [
+  ['overview', 'Overview'],
+  ['system', 'System'],
+  ['problem', 'Problem'],
+  ['decisions', 'Decisions'],
+  ['tradeoffs', 'Tradeoffs'],
+  ['evidence', 'Evidence'],
+] as const;
+---
+
+<CaseStudyLayout caseStudy={caseStudy} previous={adjacent.previous} next={adjacent.next}>
+  <CaseStudyHero caseStudy={caseStudy} metrics={claims.metrics} contextCues={contextCues} />
+
+  <div class="case-reading-layout">
+    <aside class="case-index" aria-label="Case study sections">
+      <div class="case-index-inner">
+        <span class="case-index-label">Case index</span>
+        <div class="case-index-map">
+          <span class="case-index-track" aria-hidden="true"><span data-case-progress></span></span>
+          <ol>
+            {sectionLinks.map(([id, label], index) => (
+              <li><a href={`#${id}`} data-case-index-link aria-current={index === 0 ? 'location' : undefined}><span>{String(index + 1).padStart(2, '0')}</span>{label}</a></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </aside>
+
+    <div class="case-story">
+      <CaseProcess caseStudy={caseStudy} />
+      <CaseNarrative caseStudy={caseStudy} />
+      <EvidenceBoundary claims={allEvidence} boundary={caseStudy.evidenceBoundary} />
+    </div>
+  </div>
+</CaseStudyLayout>

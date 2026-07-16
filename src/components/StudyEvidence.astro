@@ -1,0 +1,47 @@
+---
+import { getPublishableClaim } from '../data/claims';
+import { sources } from '../data/sources';
+
+const ranking = getPublishableClaim('jd_power.purchase_rank_1_value_mvno_2023');
+const scoreClaim = getPublishableClaim('jd_power.purchase_score_862_1000');
+const deltaClaim = getPublishableClaim('jd_power.above_segment_average_51');
+const source = sources.find((item) => item.id === 'src.jd_power.purchase_2023');
+if (!source?.url) throw new Error('J.D. Power citation URL is missing.');
+
+const score = Number.parseInt(scoreClaim.displayValue ?? '', 10);
+const delta = Number.parseInt(deltaClaim.displayValue ?? '', 10);
+const average = score - delta;
+---
+
+<aside class="evidence-module reveal" aria-label="Independent purchase experience recognition">
+  <div class="evidence-copy">
+    <p class="proof-label">Independent purchase experience proof</p>
+    <h3>Purchase experience recognized at the <span>top</span> of its segment.</h3>
+    <p>{ranking.statement}</p>
+    <p class="evidence-boundary">Company-level recognition provides market context for the purchase experience; it is not a causal claim about any single experiment.</p>
+    <a href={source.url} target="_blank" rel="noopener">Read the official study <span aria-hidden="true">↗</span></a>
+  </div>
+  <figure class="evidence-media evidence-visual" aria-label={`Independent study context: ${scoreClaim.displayValue}, ${deltaClaim.displayValue} above the segment average`}>
+    <div class="evidence-visual-header">
+      <span>Purchase experience index</span>
+      <strong>{ranking.displayValue} <small>in segment</small></strong>
+    </div>
+    <div class="evidence-rank" aria-hidden="true">
+      <div class="evidence-rank-row is-highlighted">
+        <span>Mint Mobile</span>
+        <div class="evidence-rank-track"><i style={`--score: ${score / 10}%`}></i></div>
+        <strong>{score}</strong>
+      </div>
+      <div class="evidence-rank-row">
+        <span>Segment average</span>
+        <div class="evidence-rank-track"><i style={`--score: ${average / 10}%`}></i></div>
+        <strong>{average}</strong>
+      </div>
+    </div>
+    <div class="evidence-delta"><strong>{deltaClaim.displayValue}</strong><span>{deltaClaim.displayLabel}</span></div>
+    <figcaption>
+      <span>Original visualization · factual study citation</span>
+      <a href={source.url} target="_blank" rel="noopener">Source ↗</a>
+    </figcaption>
+  </figure>
+</aside>
