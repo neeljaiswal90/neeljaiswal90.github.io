@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProfileRail from '../components/ProfileRail.astro';
+import ChapterNav from '../components/ChapterNav.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
+import AISection from '../components/AISection.astro';
+import OutcomeExplorer from '../components/OutcomeExplorer.astro';
+import ToolExplorer from '../components/ToolExplorer.astro';
+import BuildsSection from '../components/BuildsSection.astro';
+import BeyondSection from '../components/BeyondSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+import MediaDialog from '../components/MediaDialog.astro';
+---
+<BaseLayout canonical="/v1/" portfolioPage={true}>
+  <ProfileRail />
+  <ChapterNav />
+
+
+  <main class="content" id="main-content" data-controller="reveal spotlight">
+    <HeroSection />
+
+    <ExperienceSection />
+
+
+    <AISection />
+
+
+    <OutcomeExplorer />
+
+    <ToolExplorer />
+
+    <BuildsSection />
+
+    <BeyondSection />
+
+
+    <ContactSection />
+  </main>
+  <MediaDialog />
+</BaseLayout>

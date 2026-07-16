@@ -103,8 +103,8 @@ for (const caseStudy of caseStudies) {
       await expect(metricCells.getByText(metric, { exact: true })).toHaveCount(1);
     }
 
-    await expect(page.locator('a[href="/cohesion/#work"]')).toHaveCount(3);
-    await expect(page.locator('.case-brand')).toHaveAttribute('href', '/cohesion/#home');
+    await expect(page.locator('a[href="/#work"]')).toHaveCount(3);
+    await expect(page.locator('.case-brand')).toHaveAttribute('href', '/#home');
     await expect(page.locator('.case-process')).toContainText('Operating system');
     await expect(page.locator('.case-evidence-boundary')).toContainText('Support boundary');
     const previous = page.locator('a[rel="prev"]');
@@ -130,7 +130,7 @@ for (const caseStudy of caseStudies) {
 }
 
 test('homepage work links and browser Back preserve selected-work context', async ({ page }) => {
-  await page.goto('/#selected-work', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/#selected-work', { waitUntil: 'domcontentloaded' });
   const hrefs = await page.locator('.work-case-link').evaluateAll((links) =>
     links.map((link) => link.getAttribute('href')),
   );
@@ -139,21 +139,21 @@ test('homepage work links and browser Back preserve selected-work context', asyn
   await page.locator('.work-case-link').first().click();
   await expect(page).toHaveURL(/\/work\/growth-system\/$/);
   await page.goBack({ waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveURL(/\/#selected-work$/);
+  await expect(page).toHaveURL(/\/v1\/#selected-work$/);
   await expect(page.locator('#outcome-01')).toHaveClass(/is-active/);
 });
 
 test('case study returns to Cohesion selected work', async ({ page }) => {
-  await page.goto('/cohesion/#work', { waitUntil: 'domcontentloaded' });
+  await page.goto('/#work', { waitUntil: 'domcontentloaded' });
   const card = page.locator('.coh-work .coh-work-card[href="/work/growth-system/"]');
   await expect(card).toHaveCount(1);
   await card.click();
   await expect(page).toHaveURL(/\/work\/growth-system\/$/);
 
   const allWork = page.locator('.case-topbar-back');
-  await expect(allWork).toHaveAttribute('href', '/cohesion/#work');
+  await expect(allWork).toHaveAttribute('href', '/#work');
   await allWork.click();
-  await expect(page).toHaveURL(/\/cohesion\/#work$/);
+  await expect(page).toHaveURL(/\/#work$/);
   await expect(page.locator('#work')).toBeVisible();
 });
 

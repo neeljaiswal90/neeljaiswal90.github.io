@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
 });
 
 test('chapter navigation and page progress follow the scrolled section', async ({ page }) => {

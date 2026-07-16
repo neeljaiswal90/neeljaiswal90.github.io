@@ -14,7 +14,7 @@ interface Props {
 const { caseStudy, previous, next } = Astro.props;
 const canonical = canonicalUrl(`/work/${caseStudy.slug}/`);
 const home = canonicalUrl('/');
-const cohesionHome = canonicalUrl('/cohesion/');
+const cohesionHome = canonicalUrl('/');
 const personId = `${home}#person`;
 const websiteId = `${home}#website`;
 const pageTitle = `${caseStudy.title} — ${caseStudy.company} Case Study | Neel Jaiswal`;
@@ -65,18 +65,18 @@ const structuredData = [
 >
   <div class="case-page" data-controller="case-study-scene">
     <header class="case-topbar">
-      <a class="case-brand" href="/cohesion/#home" aria-label="Neel Jaiswal, Cohesion portfolio home">
+      <a class="case-brand" href="/#home" aria-label="Neel Jaiswal, Cohesion portfolio home">
         <b>NJ</b>
         <span>Neel Jaiswal<small>Commerce · AI product leader</small></span>
       </a>
       <nav class="case-breadcrumb" aria-label="Breadcrumb">
         <ol>
-          <li><a href="/cohesion/">Cohesion</a></li>
-          <li><a href="/cohesion/#work">Selected work</a></li>
+          <li><a href="/">Cohesion</a></li>
+          <li><a href="/#work">Selected work</a></li>
           <li aria-current="page">{caseStudy.sequence}</li>
         </ol>
       </nav>
-      <a class="case-topbar-back" href="/cohesion/#work">All work <span aria-hidden="true">↙</span></a>
+      <a class="case-topbar-back" href="/#work">All work <span aria-hidden="true">↙</span></a>
     </header>
 
     <main class="case-main" id="main-content">

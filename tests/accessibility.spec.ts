@@ -8,7 +8,7 @@ for (const theme of themes) {
     await page.addInitScript((selectedTheme) => {
       window.localStorage.setItem('neel-portfolio-theme', selectedTheme);
     }, theme);
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
 
     const results = await new AxeBuilder({ page })
@@ -21,7 +21,7 @@ for (const theme of themes) {
 }
 
 test('skip link reaches the main portfolio content', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
   await page.keyboard.press('Tab');
   const skipLink = page.locator('.skip-link');
   await expect(skipLink).toBeFocused();

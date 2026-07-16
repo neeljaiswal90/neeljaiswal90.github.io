@@ -12,6 +12,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   structuredData?: Record<string, unknown> | readonly Record<string, unknown>[];
+  portfolioPage?: boolean;
 }
 
 const experience = getPublishableClaim('profile.experience.years_10_plus');
@@ -27,6 +28,7 @@ const {
   ogImage = canonicalUrl(site.socialImage.path),
   ogType = 'website',
   structuredData,
+  portfolioPage,
 } = Astro.props;
 
 const canonicalHref = canonicalUrl(canonical);
@@ -88,7 +90,7 @@ const structuredDataDocument = {
   ],
 };
 const structuredDataJson = JSON.stringify(structuredDataDocument).replace(/</g, '\\u003c');
-const isPortfolioHome = canonicalHref === homeHref;
+const isPortfolioHome = portfolioPage ?? canonicalHref === homeHref;
 ---
 
 <!doctype html>

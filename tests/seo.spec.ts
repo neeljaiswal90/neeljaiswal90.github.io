@@ -7,15 +7,15 @@ const contentRoutes = [
     path: '/',
     canonical: canonicalUrl('/'),
     kind: 'home',
-    image: canonicalUrl(site.socialImage.path),
-    imageAlt: site.socialImage.alt,
-  },
-  {
-    path: '/cohesion/',
-    canonical: canonicalUrl('/cohesion/'),
-    kind: 'variation',
     image: canonicalUrl('/assets/social-card-cohesion.png'),
     imageAlt: 'Neel Jaiswal with the headline Make complex systems feel obvious, surrounded by playful dimensional forms',
+  },
+  {
+    path: '/v1/',
+    canonical: canonicalUrl('/v1/'),
+    kind: 'v1',
+    image: canonicalUrl(site.socialImage.path),
+    imageAlt: site.socialImage.alt,
   },
   ...workCaseSlugs.map((slug) => ({
     path: `/work/${slug}/`,

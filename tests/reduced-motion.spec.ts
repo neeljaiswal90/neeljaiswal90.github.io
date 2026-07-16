@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('reduced-motion preference keeps content visible and stops perpetual motion', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
 
   expect(await page.evaluate(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   await expect(page.locator('.reveal').first()).toHaveClass(/is-visible/);
@@ -23,7 +23,7 @@ test('reduced-motion preference keeps content visible and stops perpetual motion
 
 test('live reduced-motion changes stop and restore perpetual motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
 
   await expect.poll(async () => page.evaluate(() =>
     document.getAnimations().filter((animation) => {
@@ -54,7 +54,7 @@ test('live reduced-motion changes stop and restore perpetual motion', async ({ p
 
 test('live reduced motion settles active flagship and disclosure scenes', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
 
   const ai = page.locator('[data-controller~="ai-system-scene"]');
   await ai.evaluate((section) => section.scrollIntoView({ block: 'center', behavior: 'instant' }));

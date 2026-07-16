@@ -4,7 +4,7 @@ import { attachRuntimeGuards, expectImagesToDecode, sectionIds } from './helpers
 test('portfolio shell, assets, and layout are healthy', async ({ page }, testInfo) => {
   const runtime = attachRuntimeGuards(page, testInfo);
 
-  const response = await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const response = await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle(/Neel/i);
   await expect(page.locator('#main-content')).toBeVisible();

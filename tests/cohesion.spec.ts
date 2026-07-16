@@ -2,9 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { attachRuntimeGuards, expectImagesToDecode } from './helpers';
 
-test('cohesion variation is responsive, accessible, and complete', async ({ page }, testInfo) => {
+test('cohesion is the responsive, accessible, and complete main portfolio', async ({ page }, testInfo) => {
   const runtime = attachRuntimeGuards(page, testInfo);
-  const response = await page.goto('/cohesion/', { waitUntil: 'domcontentloaded' });
+  const response = await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle(/Neel Jaiswal/i);
@@ -74,7 +74,7 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
 
 test('cohesion hero copy stays contained and section 02 reveals the system stack', async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 740 });
-  await page.goto('/cohesion/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const heroContainment = await page.evaluate(() => {
     const container = document.querySelector('.coh-hero-intro');
@@ -143,4 +143,10 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   expect(focusTransition.cueTitleSize).toBeGreaterThanOrEqual(20);
   expect(focusTransition.stepLabelSize).toBeGreaterThanOrEqual(12);
   expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
+});
+
+test('legacy Cohesion URL preserves section context on the main portfolio', async ({ page }) => {
+  await page.goto('/cohesion/#work', { waitUntil: 'domcontentloaded' });
+  await expect(page).toHaveURL(/\/#work$/);
+  await expect(page.locator('#work')).toBeVisible();
 });

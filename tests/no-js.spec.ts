@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { expectImagesToDecode, sectionIds } from './helpers';
 
 test('the complete portfolio remains readable without JavaScript', async ({ page }) => {
-  const response = await page.goto('/', { waitUntil: 'load' });
+  const response = await page.goto('/v1/', { waitUntil: 'load' });
   expect(response?.status()).toBe(200);
   await expect(page.locator('html')).not.toHaveClass(/\bjs\b/);
   await expect(page.locator('#main-content')).toBeVisible();
@@ -25,7 +25,7 @@ test('the complete portfolio remains readable without JavaScript', async ({ page
 });
 
 test('experience disclosures remain native and independently operable without JavaScript', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'load' });
+  await page.goto('/v1/', { waitUntil: 'load' });
 
   const roles = page.locator('[data-experience-item]');
   const firstRole = roles.first();

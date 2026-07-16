@@ -11,7 +11,7 @@ const { current, previous, next } = Astro.props;
 ---
 
 <footer class="case-pager" aria-label={`More selected work after ${current.title}`}>
-  <a class="case-pager-all" href="/cohesion/#work"><span aria-hidden="true">←</span> Back to Cohesion work</a>
+  <a class="case-pager-all" href="/#work"><span aria-hidden="true">←</span> Back to Cohesion work</a>
   <nav aria-label="Adjacent case studies">
     {previous ? (
       <a href={`/work/${previous.slug}/`} rel="prev">

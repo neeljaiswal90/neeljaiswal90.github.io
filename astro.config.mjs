@@ -6,7 +6,9 @@ export default defineConfig({
   site: siteMetadata.canonicalOrigin,
   output: 'static',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    filter: (page) => !page.endsWith('/cohesion/'),
+  })],
   build: {
     format: 'directory'
   },
