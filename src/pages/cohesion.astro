@@ -273,14 +273,29 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
 
     <section class="coh-focus" id="focus" data-coh-section="focus">
       <header class="coh-focus-heading" data-coh-reveal>
-        <p>02 / What I build</p>
-        <h2>Commerce growth.<br /><em>Agentic execution.</em></h2>
-        <span>Four connected systems for finding value, acting safely, and compounding what works.</span>
+        <div class="coh-focus-heading-copy">
+          <p>02 / What I build</p>
+          <h2>Commerce growth.<br /><em>Agentic execution.</em></h2>
+          <span>Four connected systems for finding value, acting safely, and compounding what works.</span>
+        </div>
+
+        <a class="coh-focus-cue" href="#focus-system-01">
+          <span class="coh-focus-cue-copy">
+            <small>Below this frame</small>
+            <strong>Scroll through four connected systems</strong>
+          </span>
+          <span class="coh-focus-cue-steps" aria-hidden="true">
+            {focusAreas.map((area) => (
+              <i><b>{area.number}</b><span>{area.kicker}</span></i>
+            ))}
+          </span>
+          <span class="coh-focus-cue-arrow" aria-hidden="true">↓</span>
+        </a>
       </header>
 
       <div class="coh-focus-stack">
         {focusAreas.map((area) => (
-          <article class={`coh-focus-card tone-${area.tone}`}>
+          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`}>
             <span class="coh-focus-number" aria-hidden="true">{area.number}</span>
             <div class="coh-focus-copy" data-coh-reveal>
               <p>{area.number} / {area.kicker}</p>

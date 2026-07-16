@@ -21,6 +21,9 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
   await expect(page.locator('.coh-award-seal')).toHaveAttribute('href', /jdpower\.com/);
   await expect(page.locator('.coh-release-loop li')).toHaveCount(4);
   await expect(page.locator('.coh-loop-header')).toContainText('Human governed');
+  await expect(page.locator('.coh-focus-cue')).toContainText('Scroll through four connected systems');
+  await expect(page.locator('.coh-focus-cue')).toHaveAttribute('href', '#focus-system-01');
+  await expect(page.locator('.coh-focus-cue-steps > i')).toHaveCount(4);
 
   const experienceItems = page.locator('[data-coh-experience]');
   await expect(experienceItems).toHaveCount(5);
@@ -71,4 +74,57 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
   expect(blocking).toEqual([]);
 
   runtime.assertClean();
+});
+
+test('cohesion hero copy stays contained and section 02 reveals the system stack', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 740 });
+  await page.goto('/cohesion/', { waitUntil: 'domcontentloaded' });
+
+  const heroContainment = await page.evaluate(() => {
+    const container = document.querySelector('.coh-hero-intro');
+    const roleLine = document.querySelector('.coh-role-line');
+    const role = document.querySelector('[data-role-cycle]');
+    if (!(container instanceof HTMLElement) || !(roleLine instanceof HTMLElement) || !(role instanceof HTMLElement)) {
+      throw new Error('Hero role elements are missing');
+    }
+
+    role.getAnimations().forEach((animation) => animation.cancel());
+    const phrases = ['ecommerce growth systems', 'agentic AI workflows', 'conversion engines', 'AI resolution products'];
+    return phrases.map((phrase) => {
+      role.textContent = phrase;
+      const containerRect = container.getBoundingClientRect();
+      const roleRect = role.getBoundingClientRect();
+      return {
+        phrase,
+        inlineOverflow: roleLine.scrollWidth - roleLine.clientWidth,
+        rightInset: containerRect.right - roleRect.right,
+      };
+    });
+  });
+
+  for (const measurement of heroContainment) {
+    expect(measurement.inlineOverflow, `${measurement.phrase} should fit its grid area`).toBeLessThanOrEqual(1);
+    expect(measurement.rightInset, `${measurement.phrase} should retain right-side breathing room`).toBeGreaterThanOrEqual(18);
+  }
+
+  const focusTransition = await page.evaluate(() => {
+    const section = document.querySelector('#focus');
+    const heading = document.querySelector('.coh-focus-heading');
+    const cue = document.querySelector('.coh-focus-cue');
+    const firstCard = document.querySelector('#focus-system-01');
+    if (!(section instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(cue instanceof HTMLElement) || !(firstCard instanceof HTMLElement)) {
+      throw new Error('Focus transition elements are missing');
+    }
+    section.scrollIntoView({ behavior: 'instant' });
+    const headingRect = heading.getBoundingClientRect();
+    const cueRect = cue.getBoundingClientRect();
+    const cardRect = firstCard.getBoundingClientRect();
+    return {
+      cueInsideHeading: cueRect.bottom <= headingRect.bottom + 1,
+      visibleCardDepth: window.innerHeight - cardRect.top,
+    };
+  });
+
+  expect(focusTransition.cueInsideHeading).toBe(true);
+  expect(focusTransition.visibleCardDepth).toBeGreaterThanOrEqual(80);
 });
