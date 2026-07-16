@@ -4,7 +4,7 @@
 
 A recruiter-facing portfolio for a senior product leader working across AI, growth, commerce, enterprise platforms, retail, and regulated products.
 
-- **Live site:** [neeljaiswal90.github.io](https://neeljaiswal90.github.io/)
+- **Live site:** [neeljaiswal.com](https://neeljaiswal.com/)
 - **Publishing runbook:** [docs/PUBLISHING.md](docs/PUBLISHING.md)
 - **Architecture and implementation record:** [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md)
 

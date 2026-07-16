@@ -8,7 +8,7 @@ export interface ProductionSectionRecord {
   mediaIds: readonly string[];
 }
 
-const canonicalOrigin = 'https://neeljaiswal90.github.io';
+const canonicalOrigin = 'https://neeljaiswal.com';
 
 export const site = {
   name: 'Neel Jaiswal',
