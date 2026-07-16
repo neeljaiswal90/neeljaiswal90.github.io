@@ -7,6 +7,7 @@ const caseStudies = [
     slug: 'growth-system',
     title: 'Conversion, compounded.',
     company: 'Mint Mobile',
+    brand: 'mint-mobile',
     metrics: ['+54.7%', '+77%', '+10% AOV'],
     previous: null,
     next: 'home-internet',
@@ -15,6 +16,7 @@ const caseStudies = [
     slug: 'home-internet',
     title: 'From eligibility to recurring revenue.',
     company: 'Mint Home Internet',
+    brand: 'mint-mobile',
     metrics: ['33.4K → 64K', '+60%', '+9.3%'],
     previous: 'growth-system',
     next: 'production-ai',
@@ -23,6 +25,7 @@ const caseStudies = [
     slug: 'production-ai',
     title: 'Resolve the need, not just the message.',
     company: 'Mint Mobile',
+    brand: 'mint-mobile',
     metrics: ['56%', '3.1 → 4.44', '−34%'],
     previous: 'home-internet',
     next: 'device-commerce',
@@ -31,6 +34,7 @@ const caseStudies = [
     slug: 'device-commerce',
     title: 'A device business, not a product page.',
     company: 'Mint Mobile',
+    brand: 'mint-mobile',
     metrics: ['75%'],
     previous: 'production-ai',
     next: 'enterprise-integration',
@@ -39,6 +43,7 @@ const caseStudies = [
     slug: 'enterprise-integration',
     title: 'Integration is a product.',
     company: 'Inspire Brands',
+    brand: 'inspire-brands',
     metrics: [],
     previous: 'device-commerce',
     next: 'retail-self-service',
@@ -47,6 +52,7 @@ const caseStudies = [
     slug: 'retail-self-service',
     title: 'Help customers help themselves.',
     company: 'Best Buy',
+    brand: 'best-buy',
     metrics: ['10–20%', '~15%'],
     previous: 'enterprise-integration',
     next: null,
@@ -77,7 +83,19 @@ for (const caseStudy of caseStudies) {
     expect(await sections.evaluateAll((elements) => elements.map((element) => element.id)))
       .toEqual(expectedSections);
     await expect(page.locator('#system ol > li')).toHaveCount(4);
+    await expect(page.locator('.case-company-lockup [data-company-brand]')).toHaveAttribute('data-company-brand', caseStudy.brand);
     await expect(page.locator('.case-evidence-boundary p')).not.toBeEmpty();
+
+    const processContainment = await page.locator('.case-process li > strong').evaluateAll((titles) =>
+      titles.map((title) => ({ clientWidth: title.clientWidth, scrollWidth: title.scrollWidth })),
+    );
+    for (const title of processContainment) {
+      expect(title.scrollWidth).toBeLessThanOrEqual(title.clientWidth + 1);
+    }
+    const connectorContent = await page.locator('.case-process li').first().evaluate((item) =>
+      getComputedStyle(item, '::after').content,
+    );
+    expect(connectorContent).toBe('""');
 
     const metricCells = page.locator('[data-case-metric]');
     await expect(metricCells).toHaveCount(caseStudy.metrics.length);

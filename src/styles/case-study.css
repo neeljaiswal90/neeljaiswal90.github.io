@@ -490,7 +490,7 @@ html[data-theme="navy"] .case-pager nav > a > span { color: var(--muted); }
   .case-topbar-back span { font-size: 18px; }
   .case-hero-meta { align-items: flex-end; font-size: 8px; }
   .case-hero-meta span:last-child { text-align: right; }
-  .case-hero h1 { font-size: clamp(48px, 16vw, 78px); }
+  .case-hero h1 { font-size: clamp(44px, 14.5vw, 70px); letter-spacing: -.065em; }
   .case-hero-summary { font-size: 17px; line-height: 1.58; }
   .case-process ol { grid-template-columns: 1fr; }
   .case-process li { min-height: 190px; }
@@ -708,11 +708,7 @@ body:has(.case-page) #page-progress-bar {
 }
 
 .case-hero::before {
-  top: 19%;
-  right: 8%;
-  background: linear-gradient(145deg, var(--case-cyan), #37aab2);
-  border-radius: 50% 46% 52% 44%;
-  rotate: 16deg;
+  display: none;
 }
 
 .case-hero::after {
@@ -736,6 +732,7 @@ body:has(.case-page) #page-progress-bar {
 
 .case-hero-meta {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
   padding-bottom: 18px;
@@ -744,6 +741,31 @@ body:has(.case-page) #page-progress-bar {
   font: 820 10px/1 "Manrope", sans-serif;
   letter-spacing: .1em;
   text-transform: uppercase;
+}
+
+.case-company-lockup {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.case-company-lockup > b {
+  min-width: 0;
+  color: var(--case-violet-dark);
+  font: inherit;
+  overflow-wrap: anywhere;
+}
+
+.case-company-logo {
+  --company-logo-width: 58px;
+  --company-logo-height: 50px;
+  --company-logo-wide-width: 112px;
+  --company-logo-padding: 6px;
+  --company-logo-wide-padding: 7px 9px;
+  --company-logo-radius: 14px;
+  --company-logo-shadow: 0 9px 22px rgb(34 30 63 / 9%);
 }
 
 .case-hero h1 {
@@ -1037,7 +1059,7 @@ html[data-theme="navy"] .case-section {
 .case-process ol {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  gap: 16px;
   margin: 0;
   padding: 0;
   background: transparent;
@@ -1065,10 +1087,12 @@ html[data-theme="navy"] .case-process li {
 }
 
 .case-process li > strong {
+  max-width: 100%;
   margin-top: auto;
   color: var(--case-white);
-  font: 650 clamp(21px, 2vw, 29px)/1 "Space Grotesk", sans-serif;
+  font: 650 clamp(18px, 1.35vw, 24px)/1.06 "Space Grotesk", sans-serif;
   letter-spacing: -.04em;
+  overflow-wrap: anywhere;
 }
 
 .case-process li > p,
@@ -1082,21 +1106,17 @@ html[data-theme="navy"] .case-process li > p {
 }
 
 .case-process li:not(:last-child)::after {
-  content: "→";
+  content: "";
   position: absolute;
   z-index: 2;
-  top: 50%;
-  right: -12px;
-  width: 24px;
-  height: 24px;
-  display: grid;
-  place-items: center;
-  color: var(--case-ink);
+  top: 28px;
+  right: -17px;
+  width: 18px;
+  height: 3px;
   background: var(--case-cyan);
   border: 0;
-  border-radius: 50%;
-  font-size: 11px;
-  transform: translateY(-50%);
+  border-radius: 999px;
+  box-shadow: 9px 0 0 -1px var(--case-cyan);
 }
 
 .case-statement {
@@ -1415,8 +1435,14 @@ html[data-theme="navy"] .case-pager nav > a > span {
   .case-topbar-back { width: 44px; height: 44px; justify-content: center; padding: 0; font-size: 0; }
   .case-topbar-back span { font-size: 17px; }
   .case-hero-meta { align-items: flex-end; font-size: 8px; }
-  .case-hero-meta span:last-child { text-align: right; }
-  .case-hero h1 { font-size: clamp(48px, 16vw, 78px); }
+  .case-company-lockup { gap: 8px; text-align: right; }
+  .case-company-logo {
+    --company-logo-width: 44px;
+    --company-logo-height: 40px;
+    --company-logo-wide-width: 76px;
+    --company-logo-radius: 11px;
+  }
+  .case-hero h1 { font-size: clamp(44px, 14.5vw, 70px); letter-spacing: -.065em; }
   .case-hero-summary { font-size: 17px; line-height: 1.58; }
   .case-process ol { grid-template-columns: 1fr; }
   .case-process li { min-height: 205px; }

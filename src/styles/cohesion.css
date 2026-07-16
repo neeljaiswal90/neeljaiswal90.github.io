@@ -1138,8 +1138,25 @@ img {
 }
 
 .coh-experience-role {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.coh-experience-role-copy {
+  min-width: 0;
   display: grid;
   gap: 4px;
+}
+
+.coh-experience-logo {
+  --company-logo-width: 58px;
+  --company-logo-height: 52px;
+  --company-logo-wide-width: 92px;
+  --company-logo-radius: 14px;
+  --company-logo-shadow: 0 8px 20px rgb(34 30 63 / 9%);
 }
 
 .coh-experience-role small {
@@ -1572,6 +1589,22 @@ img {
 }
 
 .coh-work-meta i { font-style: normal; text-align: right; }
+
+.coh-work-brand {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.coh-work-logo {
+  --company-logo-width: 46px;
+  --company-logo-height: 42px;
+  --company-logo-wide-width: 82px;
+  --company-logo-radius: 11px;
+  --company-logo-shadow: none;
+}
 
 .coh-work-card h3 {
   max-width: 580px;
@@ -2344,6 +2377,17 @@ img {
 
   .coh-experience-role strong {
     font-size: 28px;
+  }
+
+  .coh-experience-role {
+    gap: 11px;
+  }
+
+  .coh-experience-logo {
+    --company-logo-width: 46px;
+    --company-logo-height: 42px;
+    --company-logo-wide-width: 72px;
+    --company-logo-radius: 11px;
   }
 
   .coh-experience-signal {

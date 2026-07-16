@@ -2,6 +2,7 @@
 import CohesionLayout from '../layouts/CohesionLayout.astro';
 import { getPublishableClaim } from '../data/claims';
 import { roles } from '../data/experience';
+import CompanyLogo from '../components/CompanyLogo.astro';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
 import { sources } from '../data/sources';
@@ -226,9 +227,12 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
               <summary>
                 <span class="coh-experience-index">{String(index + 1).padStart(2, '0')}</span>
                 <span class="coh-experience-role">
-                  <small>{role.period}</small>
-                  <strong>{role.company}</strong>
-                  <i>{role.title}</i>
+                  <CompanyLogo company={role.company} class="coh-experience-logo" />
+                  <span class="coh-experience-role-copy">
+                    <small>{role.period}</small>
+                    <strong>{role.company}</strong>
+                    <i>{role.title}</i>
+                  </span>
                 </span>
                 <span class="coh-experience-signal">{role.signal}</span>
                 <span class="coh-experience-toggle" aria-hidden="true"></span>
@@ -328,7 +332,10 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
       <div class="coh-work-grid">
         {workCards.map((item, index) => (
           <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal>
-            <div class="coh-work-meta"><span>{item.sequence} / {item.systemLabel}</span><i>{item.company}</i></div>
+            <div class="coh-work-meta">
+              <span>{item.sequence} / {item.systemLabel}</span>
+              <span class="coh-work-brand"><CompanyLogo company={item.company} class="coh-work-logo" /><i>{item.company}</i></span>
+            </div>
             <h3>{item.title}</h3>
             <p>{item.summary}</p>
             <div class="coh-work-metrics">

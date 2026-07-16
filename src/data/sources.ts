@@ -7,6 +7,8 @@ export type SourceId =
   | 'src.photo.weightlifting'
   | 'src.tools.owner_inventory'
   | 'src.iconify'
+  | 'src.dashboard_icons'
+  | 'src.wikimedia_commons'
   | 'src.openai.gpt_oss';
 
 export type SourceKind =
@@ -121,6 +123,28 @@ export const sources: readonly SourceRecord[] = [
     publicCitationAllowed: true,
     assetReuseAllowed: true,
     notes: 'Product marks are used nominatively and remain the property of their respective owners.',
+  },
+  {
+    id: 'src.dashboard_icons',
+    title: 'Dashboard Icons community brand marks',
+    kind: 'icon-library',
+    publisher: 'Homarr Labs and selfh.st/icons',
+    url: 'https://dashboardicons.com/icons/external/mint-mobile',
+    asOf: '2026-07-16',
+    publicCitationAllowed: true,
+    assetReuseAllowed: true,
+    notes: 'Mint Mobile fox mark supplied under CC BY 4.0 and used nominatively.',
+  },
+  {
+    id: 'src.wikimedia_commons',
+    title: 'Wikimedia Commons company logo files',
+    kind: 'icon-library',
+    publisher: 'Wikimedia Commons',
+    url: 'https://commons.wikimedia.org/',
+    asOf: '2026-07-16',
+    publicCitationAllowed: true,
+    assetReuseAllowed: true,
+    notes: 'Company marks are used nominatively; individual source and trademark notes are recorded beside the local assets.',
   },
   {
     id: 'src.openai.gpt_oss',

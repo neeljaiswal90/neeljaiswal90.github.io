@@ -1,7 +1,7 @@
 import type { SourceId } from './sources';
 
 export type MediaPublishingStatus = 'public' | 'restricted' | 'blocked' | 'unused';
-export type MediaKind = 'photo' | 'study-chart' | 'tool-mark' | 'illustration';
+export type MediaKind = 'photo' | 'study-chart' | 'tool-mark' | 'brand-mark' | 'illustration';
 
 export interface MediaRendition {
   src: string;
@@ -195,6 +195,66 @@ export const media: readonly MediaRecord[] = [
     sourceIds: ['src.owner.directives'],
     rightsBasis: 'generated-unused',
     notes: 'Rejected and year-conflicting concept; never publish.',
+  },
+  {
+    id: 'media.brand.mint_mobile',
+    title: 'Mint Mobile fox mark',
+    kind: 'brand-mark',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.dashboard_icons'],
+    assetPath: '/assets/brands/mint-mobile.svg',
+    alt: '',
+    rightsBasis: 'nominative-brand-mark',
+    notes: 'Decorative nominative mark; the adjacent company name supplies the accessible label.',
+  },
+  {
+    id: 'media.brand.inspire_brands',
+    title: 'Inspire Brands portfolio mark',
+    kind: 'brand-mark',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.wikimedia_commons'],
+    assetPath: '/assets/brands/inspire-brands.png',
+    alt: '',
+    rightsBasis: 'nominative-brand-mark',
+    notes: 'Decorative nominative mark; the adjacent company name supplies the accessible label.',
+  },
+  {
+    id: 'media.brand.best_buy',
+    title: 'Best Buy logo',
+    kind: 'brand-mark',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.wikimedia_commons'],
+    assetPath: '/assets/brands/best-buy.svg',
+    alt: '',
+    rightsBasis: 'nominative-brand-mark',
+    notes: 'Decorative nominative mark; the adjacent company name supplies the accessible label.',
+  },
+  {
+    id: 'media.brand.target',
+    title: 'Target bullseye',
+    kind: 'brand-mark',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.wikimedia_commons'],
+    assetPath: '/assets/brands/target.svg',
+    alt: '',
+    rightsBasis: 'nominative-brand-mark',
+    notes: 'Decorative nominative mark; the adjacent company name supplies the accessible label.',
+  },
+  {
+    id: 'media.brand.allianz',
+    title: 'Allianz logo',
+    kind: 'brand-mark',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.wikimedia_commons'],
+    assetPath: '/assets/brands/allianz.svg',
+    alt: '',
+    rightsBasis: 'nominative-brand-mark',
+    notes: 'Decorative nominative mark; the adjacent company name supplies the accessible label.',
   },
   toolMedia('media.tool.linear', 'Linear', 'linear.svg'),
   toolMedia('media.tool.codex', 'OpenAI Codex', 'openai-codex.svg'),

@@ -1,0 +1,52 @@
+---
+import { getCompanyBrand } from '../data/brands';
+
+interface Props {
+  company: string;
+  class?: string;
+}
+
+const { company, class: className } = Astro.props;
+const brand = getCompanyBrand(company);
+---
+
+<span class:list={['company-logo', `company-logo-${brand.id}`, `is-${brand.shape}`, className]} aria-hidden="true" data-company-brand={brand.id}>
+  <img src={brand.assetPath} alt="" loading="lazy" decoding="async" />
+</span>
+
+<style>
+  .company-logo {
+    width: var(--company-logo-width, 58px);
+    height: var(--company-logo-height, 58px);
+    flex: none;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: var(--company-logo-padding, 7px);
+    background: var(--company-logo-background, #fff);
+    border: 1px solid var(--company-logo-border, rgb(30 25 55 / 12%));
+    border-radius: var(--company-logo-radius, 16px);
+    box-shadow: var(--company-logo-shadow, 0 10px 24px rgb(28 24 58 / 10%));
+  }
+
+  .company-logo.is-wide {
+    width: var(--company-logo-wide-width, 104px);
+    padding: var(--company-logo-wide-padding, 8px 10px);
+  }
+
+  .company-logo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .company-logo-inspire-brands {
+    --company-logo-background: #0d0d0f;
+    --company-logo-border: rgb(255 255 255 / 10%);
+  }
+
+  .company-logo-best-buy {
+    --company-logo-background: #fff200;
+  }
+</style>

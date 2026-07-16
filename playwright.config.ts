@@ -35,6 +35,7 @@ export default defineConfig({
         '**/case-studies.spec.ts',
         '**/seo.spec.ts',
         '**/cohesion.spec.ts',
+        '**/ui-integrity.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],
@@ -43,7 +44,7 @@ export default defineConfig({
     },
     {
       name: 'mobile-chromium',
-      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts', '**/cohesion.spec.ts'],
+      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts', '**/cohesion.spec.ts', '**/ui-integrity.spec.ts'],
       use: {
         ...devices['Pixel 7'],
       },

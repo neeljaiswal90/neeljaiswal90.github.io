@@ -509,6 +509,21 @@ html[data-theme] .portfolio-page .signal-card strong { margin-top: auto; color: 
 .portfolio-page .role-card { border-color: var(--rule); }
 .portfolio-page .role-card summary { grid-template-columns: 130px minmax(260px, 1fr) 220px 46px; min-height: 122px; padding: 24px 0; }
 .portfolio-page .role-year { color: var(--faint); }
+.portfolio-page .role-main {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+.portfolio-page .role-copy { min-width: 0; display: grid; gap: 5px; }
+.portfolio-page .role-company-logo {
+  --company-logo-width: 58px;
+  --company-logo-height: 52px;
+  --company-logo-wide-width: 92px;
+  --company-logo-radius: 14px;
+  --company-logo-shadow: 0 8px 20px rgb(0 0 0 / 15%);
+}
 .portfolio-page .role-main strong { font-size: clamp(28px, 3.4vw, 54px); }
 .portfolio-page .role-main em,
 .portfolio-page .role-signal { color: var(--copy); }
@@ -578,6 +593,20 @@ html[data-theme] .portfolio-page .signal-card strong { margin-top: auto; color: 
 .portfolio-page .work-card > p { max-width: 690px; color: var(--copy); font-size: 14px; }
 .portfolio-page .work-doodle { width: clamp(130px, 18vw, 250px); color: var(--signal); opacity: .34; }
 .portfolio-page .work-card-top { color: var(--faint); }
+.portfolio-page .work-company-lockup {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.portfolio-page .work-company-logo {
+  --company-logo-width: 44px;
+  --company-logo-height: 40px;
+  --company-logo-wide-width: 78px;
+  --company-logo-radius: 11px;
+  --company-logo-shadow: none;
+}
 .portfolio-page .work-metrics b { color: var(--signal); }
 .portfolio-page .work-metrics b small { color: var(--faint); }
 .portfolio-page .story-flow li { border-color: var(--rule); background: var(--surface); }
@@ -741,6 +770,12 @@ html[data-theme] .portfolio-page .build-card.featured { background: var(--signal
   .portfolio-page .role-card summary { grid-template-columns: 1fr 40px; gap: 10px; }
   .portfolio-page .role-year,
   .portfolio-page .role-main { grid-column: 1; }
+  .portfolio-page .role-main { gap: 12px; }
+  .portfolio-page .role-company-logo {
+    --company-logo-width: 48px;
+    --company-logo-height: 44px;
+    --company-logo-wide-width: 76px;
+  }
   .portfolio-page .role-toggle { grid-column: 2; grid-row: 1 / span 2; }
   .portfolio-page .role-body { padding-left: 0; }
   .portfolio-page .work-card { min-height: 820px; padding: 28px; box-shadow: 10px 10px 0 var(--signal); }

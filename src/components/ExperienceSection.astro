@@ -2,6 +2,7 @@
 import { getPublishableClaim } from '../data/claims';
 import { roles } from '../data/experience';
 import { getProductionSection } from '../data/site';
+import CompanyLogo from './CompanyLogo.astro';
 
 const section = getProductionSection('experience');
 ---
@@ -20,7 +21,10 @@ const section = getProductionSection('experience');
         <details class="role-card reveal" open={index === 0} data-experience-item>
           <summary>
             <span class="role-year">{period.displayValue}</span>
-            <span class="role-main"><strong>{role.company}</strong><em>{role.title}</em></span>
+            <span class="role-main">
+              <CompanyLogo company={role.company} class="role-company-logo" />
+              <span class="role-copy"><strong>{role.company}</strong><em>{role.title}</em></span>
+            </span>
             <span class="role-signal">{role.signal}</span><span class="role-toggle" aria-hidden="true"></span>
           </summary>
           <div class="role-body" data-experience-panel>

@@ -1,6 +1,7 @@
 ---
 import type { ClaimRecord } from '../../data/claims';
 import type { WorkCase, WorkContextCue } from '../../data/work';
+import CompanyLogo from '../CompanyLogo.astro';
 import CaseMetricStrip from './CaseMetricStrip.astro';
 
 interface Props {
@@ -16,7 +17,10 @@ const { caseStudy, metrics, contextCues } = Astro.props;
   <div class="case-hero-grid" aria-hidden="true"></div>
   <div class="case-hero-meta">
     <span>{caseStudy.sequence} / {caseStudy.systemLabel}</span>
-    <span>{caseStudy.company}</span>
+    <span class="case-company-lockup">
+      <CompanyLogo company={caseStudy.company} class="case-company-logo" />
+      <b>{caseStudy.company}</b>
+    </span>
   </div>
   <h1 data-case-title>{caseStudy.title}</h1>
   <p class="case-hero-summary">{caseStudy.summary}</p>

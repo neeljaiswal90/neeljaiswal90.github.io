@@ -16,6 +16,7 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
   }
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
+  await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(12);
   await expect(page.locator('.coh-award-seal')).toContainText('J.D. POWER');
   await expect(page.locator('.coh-award-seal')).toHaveAttribute('href', /jdpower\.com/);
@@ -27,6 +28,7 @@ test('cohesion variation is responsive, accessible, and complete', async ({ page
 
   const experienceItems = page.locator('[data-coh-experience]');
   await expect(experienceItems).toHaveCount(5);
+  await expect(page.locator('.coh-experience-role [data-company-brand]')).toHaveCount(5);
   await expect(experienceItems.first()).toHaveAttribute('open', '');
   await experienceItems.nth(1).locator('summary').click();
   await expect(experienceItems.nth(1)).toHaveAttribute('open', '');

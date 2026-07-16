@@ -26,6 +26,7 @@ test('outcome explorer supports indexed and arrow navigation', async ({ page }) 
   const track = page.locator('#work-track');
   await track.scrollIntoViewIfNeeded();
   await expect(page.locator('#work-count')).toHaveText('01 / 06');
+  await expect(page.locator('.work-company-logo[data-company-brand]')).toHaveCount(6);
 
   await track.focus();
   await expect(track).toBeFocused();
@@ -172,6 +173,7 @@ test('experience disclosures keep one role open and settle panel motion', async 
   const fourthRole = roles.nth(3);
 
   await expect(roles).toHaveCount(5);
+  await expect(page.locator('.role-company-logo[data-company-brand]')).toHaveCount(5);
   await expect(page.locator('[data-experience-item][open]')).toHaveCount(1);
 
   await secondRole.locator(':scope > summary').click();

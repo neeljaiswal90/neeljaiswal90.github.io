@@ -1,6 +1,7 @@
 ---
 import { getPublishedClaim, workCases } from '../data/work';
 import { getProductionSection } from '../data/site';
+import CompanyLogo from './CompanyLogo.astro';
 
 const section = getProductionSection('selected-work');
 
@@ -58,7 +59,10 @@ for (const item of workCases) {
           return (
             <article class:list={['work-card', 'spotlight-card', { 'is-active': index === 0 }]} id={item.outcomeId} data-work-slide aria-roledescription="slide" aria-label={`${index + 1} of ${workCases.length}: ${item.title}`}>
               <svg class="work-doodle" viewBox="0 0 160 160" aria-hidden="true" set:html={doodlesBySlug[item.slug]}></svg>
-              <div class="work-card-top"><span>{item.sequence} · {item.systemLabel}</span><i>{item.company}</i></div>
+              <div class="work-card-top">
+                <span>{item.sequence} · {item.systemLabel}</span>
+                <span class="work-company-lockup"><CompanyLogo company={item.company} class="work-company-logo" /><i>{item.company}</i></span>
+              </div>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
               <div class:list={['work-metrics', { compact: metrics.length < 3 }]}>
