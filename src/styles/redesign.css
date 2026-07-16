@@ -264,7 +264,7 @@ html[data-theme] .portfolio-page .chapter-nav a span { color: #a8a8a3; }
 .portfolio-page .chapter-nav a:hover { color: #fff; background: rgba(255, 255, 255, .06); }
 .portfolio-page .chapter-nav a[aria-current] { background: var(--signal); }
 .portfolio-page .chapter-nav a[aria-current],
-html[data-theme] .portfolio-page .chapter-nav a[aria-current] span { color: #141414; }
+html[data-theme] .portfolio-page .chapter-nav a[aria-current] span { color: #050505; }
 
 .portfolio-page .content { margin-left: 0; overflow: clip; }
 .portfolio-page .chapter { scroll-margin-top: 0; padding: clamp(96px, 9vw, 148px) var(--content-pad); }

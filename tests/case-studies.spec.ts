@@ -85,7 +85,10 @@ for (const caseStudy of caseStudies) {
       await expect(metricCells.getByText(metric, { exact: true })).toHaveCount(1);
     }
 
-    await expect(page.locator('a[href="/#selected-work"]')).not.toHaveCount(0);
+    await expect(page.locator('a[href="/cohesion/#work"]')).toHaveCount(3);
+    await expect(page.locator('.case-brand')).toHaveAttribute('href', '/cohesion/#home');
+    await expect(page.locator('.case-process')).toContainText('Operating system');
+    await expect(page.locator('.case-evidence-boundary')).toContainText('Support boundary');
     const previous = page.locator('a[rel="prev"]');
     const next = page.locator('a[rel="next"]');
     if (caseStudy.previous) {
@@ -120,6 +123,20 @@ test('homepage work links and browser Back preserve selected-work context', asyn
   await page.goBack({ waitUntil: 'domcontentloaded' });
   await expect(page).toHaveURL(/\/#selected-work$/);
   await expect(page.locator('#outcome-01')).toHaveClass(/is-active/);
+});
+
+test('case study returns to Cohesion selected work', async ({ page }) => {
+  await page.goto('/cohesion/#work', { waitUntil: 'domcontentloaded' });
+  const card = page.locator('.coh-work .coh-work-card[href="/work/growth-system/"]');
+  await expect(card).toHaveCount(1);
+  await card.click();
+  await expect(page).toHaveURL(/\/work\/growth-system\/$/);
+
+  const allWork = page.locator('.case-topbar-back');
+  await expect(allWork).toHaveAttribute('href', '/cohesion/#work');
+  await allWork.click();
+  await expect(page).toHaveURL(/\/cohesion\/#work$/);
+  await expect(page.locator('#work')).toBeVisible();
 });
 
 test('case index tracks the active narrative section', async ({ page }) => {
