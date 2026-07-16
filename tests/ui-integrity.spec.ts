@@ -3,7 +3,6 @@ import { attachRuntimeGuards, expectImagesToDecode } from './helpers';
 
 const routes = [
   '/',
-  '/v1/',
   '/work/growth-system/',
   '/work/home-internet/',
   '/work/production-ai/',

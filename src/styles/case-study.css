@@ -513,10 +513,9 @@ html[data-theme="navy"] .case-pager nav > a > span { color: var(--muted); }
 }
 
 /* Cohesion case-study system -------------------------------------------------
-   Case-study routes share the Cohesion portfolio's paper/ink palette,
-   editorial scale, dimensional cards, and evidence-forward interaction
-   language. These rules intentionally sit after the legacy theme layer so a
-   stored V1 theme cannot pull a Cohesion case back into the old visual system. */
+   Case-study routes share the portfolio's paper/ink palette, editorial scale,
+   dimensional cards, and evidence-forward interaction language. These rules
+   remain stable regardless of stored theme preferences. */
 
 body:has(.case-page) {
   background: #f8f7f3;

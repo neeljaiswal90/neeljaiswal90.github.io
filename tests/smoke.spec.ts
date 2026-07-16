@@ -4,10 +4,10 @@ import { attachRuntimeGuards, expectImagesToDecode, sectionIds } from './helpers
 test('portfolio shell, assets, and layout are healthy', async ({ page }, testInfo) => {
   const runtime = attachRuntimeGuards(page, testInfo);
 
-  const response = await page.goto('/v1/', { waitUntil: 'domcontentloaded' });
+  const response = await page.goto('/', { waitUntil: 'domcontentloaded' });
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle(/Neel/i);
-  await expect(page.locator('#main-content')).toBeVisible();
+  await expect(page.locator('#cohesion-main')).toBeVisible();
 
   for (const id of sectionIds) {
     await expect(page.locator(`#${id}`), `#${id} should exist`).toHaveCount(1);

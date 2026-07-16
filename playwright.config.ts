@@ -30,7 +30,6 @@ export default defineConfig({
       name: 'desktop-chromium',
       testMatch: [
         '**/smoke.spec.ts',
-        '**/interactions.spec.ts',
         '**/accessibility.spec.ts',
         '**/case-studies.spec.ts',
         '**/seo.spec.ts',
@@ -51,7 +50,7 @@ export default defineConfig({
     },
     {
       name: 'reduced-motion',
-      testMatch: ['**/smoke.spec.ts', '**/reduced-motion.spec.ts', '**/case-studies-motion.spec.ts', '**/cohesion.spec.ts'],
+      testMatch: ['**/smoke.spec.ts', '**/case-studies-motion.spec.ts', '**/cohesion.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },

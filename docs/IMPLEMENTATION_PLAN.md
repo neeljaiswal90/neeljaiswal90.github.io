@@ -58,7 +58,7 @@ Real photos have owner-supplied rights records and responsive AVIF/WebP variants
 
 | Phase | Delivered scope | Verification gate |
 | --- | --- | --- |
-| 0. Baseline | Preserved static prototype and recorded claims, media, themes, breakpoints, and Lighthouse baseline. | Local `static-v1` tag. |
+| 0. Baseline | Preserved the initial static prototype and recorded claims, media, themes, breakpoints, and Lighthouse baseline. | Archived baseline tag. |
 | 1. Astro parity | Astro/TypeScript shell, components, semantic HTML, responsive styling, and production build. | Astro diagnostics and visual parity. |
 | 2. Content system | Typed sources, claims, media, experience, tools, projects, work records, and build-time publication validator. | No duplicated metrics; restricted media fails validation. |
 | 3. Motion foundation | Controller registry, Motion primitives, shared preference state, reveal/navigation/filter/dialog interactions. | No section-owned global lifecycle. |

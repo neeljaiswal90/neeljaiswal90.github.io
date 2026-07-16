@@ -181,15 +181,6 @@ img {
   gap: 8px;
 }
 
-.coh-version-link {
-  padding: 10px 12px;
-  color: var(--coh-muted);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
 .coh-talk {
   display: inline-flex;
   align-items: center;
@@ -2212,8 +2203,7 @@ img {
     grid-template-columns: auto 1fr auto;
   }
 
-  .coh-brand > span,
-  .coh-version-link {
+  .coh-brand > span {
     display: none;
   }
 

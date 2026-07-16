@@ -129,20 +129,6 @@ for (const caseStudy of caseStudies) {
   });
 }
 
-test('homepage work links and browser Back preserve selected-work context', async ({ page }) => {
-  await page.goto('/v1/#selected-work', { waitUntil: 'domcontentloaded' });
-  const hrefs = await page.locator('.work-case-link').evaluateAll((links) =>
-    links.map((link) => link.getAttribute('href')),
-  );
-  expect(hrefs).toEqual(caseStudies.map(({ slug }) => `/work/${slug}/`));
-
-  await page.locator('.work-case-link').first().click();
-  await expect(page).toHaveURL(/\/work\/growth-system\/$/);
-  await page.goBack({ waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveURL(/\/v1\/#selected-work$/);
-  await expect(page.locator('#outcome-01')).toHaveClass(/is-active/);
-});
-
 test('case study returns to Cohesion selected work', async ({ page }) => {
   await page.goto('/#work', { waitUntil: 'domcontentloaded' });
   const card = page.locator('.coh-work .coh-work-card[href="/work/growth-system/"]');

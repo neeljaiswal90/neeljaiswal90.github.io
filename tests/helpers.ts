@@ -1,13 +1,11 @@
 import { expect, type Page, type TestInfo } from '@playwright/test';
 
 export const sectionIds = [
-  'intro',
-  'experience',
-  'ai-system',
-  'selected-work',
+  'home',
+  'about',
+  'focus',
+  'work',
   'stack',
-  'builds',
-  'beyond',
   'contact',
 ] as const;
 
