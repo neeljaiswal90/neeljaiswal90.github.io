@@ -77,6 +77,16 @@ if (roleTarget && !reducedMotion) {
   }, 2400);
 }
 
+const experienceItems = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-coh-experience]'));
+experienceItems.forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    experienceItems.forEach((otherItem) => {
+      if (otherItem !== item) otherItem.open = false;
+    });
+  });
+});
+
 if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   document.querySelectorAll<HTMLElement>('[data-coh-tilt]').forEach((card) => {
     card.addEventListener('pointermove', (event) => {

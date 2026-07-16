@@ -62,6 +62,7 @@ const focusAreas = [
 const career = roles.map((role) => ({
   ...role,
   period: getPublishableClaim(role.periodClaimId).displayValue,
+  summary: getPublishableClaim(role.summaryClaimId).statement,
 }));
 
 const selectedTools = [
@@ -212,11 +213,62 @@ const description = 'Ecommerce growth systems, agentic AI workflows, and evidenc
         </div>
       </div>
 
-      <div class="coh-career-ribbon" data-coh-reveal>
-        {career.map((role) => (
-          <div><span>{role.period}</span><b>{role.company}</b><small>{role.signal}</small></div>
-        ))}
-      </div>
+      <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal>
+        <header class="coh-experience-heading">
+          <p>Career depth</p>
+          <h2 id="coh-experience-title">From regulated delivery<br />to <em>commerce + agentic AI.</em></h2>
+          <span>Open a role to inspect its scope, selected systems, capabilities, and linked case studies.</span>
+        </header>
+
+        <div class="coh-experience-list">
+          {career.map((role, index) => (
+            <details class="coh-experience-item" data-coh-experience open={index === 0}>
+              <summary>
+                <span class="coh-experience-index">{String(index + 1).padStart(2, '0')}</span>
+                <span class="coh-experience-role">
+                  <small>{role.period}</small>
+                  <strong>{role.company}</strong>
+                  <i>{role.title}</i>
+                </span>
+                <span class="coh-experience-signal">{role.signal}</span>
+                <span class="coh-experience-toggle" aria-hidden="true"></span>
+              </summary>
+
+              <div class="coh-experience-body">
+                <div class="coh-experience-scope">
+                  <small>Role scope</small>
+                  <p>{role.summary}</p>
+                </div>
+
+                {role.achievements.length > 0 && (
+                  <div class="coh-experience-systems">
+                    <small>Selected systems</small>
+                    <ul>
+                      {role.achievements.map((achievement) => (
+                        <li>
+                          {achievement.href ? (
+                            <a href={achievement.href}>
+                              <span><b>{achievement.title}</b><small>{achievement.description}</small></span>
+                              <i aria-hidden="true">↗</i>
+                            </a>
+                          ) : (
+                            <div><span><b>{achievement.title}</b><small>{achievement.description}</small></span></div>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div class="coh-experience-capabilities">
+                  <small>Capabilities</small>
+                  <ul>{role.tags.map((tag) => <li>{tag}</li>)}</ul>
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
     </section>
 
     <section class="coh-focus" id="focus" data-coh-section="focus">
