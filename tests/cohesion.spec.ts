@@ -107,7 +107,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
     };
 
     return {
-      intro: center('.coh-hero-intro'),
+      intro: center('.coh-identity-header'),
       wordmark: center('.coh-hero-wordmark'),
       portrait: center('.coh-portrait-wrap'),
       actions: center('.coh-hero-actions'),
@@ -168,8 +168,8 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const heroContainment = await page.evaluate(() => {
-    const container = document.querySelector('.coh-hero-intro');
-    const heading = document.querySelector('.coh-hero-intro h1');
+    const container = document.querySelector('.coh-identity-header');
+    const heading = document.querySelector('.coh-identity-header h1');
     const greeting = document.querySelector('.coh-intro-greeting');
     const role = document.querySelector('.coh-role-line');
     if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(greeting instanceof HTMLElement) || !(role instanceof HTMLElement)) {
@@ -187,8 +187,8 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     return { measurements, top: containerRect.top, bottom: containerRect.bottom };
   });
 
-  expect(heroContainment.top).toBeGreaterThanOrEqual(70);
-  expect(heroContainment.bottom).toBeLessThanOrEqual(340);
+  expect(heroContainment.top).toBeGreaterThanOrEqual(12);
+  expect(heroContainment.bottom).toBeLessThanOrEqual(100);
   for (const measurement of heroContainment.measurements) {
     expect(measurement.inlineOverflow, 'hero copy should not overflow its own box').toBeLessThanOrEqual(1);
     expect(measurement.leftInset, 'hero copy should stay inside the left edge').toBeGreaterThanOrEqual(-1);
@@ -227,6 +227,30 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   expect(focusTransition.cueTitleSize).toBeGreaterThanOrEqual(20);
   expect(focusTransition.stepLabelSize).toBeGreaterThanOrEqual(12);
   expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
+});
+
+test('rotating identity header hands off to navigation after scroll', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const root = page.locator('html');
+  const identity = page.locator('[data-coh-identity-header]');
+  const navigation = page.locator('[data-coh-nav-header]');
+
+  await expect(root).not.toHaveClass(/coh-nav-active/);
+  await expect(identity).toHaveAttribute('aria-hidden', 'false');
+  await expect(navigation).toHaveAttribute('aria-hidden', 'true');
+  await expect(navigation).toHaveAttribute('inert', '');
+
+  await page.evaluate(() => window.scrollTo({ top: 180, behavior: 'instant' }));
+  await expect(root).toHaveClass(/coh-nav-active/);
+  await expect(identity).toHaveAttribute('aria-hidden', 'true');
+  await expect(navigation).toHaveAttribute('aria-hidden', 'false');
+  await expect(navigation).not.toHaveAttribute('inert', '');
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect(root).not.toHaveClass(/coh-nav-active/);
+  await expect(identity).toHaveAttribute('aria-hidden', 'false');
+  await expect(navigation).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('about metrics remain fully visible beside the story cards', async ({ page }) => {

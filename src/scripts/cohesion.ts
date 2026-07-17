@@ -32,10 +32,26 @@ if ('IntersectionObserver' in window) {
   sections.forEach((section) => sectionObserver.observe(section));
 }
 
+const identityHeader = document.querySelector<HTMLElement>('[data-coh-identity-header]');
+const navHeader = document.querySelector<HTMLElement>('[data-coh-nav-header]');
+let navHeaderActive: boolean | undefined;
+const updateHeaderState = () => {
+  if (!identityHeader || !navHeader) return;
+  const switchPoint = identityHeader.offsetHeight + 32;
+  const nextState = window.scrollY > switchPoint;
+  if (nextState === navHeaderActive) return;
+  navHeaderActive = nextState;
+  root.classList.toggle('coh-nav-active', nextState);
+  identityHeader.setAttribute('aria-hidden', String(nextState));
+  navHeader.setAttribute('aria-hidden', String(!nextState));
+  navHeader.toggleAttribute('inert', !nextState);
+};
+
 let ticking = false;
 const updateScroll = () => {
   const range = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   root.style.setProperty('--coh-scroll', String(Math.min(1, Math.max(0, window.scrollY / range))));
+  updateHeaderState();
   ticking = false;
 };
 window.addEventListener('scroll', () => {
