@@ -15,20 +15,22 @@ if (reducedMotion || !('IntersectionObserver' in window)) {
   revealItems.forEach((item) => revealObserver.observe(item));
 }
 
-const sectionLinks = new Map(
-  Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-coh-nav]'))
-    .map((link) => [link.dataset.cohNav ?? '', link] as const),
-);
+const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-coh-nav]'));
 const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-coh-section]'));
 if ('IntersectionObserver' in window) {
+  const sectionIntersections = new Map<HTMLElement, IntersectionObserverEntry>();
   const sectionObserver = new IntersectionObserver((entries) => {
-    const visible = entries
+    entries.forEach((entry) => sectionIntersections.set(entry.target as HTMLElement, entry));
+    const visible = Array.from(sectionIntersections.values())
       .filter((entry) => entry.isIntersecting)
       .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
     if (!visible) return;
     const id = (visible.target as HTMLElement).dataset.cohSection;
-    sectionLinks.forEach((link, key) => link.classList.toggle('is-active', key === id));
-  }, { threshold: [0.2, 0.45, 0.7], rootMargin: '-15% 0px -55% 0px' });
+    sectionLinks.forEach((link) => {
+      const aliases = (link.dataset.cohNavAlias ?? '').split(/\s+/).filter(Boolean);
+      link.classList.toggle('is-active', link.dataset.cohNav === id || aliases.includes(id ?? ''));
+    });
+  }, { threshold: [0, 0.2, 0.45, 0.7], rootMargin: '-15% 0px -55% 0px' });
   sections.forEach((section) => sectionObserver.observe(section));
 }
 

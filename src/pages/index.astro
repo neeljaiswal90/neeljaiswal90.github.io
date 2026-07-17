@@ -7,6 +7,7 @@ import { projects } from '../data/projects';
 import { site } from '../data/site';
 import { sources } from '../data/sources';
 import { toolFilters, toolProfiles } from '../data/tools';
+import { workCases } from '../data/work';
 
 const location = getPublishableClaim('profile.location.greater_san_diego');
 const locationLabel = location.displayValue ?? location.displayLabel ?? location.statement;
@@ -98,6 +99,19 @@ const career = roles.map((role) => ({
   period: getPublishableClaim(role.periodClaimId).displayValue,
   summary: getPublishableClaim(role.summaryClaimId).statement,
 }));
+
+const workCards = workCases
+  .filter((workCase) => workCase.featured)
+  .map((workCase) => ({
+    ...workCase,
+    metrics: workCase.metricClaimIds.slice(0, 2).map((claimId) => {
+      const claim = getPublishableClaim(claimId);
+      return {
+        value: claim.displayValue ?? claim.displayLabel ?? 'Published',
+        label: claim.displayLabel ?? claim.statement,
+      };
+    }),
+  }));
 
 const featuredToolIds = new Set(['amplitude', 'optimizely', 'figma', 'jira', 'snowflake', 'looker', 'codex', 'github', 'woocommerce', 'datadog']);
 const featuredTools = toolProfiles.filter((tool) => featuredToolIds.has(tool.id));
@@ -195,6 +209,14 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         <i aria-hidden="true">↓</i>
       </a>
     </section>
+
+    <nav class="coh-mobile-nav" aria-label="Mobile portfolio navigation" data-coh-mobile-nav>
+      <a class="is-active" href="#home" data-coh-nav="home">Top</a>
+      <a href="#about" data-coh-nav="about">About</a>
+      <a href="#focus" data-coh-nav="focus" data-coh-nav-alias="stack">Systems</a>
+      <a href="#work" data-coh-nav="work">Work</a>
+      <a href="#contact" data-coh-nav="contact">Contact</a>
+    </nav>
 
     <nav class="coh-journey-nav" data-coh-journey-nav aria-label="Navigate the portfolio journey" aria-hidden="true" inert>
       <button type="button" data-coh-journey-previous aria-label="Previous component">
@@ -381,10 +403,60 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         <span>Six case studies across growth, launches, platforms, and AI.</span>
       </header>
 
-      <a class="coh-work-gateway" href="/work/" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Case studies">
-        <span>Selected case studies</span>
-        <strong>Growth · 0-to-1 · commerce · AI</strong>
-        <b>View all six <i aria-hidden="true">↗</i></b>
+      <p class="coh-work-rail-cue"><span>Swipe through 6</span><i aria-hidden="true">→</i></p>
+
+      <div class="coh-work-tiles" role="list" aria-label="Six selected case studies" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Case studies">
+        {workCards.map((workCase, index) => (
+          <article class={`coh-work-tile coh-work-tile-tone-${index + 1}`} role="listitem">
+            <a
+              href={`/work/${workCase.slug}/`}
+              aria-label={`${workCase.company}: ${workCase.indexTitle} Read case study`}
+              aria-describedby={`work-tile-${workCase.slug}-description`}
+            >
+              <div class="coh-work-tile-inner">
+                <div class="coh-work-tile-face coh-work-tile-front" aria-hidden="true">
+                  <div class="coh-work-tile-topline">
+                    <span>{workCase.sequence} / {workCase.systemLabel}</span>
+                    <CompanyLogo company={workCase.company} class="coh-work-tile-logo" />
+                  </div>
+                  <h3>{workCase.indexTitle}</h3>
+                  <div class="coh-work-tile-prompt">
+                    <span class="coh-work-tile-desktop-prompt">Hover to explore</span>
+                    <span class="coh-work-tile-touch-prompt">Tap to read</span>
+                    <i aria-hidden="true">↗</i>
+                  </div>
+                </div>
+
+                <div class="coh-work-tile-face coh-work-tile-back" aria-hidden="true">
+                  <div class="coh-work-tile-topline">
+                    <span>{workCase.company}</span>
+                    <b>{workCase.sequence}</b>
+                  </div>
+                  <h3>{workCase.indexTitle}</h3>
+                  <p>{workCase.summary}</p>
+                  <div class="coh-work-tile-metrics">
+                    {workCase.metrics.map((metric) => (
+                      <span><strong>{metric.value}</strong><small>{metric.label}</small></span>
+                    ))}
+                  </div>
+                  <div class="coh-work-tile-link">
+                    <span>Read case study</span>
+                    <i aria-hidden="true">↗</i>
+                  </div>
+                </div>
+              </div>
+              <span class="coh-sr-only sr-only" id={`work-tile-${workCase.slug}-description`}>
+                {workCase.summary} Selected outcomes: {workCase.metrics.map((metric) => `${metric.value}, ${metric.label}`).join('; ')}.
+              </span>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <a class="coh-work-all" href="/work/">
+        <span>Selected work index</span>
+        <strong>View all six case studies</strong>
+        <i aria-hidden="true">↗</i>
       </a>
     </section>
 

@@ -208,8 +208,18 @@ export const createCaseStudySceneController: MotionControllerFactory = (root, co
     for (const link of links) {
       const active = linkToken(link) === token;
       link.classList.toggle('is-active', active);
-      if (active) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
+      if (active) {
+        link.setAttribute('aria-current', 'location');
+        const rail = link.closest<HTMLElement>('.case-index-inner');
+        if (rail && context.window.innerWidth <= 900) {
+          const railRect = rail.getBoundingClientRect();
+          const linkRect = link.getBoundingClientRect();
+          const left = rail.scrollLeft + linkRect.left - railRect.left - (rail.clientWidth - linkRect.width) / 2;
+          rail.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+        }
+      } else {
+        link.removeAttribute('aria-current');
+      }
     }
   };
 

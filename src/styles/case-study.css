@@ -1534,8 +1534,14 @@ html[data-theme="navy"] .case-pager nav > a > span {
   .case-index-track { display: none; }
   .case-index ol { display: flex; gap: 3px; }
   .case-index li { flex: none; }
-  .case-index a { padding: 8px 10px; white-space: nowrap; }
-  .case-section { scroll-margin-top: 138px; padding-block: 78px; }
+  .case-index a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+  .case-section { scroll-margin-top: 150px; padding-block: 78px; }
   .case-section-heading { grid-template-columns: 1fr; gap: 16px; margin-bottom: 42px; }
   .case-section-heading > p { margin: 0; }
   .case-section-heading h2 { font-size: clamp(40px, 10vw, 60px); }

@@ -27,9 +27,12 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('[data-role-cycle]')).toHaveText('conversion engines');
   await expect(page.locator('.coh-portrait-flip-hint')).toHaveCount(0);
 
-  await expect(page.locator('.coh-work-card')).toHaveCount(0);
-  await expect(page.locator('.coh-work-gateway')).toHaveAttribute('href', '/work/');
-  await expect(page.locator('.coh-work-gateway')).toContainText('Growth · 0-to-1 · commerce · AI');
+  await expect(page.locator('#work .coh-work-card')).toHaveCount(0);
+  await expect(page.locator('.coh-work-tile')).toHaveCount(6);
+  await expect(page.locator('.coh-work-tile [data-company-brand]')).toHaveCount(6);
+  await expect(page.locator('.coh-work-tile a[href="/work/growth-system/"]')).toHaveCount(1);
+  await expect(page.locator('.coh-work-all')).toHaveAttribute('href', '/work/');
+  await expect(page.locator('.coh-work-all')).toContainText('View all six case studies');
   await expect(page.locator('.coh-build-card')).toHaveCount(6);
   await expect(page.locator('.coh-build-card').filter({ hasText: 'HabitFlow' })).toHaveAttribute('href', 'https://github.com/neeljaiswal90/habitflow');
   await expect(page.locator('.coh-build-card').filter({ hasText: 'Fitness App' })).toHaveAttribute('href', 'https://neeltraining.lovable.app/');
@@ -168,7 +171,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(heroConnection.headerShadow).toBe('none');
 
   const interactionLayout = await page.evaluate(() => {
-    const nav = document.querySelector('.coh-pill-nav');
+    const nav = document.querySelector(window.innerWidth <= 680 ? '.coh-mobile-nav' : '.coh-pill-nav');
     const actions = document.querySelector('.coh-hero-actions');
     const leadership = document.querySelector('.coh-about-card');
     if (!(nav instanceof HTMLElement) || !(actions instanceof HTMLElement) || !(leadership instanceof HTMLElement)) {
@@ -212,6 +215,42 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(blocking).toEqual([]);
 
   runtime.assertClean();
+});
+
+test('desktop case-study tiles flip for hover and keyboard focus without trapping navigation', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium', 'Desktop-only flip treatment');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const firstTile = page.locator('.coh-work-tile').first();
+  const firstLink = firstTile.locator('a');
+  const inner = firstTile.locator('.coh-work-tile-inner');
+  await firstTile.scrollIntoViewIfNeeded();
+  await firstLink.hover();
+  await expect.poll(() => inner.evaluate((element) => getComputedStyle(element).transform)).not.toBe('none');
+
+  await page.mouse.move(0, 0);
+  await firstLink.focus();
+  await expect.poll(() => inner.evaluate((element) => getComputedStyle(element).transform)).not.toBe('none');
+  await expect(firstLink).toHaveAttribute('href', '/work/growth-system/');
+});
+
+test('case-study preview faces keep every title, summary, outcome, and link inside the tile', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium', 'Mobile links directly from the compact front face');
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const faces = await page.locator('.coh-work-tile-back').evaluateAll((elements) => elements.map((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  })));
+  expect(faces).toHaveLength(6);
+  for (const face of faces) {
+    expect(face.scrollHeight).toBeLessThanOrEqual(face.clientHeight + 1);
+    expect(face.scrollWidth).toBeLessThanOrEqual(face.clientWidth + 1);
+  }
 });
 
 test('cohesion hero copy stays contained and section 02 reveals the system stack', async ({ page }) => {
@@ -327,7 +366,8 @@ test('page uses natural scrolling with curated journey stops', async ({ page }) 
   await expect(page.locator('[data-coh-focus-nav]')).toHaveCount(0);
 });
 
-test('hero and global arrows move one component at a time', async ({ page }) => {
+test('hero and global arrows move one component at a time', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium', 'Mobile uses one bottom chapter dock instead of competing floating arrows');
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const heroNext = page.locator('[data-coh-hero-next]');
@@ -366,7 +406,8 @@ test('hero and global arrows move one component at a time', async ({ page }) => 
   await expect(previous).toBeEnabled();
 });
 
-test('journey arrows traverse every component forward and backward', async ({ page }) => {
+test('journey arrows traverse every component forward and backward', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium', 'Desktop-only journey navigator');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
