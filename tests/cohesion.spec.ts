@@ -26,6 +26,15 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-role-line')).toContainText('I build');
   await expect(page.locator('[data-role-cycle]')).toHaveText('conversion engines');
   await expect(page.locator('.coh-portrait-flip-hint')).toHaveCount(0);
+  await expect(page.locator('.coh-hero-capability')).toHaveCount(4);
+  await expect(page.locator('.coh-hero-capability-front > i')).toHaveCount(4);
+  await expect(page.locator('.coh-hero-capability-back')).toHaveCount(4);
+  await expect(page.locator('.coh-hero-capability-back').first()).toContainText('one measurable growth system');
+  await expect(page.locator('#home .coh-hero-actions, #home .coh-hero-cta, #home .coh-hero-secondary')).toHaveCount(0);
+  await expect(page.locator('#home a[href*="Resume"]')).toHaveCount(0);
+  await expect(page.locator('.coh-hero-next-cta')).toHaveAttribute('href', '#about');
+  await expect(page.locator('.coh-hero-next-cta')).toContainText('Explore how I lead');
+  await expect(page.locator('.coh-hero-next-cta')).toContainText('Continue to About');
 
   await expect(page.locator('#work .coh-work-card')).toHaveCount(0);
   await expect(page.locator('.coh-work-tile')).toHaveCount(6);
@@ -136,7 +145,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
       intro: center('.coh-identity-header'),
       wordmark: center('.coh-hero-wordmark'),
       portrait: center('.coh-portrait-wrap'),
-      actions: center('.coh-hero-actions'),
+      nextCta: center('.coh-hero-next-cta'),
     };
   });
   for (const [element, center] of Object.entries(heroAlignment)) {
@@ -172,23 +181,23 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
 
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector(window.innerWidth <= 680 ? '.coh-mobile-nav' : '.coh-pill-nav');
-    const actions = document.querySelector('.coh-hero-actions');
+    const nextCta = document.querySelector('.coh-hero-next-cta');
     const leadership = document.querySelector('.coh-about-card');
-    if (!(nav instanceof HTMLElement) || !(actions instanceof HTMLElement) || !(leadership instanceof HTMLElement)) {
+    if (!(nav instanceof HTMLElement) || !(nextCta instanceof HTMLElement) || !(leadership instanceof HTMLElement)) {
       throw new Error('Interaction layout elements are missing');
     }
     const navRect = nav.getBoundingClientRect();
-    const actionsRect = actions.getBoundingClientRect();
+    const nextCtaRect = nextCta.getBoundingClientRect();
     return {
       navTop: navRect.top,
       viewportHeight: window.innerHeight,
-      actionsOverlapNav: actionsRect.bottom > navRect.top && actionsRect.top < navRect.bottom,
+      nextCtaOverlapsNav: nextCtaRect.bottom > navRect.top && nextCtaRect.top < navRect.bottom,
       leadershipPosition: getComputedStyle(leadership).position,
     };
   });
   if (testInfo.project.name === 'mobile-chromium') {
     expect(interactionLayout.navTop).toBeGreaterThan(interactionLayout.viewportHeight * 0.8);
-    expect(interactionLayout.actionsOverlapNav).toBe(false);
+    expect(interactionLayout.nextCtaOverlapsNav).toBe(false);
     expect(interactionLayout.leadershipPosition).toBe('static');
   } else {
     expect(interactionLayout.leadershipPosition).toBe('sticky');
@@ -215,6 +224,46 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(blocking).toEqual([]);
 
   runtime.assertClean();
+});
+
+test('hero capability cards reveal their context without clipping', async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const cards = page.locator('[data-coh-capability]');
+  const firstCard = cards.first();
+  const firstInner = firstCard.locator('.coh-hero-capability-inner');
+  await expect(cards).toHaveCount(4);
+
+  if (testInfo.project.name === 'mobile-chromium') {
+    await firstCard.click({ force: true });
+    await expect(firstCard).toHaveAttribute('aria-pressed', 'true');
+    await expect(firstCard).toHaveClass(/is-flipped/);
+    await firstCard.click({ force: true });
+    await expect(firstCard).toHaveAttribute('aria-pressed', 'false');
+  } else {
+    await firstCard.hover({ force: true });
+    await expect.poll(() => firstInner.evaluate((element) => getComputedStyle(element).transform)).not.toBe('none');
+    await page.mouse.move(0, 0);
+  }
+
+  await firstCard.focus();
+  await firstCard.press('Enter');
+  await expect(firstCard).toHaveAttribute('aria-pressed', 'true');
+  await firstCard.press('Enter');
+  await expect(firstCard).toHaveAttribute('aria-pressed', 'false');
+
+  const faces = await page.locator('.coh-hero-capability-face').evaluateAll((elements) => elements.map((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  })));
+  expect(faces).toHaveLength(8);
+  for (const face of faces) {
+    expect(face.scrollHeight).toBeLessThanOrEqual(face.clientHeight + 1);
+    expect(face.scrollWidth).toBeLessThanOrEqual(face.clientWidth + 1);
+  }
 });
 
 test('desktop case-study tiles flip for hover and keyboard focus without trapping navigation', async ({ page }, testInfo) => {

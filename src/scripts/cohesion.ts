@@ -269,6 +269,23 @@ if (contactForm) {
   });
 }
 
+const heroCapabilityCards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-coh-capability]'));
+const capabilityHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+const setCapabilityCard = (card: HTMLButtonElement, expanded: boolean) => {
+  card.classList.toggle('is-flipped', expanded);
+  card.setAttribute('aria-pressed', String(expanded));
+};
+
+heroCapabilityCards.forEach((card) => {
+  card.addEventListener('click', (event) => {
+    const keyboardActivation = event.detail === 0;
+    if (capabilityHover.matches && !keyboardActivation) return;
+    const expand = !card.classList.contains('is-flipped');
+    heroCapabilityCards.forEach((otherCard) => setCapabilityCard(otherCard, otherCard === card && expand));
+  });
+  card.addEventListener('blur', () => setCapabilityCard(card, false));
+});
+
 const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {

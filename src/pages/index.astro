@@ -25,13 +25,33 @@ if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 const leadershipClaim = getPublishableClaim('career.mint.product_leadership_team_of_pms');
 
 const heroCapabilities = [
-  { eyebrow: 'Skill', title: 'Ecommerce growth', detail: 'Funnel · lifecycle · revenue' },
-  { eyebrow: 'Products shipped', title: 'Products 0–1', detail: 'Checkout · Home Internet · kids mobile' },
-  { eyebrow: 'Technology', title: 'Applied AI + platforms', detail: 'Agentic workflows · APIs · data' },
+  {
+    eyebrow: 'Skill',
+    title: 'Ecommerce growth',
+    detail: 'Funnel · lifecycle · revenue',
+    symbol: '↗',
+    context: 'I connect acquisition, merchandising, checkout, and lifecycle into one measurable growth system.',
+  },
+  {
+    eyebrow: 'Products shipped',
+    title: 'Products 0–1',
+    detail: 'Checkout · Home Internet · kids mobile',
+    symbol: '＋',
+    context: 'I build the customer journey and operating model—from eligibility through activation and adoption.',
+  },
+  {
+    eyebrow: 'Technology',
+    title: 'Applied AI + platforms',
+    detail: 'Agentic workflows · APIs · data',
+    symbol: '⌘',
+    context: 'I translate AI, APIs, data, and platform constraints into products teams can operate and scale.',
+  },
   {
     eyebrow: 'Leadership',
     title: leadershipClaim.displayValue,
     detail: `${leadershipClaim.displayLabel} · portfolio ownership`,
+    symbol: '◎',
+    context: 'I align teams of PMs around outcomes, evidence, dependencies, and clear ownership.',
   },
 ] as const;
 
@@ -193,22 +213,42 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       </button>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
 
-      <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Core product capabilities and leadership">
+      <div class="coh-hero-trust coh-hero-proof" data-coh-reveal role="list" aria-label="Core product capabilities and leadership">
         {heroCapabilities.map((capability) => (
-          <span>
-            <small>{capability.eyebrow}</small>
-            <strong>{capability.title}</strong>
-            <em>{capability.detail}</em>
+          <span class="coh-hero-capability-item" role="listitem">
+            <button
+              class="coh-hero-capability"
+              type="button"
+              data-coh-capability
+              aria-pressed="false"
+              aria-label={`${capability.title}. ${capability.detail}. Activate for more context.`}
+            >
+              <span class="coh-hero-capability-inner">
+                <span class="coh-hero-capability-face coh-hero-capability-front" aria-hidden="true">
+                  <i aria-hidden="true">{capability.symbol}</i>
+                  <span>
+                    <small>{capability.eyebrow}</small>
+                    <strong>{capability.title}</strong>
+                    <em>{capability.detail}</em>
+                  </span>
+                </span>
+                <span class="coh-hero-capability-face coh-hero-capability-back" aria-hidden="true">
+                  <small>How I work</small>
+                  <strong>{capability.title}</strong>
+                  <em>{capability.context}</em>
+                  <i aria-hidden="true">↩</i>
+                </span>
+              </span>
+            </button>
           </span>
         ))}
       </div>
 
-      <div class="coh-hero-actions">
-        <a class="coh-hero-cta" href="/work/">View selected work <span aria-hidden="true">↗</span></a>
-        <a class="coh-hero-secondary" href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↗</span></a>
-      </div>
-      <a class="coh-hero-journey-next" href="#about" data-coh-hero-next aria-label="Continue to the About section">
-        <span>Continue</span>
+      <a class="coh-hero-next-cta" href="#about" data-coh-hero-next aria-label="Continue to the About section">
+        <span aria-hidden="true">
+          <b>Explore how I lead</b>
+          <b>Continue to About</b>
+        </span>
         <i aria-hidden="true">↓</i>
       </a>
     </section>
