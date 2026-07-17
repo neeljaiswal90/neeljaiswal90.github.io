@@ -273,8 +273,9 @@ test('page settles scrolling on narrative component boundaries', async ({ page }
     };
   });
 
-  expect(snapping.targetCount).toBeGreaterThanOrEqual(20);
+  expect(snapping.targetCount).toBeGreaterThanOrEqual(18);
   expect(snapping.alignments.every((alignment) => alignment === 'start')).toBe(true);
+  await expect(page.locator('.coh-focus-card[data-coh-snap]')).toHaveCount(0);
   const storyStops = await page.locator('.coh-story-step').evaluateAll((steps) => steps.map((step) => getComputedStyle(step).scrollSnapStop));
   expect(storyStops).toEqual(['always', 'always', 'always']);
   expect(snapping.stops.every((stop) => stop === 'normal' || stop === 'always')).toBe(true);
@@ -311,6 +312,66 @@ test('about story rail advances one card per scroll gesture', async ({ page }, t
   await page.mouse.wheel(0, 2_400);
   await page.waitForTimeout(900);
   expect(await getNearestStep()).toBe(2);
+});
+
+test('section 02 advances through every system and offers desktop arrow navigation', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop-chromium', 'Desktop focus navigation behavior');
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const cards = page.locator('.coh-focus-card');
+  const navigation = page.locator('[data-coh-focus-nav]');
+  const nextButton = navigation.locator('[data-coh-focus-next]');
+  await expect(cards).toHaveCount(4);
+  await cards.first().evaluate((card) => {
+    const stack = card.parentElement;
+    if (!(stack instanceof HTMLElement)) throw new Error('Focus stack is missing');
+    const top = stack.getBoundingClientRect().top + window.scrollY + (card as HTMLElement).offsetTop - 96;
+    window.scrollTo({ top, behavior: 'instant' });
+  });
+  await page.waitForTimeout(500);
+
+  const getNearestCard = () => cards.evaluateAll((items) => {
+    const stack = items[0]?.parentElement;
+    if (!(stack instanceof HTMLElement)) throw new Error('Focus stack is missing');
+    const stackTop = stack.getBoundingClientRect().top + window.scrollY;
+    const readingPosition = window.scrollY + 96;
+    const distances = items.map((item) => Math.abs(stackTop + (item as HTMLElement).offsetTop - readingPosition));
+    return distances.indexOf(Math.min(...distances));
+  });
+
+  await expect(navigation).toBeVisible();
+  await expect(navigation.locator('[data-coh-focus-progress]')).toHaveText('01 / 04');
+  expect(await getNearestCard()).toBe(0);
+
+  await nextButton.click();
+  await page.waitForTimeout(850);
+  expect(await getNearestCard()).toBe(1);
+  await expect(navigation.locator('[data-coh-focus-progress]')).toHaveText('02 / 04');
+
+  await page.mouse.wheel(0, 2_400);
+  await page.waitForTimeout(850);
+  expect(await getNearestCard()).toBe(2);
+
+  await nextButton.click();
+  await page.waitForTimeout(850);
+  expect(await getNearestCard()).toBe(3);
+  await expect(navigation.locator('[data-coh-focus-progress]')).toHaveText('04 / 04');
+
+  const lastCardTop = await cards.last().evaluate((card) => {
+    const stack = card.parentElement;
+    if (!(stack instanceof HTMLElement)) throw new Error('Focus stack is missing');
+    return stack.getBoundingClientRect().top + window.scrollY + (card as HTMLElement).offsetTop;
+  });
+  await page.mouse.wheel(0, 2_400);
+  await page.waitForTimeout(850);
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(lastCardTop);
+});
+
+test('section 02 arrow navigation stays hidden on mobile', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium', 'Mobile-only visibility check');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('[data-coh-focus-nav]')).toHaveCSS('display', 'none');
 });
 
 test('about metrics remain fully visible beside the story cards', async ({ page }) => {

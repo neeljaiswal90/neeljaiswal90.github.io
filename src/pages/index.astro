@@ -365,7 +365,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
 
       <div class="coh-focus-stack">
         {focusAreas.map((area) => (
-          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`} data-coh-snap>
+          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`}>
             <span class="coh-focus-number" aria-hidden="true">{area.number}</span>
             <div class="coh-focus-copy" data-coh-reveal>
               <p>{area.number} / {area.kicker}</p>
@@ -386,6 +386,16 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
           </article>
         ))}
       </div>
+
+      <nav class="coh-focus-float-nav" data-coh-focus-nav aria-label="Navigate What I build systems" aria-hidden="true" inert>
+        <button type="button" data-coh-focus-previous aria-label="Previous system">
+          <span aria-hidden="true">↑</span>
+        </button>
+        <span class="coh-focus-nav-progress" data-coh-focus-progress aria-live="polite">01 / 04</span>
+        <button type="button" data-coh-focus-next aria-label="Next system">
+          <span aria-hidden="true">↓</span>
+        </button>
+      </nav>
     </section>
 
     <section class="coh-work" id="work" data-coh-section="work">

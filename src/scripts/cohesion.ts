@@ -108,6 +108,106 @@ if (storyRail && storySteps.length > 1 && !reducedMotion) {
   }, { passive: false });
 }
 
+const focusSection = document.querySelector<HTMLElement>('#focus');
+const focusHeading = focusSection?.querySelector<HTMLElement>('.coh-focus-heading');
+const focusStack = focusSection?.querySelector<HTMLElement>('.coh-focus-stack');
+const focusCards = focusSection
+  ? Array.from(focusSection.querySelectorAll<HTMLElement>('.coh-focus-card'))
+  : [];
+const focusNavigation = focusSection?.querySelector<HTMLElement>('[data-coh-focus-nav]');
+const focusPrevious = focusNavigation?.querySelector<HTMLButtonElement>('[data-coh-focus-previous]');
+const focusNext = focusNavigation?.querySelector<HTMLButtonElement>('[data-coh-focus-next]');
+const focusProgress = focusNavigation?.querySelector<HTMLElement>('[data-coh-focus-progress]');
+const workSection = document.querySelector<HTMLElement>('#work');
+
+if (focusSection && focusHeading && focusStack && focusCards.length > 1 && focusNavigation && focusPrevious && focusNext) {
+  const desktopFocusNavigation = window.matchMedia('(min-width: 901px)');
+  let focusScrollLocked = false;
+  let focusScrollTimer = 0;
+  let activeFocusIndex = 0;
+  let focusNavigationFrame = 0;
+
+  const focusAnchor = () => 96;
+  const focusStackTop = () => focusStack.getBoundingClientRect().top + window.scrollY;
+  const focusCardTop = (index: number) => focusStackTop() + (focusCards[index]?.offsetTop ?? 0);
+  const nearestFocusCard = () => {
+    const readingPosition = window.scrollY + focusAnchor();
+    const distances = focusCards.map((_, index) => Math.abs(focusCardTop(index) - readingPosition));
+    return distances.indexOf(Math.min(...distances));
+  };
+  const scrollToElement = (element: HTMLElement) => {
+    const top = element.getBoundingClientRect().top + window.scrollY - focusAnchor();
+    window.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' });
+  };
+  const moveToFocusCard = (index: number) => {
+    const card = focusCards[index];
+    if (!card) return;
+    window.scrollTo({ top: focusCardTop(index) - focusAnchor(), behavior: reducedMotion ? 'auto' : 'smooth' });
+  };
+  const releaseFocusScroll = () => {
+    window.clearTimeout(focusScrollTimer);
+    focusScrollTimer = window.setTimeout(() => {
+      focusScrollLocked = false;
+    }, 700);
+  };
+  const syncFocusNavigation = () => {
+    focusNavigationFrame = 0;
+    const stackRect = focusStack.getBoundingClientRect();
+    const isActive = desktopFocusNavigation.matches
+      && stackRect.top <= window.innerHeight * 0.58
+      && stackRect.bottom >= window.innerHeight * 0.42;
+    activeFocusIndex = nearestFocusCard();
+    focusNavigation.classList.toggle('is-active', isActive);
+    focusNavigation.setAttribute('aria-hidden', String(!isActive));
+    focusNavigation.toggleAttribute('inert', !isActive);
+    if (focusProgress) {
+      focusProgress.textContent = `${String(activeFocusIndex + 1).padStart(2, '0')} / ${String(focusCards.length).padStart(2, '0')}`;
+    }
+    const previousTitle = focusCards[activeFocusIndex - 1]?.querySelector('h3')?.textContent?.trim();
+    const nextTitle = focusCards[activeFocusIndex + 1]?.querySelector('h3')?.textContent?.trim();
+    focusPrevious.setAttribute('aria-label', previousTitle ? `Previous system: ${previousTitle}` : 'Back to the What I build introduction');
+    focusNext.setAttribute('aria-label', nextTitle ? `Next system: ${nextTitle}` : 'Continue to selected work');
+  };
+  const requestFocusNavigationSync = () => {
+    if (focusNavigationFrame) return;
+    focusNavigationFrame = window.requestAnimationFrame(syncFocusNavigation);
+  };
+
+  focusPrevious.addEventListener('click', () => {
+    const previousIndex = activeFocusIndex - 1;
+    if (previousIndex >= 0) moveToFocusCard(previousIndex);
+    else scrollToElement(focusHeading);
+  });
+  focusNext.addEventListener('click', () => {
+    const nextIndex = activeFocusIndex + 1;
+    if (nextIndex < focusCards.length) moveToFocusCard(nextIndex);
+    else if (workSection) scrollToElement(workSection);
+  });
+
+  window.addEventListener('wheel', (event) => {
+    if (!desktopFocusNavigation.matches || reducedMotion || Math.abs(event.deltaY) < 4) return;
+    const stackRect = focusStack.getBoundingClientRect();
+    const anchor = focusAnchor();
+    const stackIsActive = stackRect.top <= anchor + 100 && stackRect.bottom >= anchor + window.innerHeight * 0.55;
+    if (!stackIsActive) return;
+
+    const currentIndex = nearestFocusCard();
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const nextIndex = currentIndex + direction;
+    if (nextIndex < 0 || nextIndex >= focusCards.length) return;
+
+    event.preventDefault();
+    releaseFocusScroll();
+    if (focusScrollLocked) return;
+    focusScrollLocked = true;
+    moveToFocusCard(nextIndex);
+  }, { passive: false });
+
+  window.addEventListener('scroll', requestFocusNavigationSync, { passive: true });
+  desktopFocusNavigation.addEventListener('change', requestFocusNavigationSync);
+  syncFocusNavigation();
+}
+
 const hero = document.querySelector<HTMLElement>('.coh-hero');
 if (hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   hero.addEventListener('pointermove', (event) => {

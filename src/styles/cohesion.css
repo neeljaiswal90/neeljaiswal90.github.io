@@ -1609,6 +1609,10 @@ img {
   z-index: 2;
 }
 
+.coh-focus-float-nav {
+  display: none;
+}
+
 .coh-focus-card {
   position: sticky;
   top: 0;
@@ -1628,6 +1632,73 @@ img {
 .coh-focus-card.tone-ink { color: var(--coh-white); background: #121216; }
 .coh-focus-card.tone-lime { color: var(--coh-ink); background: var(--coh-lime); }
 .coh-focus-card.tone-coral { color: var(--coh-ink); background: var(--coh-coral); }
+
+@media (min-width: 901px) {
+  .coh-focus-float-nav {
+    position: fixed;
+    z-index: 40;
+    top: 50%;
+    right: clamp(20px, 2.7vw, 46px);
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 9px;
+    color: var(--coh-white);
+    background: rgb(13 13 15 / 78%);
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 999px;
+    box-shadow: 0 18px 52px rgb(0 0 0 / 26%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    translate: 18px -50%;
+    backdrop-filter: blur(16px);
+    transition: opacity 180ms ease, translate 220ms ease, visibility 0s linear 220ms;
+  }
+
+  .coh-focus-float-nav.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    translate: 0 -50%;
+    transition-delay: 0s;
+  }
+
+  .coh-focus-float-nav button {
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--coh-ink);
+    background: var(--coh-cyan);
+    border: 0;
+    border-radius: 50%;
+    font: 700 20px/1 "Space Grotesk", sans-serif;
+    cursor: pointer;
+    transition: background 160ms ease, scale 160ms ease;
+  }
+
+  .coh-focus-float-nav button:hover {
+    background: var(--coh-lime);
+    scale: 1.06;
+  }
+
+  .coh-focus-float-nav button:focus-visible {
+    outline: 3px solid var(--coh-white);
+    outline-offset: 3px;
+  }
+
+  .coh-focus-nav-progress {
+    min-width: 42px;
+    padding: 4px 0;
+    color: #d8d5df;
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: .08em;
+    text-align: center;
+  }
+}
 
 .coh-focus-number {
   font-family: "Space Grotesk", sans-serif;
