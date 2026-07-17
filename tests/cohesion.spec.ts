@@ -16,6 +16,9 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   }
 
   await expect(page.locator('.coh-talk')).toHaveAttribute('href', '#contact');
+  await expect(page.locator('.coh-hero-wordmark-track')).toHaveCount(1);
+  await expect(page.locator('.coh-hero-wordmark-group')).toHaveCount(2);
+  await expect(page.locator('.coh-portrait-flip-hint')).toHaveCount(0);
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
@@ -64,19 +67,25 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await page.locator('#home').evaluate((section) => section.scrollIntoView({ behavior: 'instant' }));
   await page.mouse.move(0, 0);
   await expect(portraitFlip).toHaveAttribute('data-intro-flip', 'complete');
-  await expect(portraitFlip).toHaveAttribute('aria-expanded', 'false');
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
   if (testInfo.project.name === 'mobile-chromium') {
     await portraitFlip.click({ force: true });
-    await expect(portraitFlip).toHaveAttribute('aria-expanded', 'true');
+    await expect(portraitFlip).toHaveAttribute('aria-pressed', 'true');
     await expect(portraitFlip).toHaveClass(/is-flipped/);
     await portraitFlip.click({ force: true });
   } else {
     await portraitFlip.hover({ force: true });
-    await expect(portraitFlip).toHaveAttribute('aria-expanded', 'true');
+    await expect(portraitFlip).toHaveAttribute('aria-pressed', 'true');
     await expect(portraitFlip).toHaveClass(/is-flipped/);
     await page.mouse.move(0, 0);
   }
-  await expect(portraitFlip).toHaveAttribute('aria-expanded', 'false');
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
+
+  await portraitFlip.focus();
+  await portraitFlip.press('Enter');
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'true');
+  await portraitFlip.press('Enter');
+  await expect(portraitFlip).toHaveAttribute('aria-pressed', 'false');
   await expectImagesToDecode(page);
   await page.waitForTimeout(900);
 
@@ -103,6 +112,30 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   });
   for (const [element, center] of Object.entries(heroAlignment)) {
     expect(Math.abs(center - heroAlignment.portrait), `${element} should share the portrait center axis`).toBeLessThanOrEqual(2);
+  }
+
+  const interactionLayout = await page.evaluate(() => {
+    const nav = document.querySelector('.coh-pill-nav');
+    const actions = document.querySelector('.coh-hero-actions');
+    const leadership = document.querySelector('.coh-story-card.is-leadership');
+    if (!(nav instanceof HTMLElement) || !(actions instanceof HTMLElement) || !(leadership instanceof HTMLElement)) {
+      throw new Error('Interaction layout elements are missing');
+    }
+    const navRect = nav.getBoundingClientRect();
+    const actionsRect = actions.getBoundingClientRect();
+    return {
+      navTop: navRect.top,
+      viewportHeight: window.innerHeight,
+      actionsOverlapNav: actionsRect.bottom > navRect.top && actionsRect.top < navRect.bottom,
+      leadershipPosition: getComputedStyle(leadership).position,
+    };
+  });
+  if (testInfo.project.name === 'mobile-chromium') {
+    expect(interactionLayout.navTop).toBeGreaterThan(interactionLayout.viewportHeight * 0.8);
+    expect(interactionLayout.actionsOverlapNav).toBe(false);
+    expect(interactionLayout.leadershipPosition).toBe('static');
+  } else {
+    expect(interactionLayout.leadershipPosition).toBe('sticky');
   }
 
   const portraitFraming = await page.locator('.coh-portrait-wrap').evaluate((portrait) => {
@@ -135,12 +168,11 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     const container = document.querySelector('.coh-hero-intro');
     const heading = document.querySelector('.coh-hero-intro h1');
     const eyebrow = document.querySelector('.coh-hero-eyebrow');
-    const summary = document.querySelector('.coh-hero-summary');
-    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(eyebrow instanceof HTMLElement) || !(summary instanceof HTMLElement)) {
+    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(eyebrow instanceof HTMLElement)) {
       throw new Error('Hero positioning elements are missing');
     }
     const containerRect = container.getBoundingClientRect();
-    const measurements = [eyebrow, heading, summary].map((element) => {
+    const measurements = [eyebrow, heading].map((element) => {
       const rect = element.getBoundingClientRect();
       return {
         leftInset: rect.left - containerRect.left,
@@ -191,6 +223,22 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   expect(focusTransition.cueTitleSize).toBeGreaterThanOrEqual(20);
   expect(focusTransition.stepLabelSize).toBeGreaterThanOrEqual(12);
   expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
+});
+
+test('portrait demonstrates its flip once and settles on the front', async ({ page }, testInfo) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const portrait = page.locator('[data-coh-portrait-flip]');
+
+  if (testInfo.project.name === 'reduced-motion') {
+    await expect(portrait).toHaveAttribute('data-intro-flip', 'complete');
+  } else {
+    await expect(portrait).toHaveAttribute('data-intro-flip', 'preview', { timeout: 1_200 });
+    await expect(portrait).toHaveAttribute('data-intro-flip', 'complete', { timeout: 2_200 });
+  }
+
+  await expect(portrait).toHaveAttribute('aria-pressed', 'false');
+  await expect(portrait.locator('.coh-portrait-front')).toHaveAttribute('aria-hidden', 'false');
+  await expect(portrait.locator('.coh-portrait-back')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('legacy Cohesion URL preserves section context on the main portfolio', async ({ page }) => {

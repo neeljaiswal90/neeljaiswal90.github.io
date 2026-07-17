@@ -151,7 +151,7 @@ for (const caseStudy of caseStudies) {
   });
 }
 
-test('case study returns to Cohesion selected work', async ({ page }) => {
+test('case study returns to selected work', async ({ page }) => {
   await page.goto('/#work', { waitUntil: 'domcontentloaded' });
   const card = page.locator('.coh-work .coh-work-card[href="/work/growth-system/"]');
   await expect(card).toHaveCount(1);

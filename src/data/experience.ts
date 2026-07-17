@@ -11,11 +11,11 @@ export interface RoleRecord {
 
 export const roles: readonly RoleRecord[] = [
   {
-    id: 'mint', periodClaimId: 'career.mint.role_dates', summaryClaimId: 'career.mint.scope', company: 'Mint Mobile', title: 'Senior Product Manager', signal: 'Ecommerce portfolio · 4 direct reports',
+    id: 'mint', periodClaimId: 'career.mint.role_dates', summaryClaimId: 'career.mint.scope', company: 'Mint Mobile', title: 'Senior Product Manager', signal: 'Ecommerce portfolio · multiple PMs',
     achievements: [
-      { title: 'Growth system', description: 'Built a repeatable funnel operating loop across homepage, plans, checkout, and lifecycle.', href: '/work/growth-system/' },
+      { title: 'Growth system', description: 'Built a repeatable operating loop across the core funnel, cart, checkout, and lifecycle.', href: '/work/growth-system/' },
       { title: 'New-business launches', description: 'Connected eligibility, purchase, activation, hardware, and operations for Home Internet, Mint Kids, eSIM, and device commerce.', href: '/work/home-internet/' },
-      { title: 'Product leadership', description: 'Directly manage four product managers across acquisition, checkout, activation, devices, and post-purchase growth.' },
+      { title: 'Product leadership', description: 'Lead multiple product managers across acquisition, cart and checkout, activation, devices, and post-purchase growth.' },
       { title: 'Production AI', description: 'Shipped a grounded assistant measured on resolution, customer satisfaction, and safe escalation.', href: '/work/production-ai/' },
     ],
     tags: ['Ecommerce', 'Experimentation', 'Home Internet', 'Mint Kids', 'eSIM', 'Device commerce', 'People leadership'],

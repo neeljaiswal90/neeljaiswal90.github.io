@@ -62,17 +62,24 @@ const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portra
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {
   const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const portraitFront = portraitFlip.querySelector<HTMLElement>('.coh-portrait-front');
   const portraitBack = portraitFlip.querySelector<HTMLElement>('.coh-portrait-back');
+  let lastPointerType = '';
+  let previewTimer = 0;
+  let resetTimer = 0;
   const completeIntroFlip = () => {
+    window.clearTimeout(previewTimer);
+    window.clearTimeout(resetTimer);
     portraitFlip.dataset.introFlip = 'complete';
   };
   const showPortraitBack = (showBack: boolean) => {
     completeIntroFlip();
     portraitFlip.classList.toggle('is-flipped', showBack);
-    portraitFlip.setAttribute('aria-expanded', String(showBack));
+    portraitFlip.setAttribute('aria-pressed', String(showBack));
     portraitFlip.setAttribute('aria-label', showBack
       ? 'Show Neel’s portrait'
-      : 'Reveal what Neel builds');
+      : 'Reveal Neel’s leadership focus');
+    portraitFront?.setAttribute('aria-hidden', String(showBack));
     portraitBack?.setAttribute('aria-hidden', String(!showBack));
     if (portraitStatus) portraitStatus.textContent = showBack
       ? 'Showing what Neel builds.'
@@ -82,10 +89,18 @@ if (portraitFlip) {
   if (reducedMotion) {
     completeIntroFlip();
   } else {
-    window.setTimeout(() => {
-      if (portraitFlip.dataset.introFlip === 'pending') completeIntroFlip();
-    }, 850);
+    previewTimer = window.setTimeout(() => {
+      if (portraitFlip.dataset.introFlip === 'pending') portraitFlip.dataset.introFlip = 'preview';
+    }, 420);
+    resetTimer = window.setTimeout(() => {
+      if (portraitFlip.dataset.introFlip === 'preview') completeIntroFlip();
+    }, 1550);
   }
+
+  portraitFlip.addEventListener('pointerdown', (event) => {
+    lastPointerType = event.pointerType;
+    completeIntroFlip();
+  });
 
   portraitFlip.addEventListener('mouseenter', () => {
     if (hoverCapable.matches) showPortraitBack(true);
@@ -93,14 +108,9 @@ if (portraitFlip) {
   portraitFlip.addEventListener('mouseleave', () => {
     if (hoverCapable.matches) showPortraitBack(false);
   });
-  portraitFlip.addEventListener('focus', () => {
-    if (hoverCapable.matches) showPortraitBack(true);
-  });
-  portraitFlip.addEventListener('blur', () => {
-    if (hoverCapable.matches) showPortraitBack(false);
-  });
-  portraitFlip.addEventListener('click', () => {
-    if (hoverCapable.matches) return;
+  portraitFlip.addEventListener('click', (event) => {
+    const keyboardActivation = event.detail === 0;
+    if (hoverCapable.matches && lastPointerType === 'mouse' && !keyboardActivation) return;
     showPortraitBack(!portraitFlip.classList.contains('is-flipped'));
   });
 }

@@ -47,7 +47,7 @@ const structuredData = [
     '@id': `${canonical}#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Portfolio', item: home },
-      { '@type': 'ListItem', position: 2, name: 'Cohesion selected work', item: `${cohesionHome}#work` },
+      { '@type': 'ListItem', position: 2, name: 'Selected work', item: `${cohesionHome}#work` },
       { '@type': 'ListItem', position: 3, name: caseStudy.title, item: canonical },
     ],
   },
@@ -65,13 +65,13 @@ const structuredData = [
 >
   <div class="case-page" data-controller="case-study-scene">
     <header class="case-topbar">
-      <a class="case-brand" href="/#home" aria-label="Neel Jaiswal, Cohesion portfolio home">
+      <a class="case-brand" href="/#home" aria-label="Neel Jaiswal portfolio home">
         <b>NJ</b>
         <span>Neel Jaiswal<small>Senior Product Manager · Mint Mobile</small></span>
       </a>
       <nav class="case-breadcrumb" aria-label="Breadcrumb">
         <ol>
-          <li><a href="/">Cohesion</a></li>
+          <li><a href="/">Portfolio</a></li>
           <li><a href="/#work">Selected work</a></li>
           <li aria-current="page">{caseStudy.sequence}</li>
         </ol>

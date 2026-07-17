@@ -20,9 +20,9 @@ const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purch
 if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 
 const heroSignals = [
-  { category: 'Product leadership', claim: getPublishableClaim('career.mint.direct_reports_four_pm') },
-  { category: 'Homepage growth', claim: getPublishableClaim('growth.homepage_conversion_lift_54_7') },
-  { category: 'Plans growth', claim: getPublishableClaim('growth.plans_conversion_lift_77') },
+  { category: 'Product leadership', claim: getPublishableClaim('career.mint.product_leadership_multiple_pms') },
+  { category: 'Core funnel', claim: getPublishableClaim('growth.core_funnel_conversion_lift_54_7') },
+  { category: 'Cart / checkout', claim: getPublishableClaim('growth.cart_checkout_conversion_lift_77') },
   { category: 'Order economics', claim: getPublishableClaim('commerce.aov_lift_10_flat_conversion') },
   { category: 'Activation choice', claim: getPublishableClaim('esim.default_selection_lift_7_flat_conversion') },
   { category: 'New-business launch', claim: getPublishableClaim('kids.activations_14k_90_days') },
@@ -33,10 +33,10 @@ const heroProof = heroSignals.slice(0, 4);
 const focusAreas = [
   {
     number: '01',
-    kicker: 'Ecommerce growth',
+    kicker: 'Core funnel + cart / checkout',
     title: 'Turn friction into compounding growth.',
     body: 'I connect funnel diagnosis, experimentation, merchandising, checkout, payments, and lifecycle into one measurable growth system.',
-    claimIds: ['growth.homepage_conversion_lift_54_7', 'growth.plans_conversion_lift_77', 'commerce.aov_lift_10_flat_conversion'],
+    claimIds: ['growth.core_funnel_conversion_lift_54_7', 'growth.cart_checkout_conversion_lift_77', 'commerce.aov_lift_10_flat_conversion'],
     tone: 'violet',
   },
   {
@@ -49,7 +49,7 @@ const focusAreas = [
   },
   {
     number: '03',
-    kicker: 'Commerce operating model',
+    kicker: 'Commerce platforms',
     title: 'Make every dependency part of the product.',
     body: 'I design catalog, offers, checkout, payment risk, fulfillment, activation, support, and returns as one end-to-end product system.',
     claimIds: ['device.pixel_units_22_752', 'device.offer_configurations_100_plus', 'esim.eligible_purchase_mix_67_77'],
@@ -57,7 +57,7 @@ const focusAreas = [
   },
   {
     number: '04',
-    kicker: 'AI-enabled execution',
+    kicker: 'AI-enabled service',
     title: 'Give AI evidence, tools, and boundaries.',
     body: 'I use AI to improve product and service execution, with retrieval, evaluation, escalation, and human approval designed into the workflow.',
     claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44', 'ai.assistant.escalations_reduced_34'],
@@ -104,7 +104,7 @@ const description = site.description;
     <nav class="coh-pill-nav" aria-label="Portfolio sections">
       <a class="is-active" href="#home" data-coh-nav="home">Home</a>
       <a href="#about" data-coh-nav="about">About</a>
-      <a href="#focus" data-coh-nav="focus">Focus</a>
+      <a href="#focus" data-coh-nav="focus">Systems</a>
       <a href="#work" data-coh-nav="work">Work</a>
       <a href="#stack" data-coh-nav="stack">Stack</a>
       <a href="#contact" data-coh-nav="contact">Contact</a>
@@ -118,12 +118,16 @@ const description = site.description;
   <main id="cohesion-main">
     <section class="coh-hero" id="home" data-coh-section="home">
       <div class="coh-hero-intro" data-coh-reveal>
-        <p class="coh-hero-eyebrow">Senior Product Manager · Mint Mobile · Since July 2020</p>
-        <h1>I lead the ecommerce systems behind <em>Mint Mobile’s growth.</em></h1>
-        <p class="coh-hero-summary">I own the portfolio from acquisition through post-purchase growth and directly manage four product managers.</p>
+        <p class="coh-hero-eyebrow">Senior Product Manager</p>
+        <h1>I lead ecommerce systems that <em>compound growth.</em></h1>
       </div>
 
-      <p class="coh-hero-wordmark" aria-hidden="true"><span>NEEL</span><span>JAISWAL</span></p>
+      <div class="coh-hero-wordmark" aria-hidden="true">
+        <div class="coh-hero-wordmark-track">
+          <span class="coh-hero-wordmark-group"><b>NEEL JAISWAL</b><i>·</i><b>NEEL JAISWAL</b><i>·</i></span>
+          <span class="coh-hero-wordmark-group"><b>NEEL JAISWAL</b><i>·</i><b>NEEL JAISWAL</b><i>·</i></span>
+        </div>
+      </div>
 
       <button
         class="coh-portrait-wrap"
@@ -131,28 +135,22 @@ const description = site.description;
         data-coh-reveal
         data-coh-portrait-flip
         data-intro-flip="pending"
-        aria-expanded="false"
-        aria-label="Reveal what Neel builds"
-        aria-describedby="coh-portrait-flip-hint"
+        aria-pressed="false"
+        aria-label="Reveal Neel’s leadership focus"
       >
         <span class="coh-portrait-flipper">
-          <span class="coh-portrait-face coh-portrait-front">
+          <span class="coh-portrait-face coh-portrait-front" aria-hidden="false">
             <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
-            <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Mint Mobile · Since Jul 2020</small></span>
+            <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Ecommerce · growth · AI</small></span>
           </span>
           <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
             <small>What I lead</small>
-            <strong>Mint Mobile’s ecommerce portfolio.</strong>
+            <strong>Ecommerce growth, end to end.</strong>
             <span>{heroSignals[0].claim.displayValue} · acquisition to post-purchase</span>
             <b aria-hidden="true">NJ</b>
           </span>
         </span>
       </button>
-      <p class="coh-portrait-flip-hint" id="coh-portrait-flip-hint">
-        <span class="coh-flip-hint-hover">Hover portrait to flip</span>
-        <span class="coh-flip-hint-touch">Tap portrait to flip</span>
-        <b aria-hidden="true">↻</b>
-      </p>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
 
       <div class="coh-shape coh-shape-a" data-coh-depth="1" aria-hidden="true"></div>
@@ -178,8 +176,8 @@ const description = site.description;
     <section class="coh-about" id="about" data-coh-section="about">
       <header class="coh-section-heading coh-about-heading" data-coh-reveal>
         <p>01 / About</p>
-        <h2>Portfolio leadership,<br /><em>made measurable.</em></h2>
-        <span>I turn customer behavior into roadmap choices, launch systems, and evidence-qualified business outcomes.</span>
+        <h2>Clear decisions.<br /><em>Measurable outcomes.</em></h2>
+        <span>I lead through portfolio ownership, evidence-led decisions, and AI-assisted execution.</span>
       </header>
 
       <div class="coh-about-stage">
@@ -194,13 +192,13 @@ const description = site.description;
         </div>
 
         <div class="coh-story-cards">
-          <article class="coh-story-card" data-coh-reveal>
-            <span>01 / Portfolio leader</span>
-            <h3>I lead from acquisition through post-purchase growth.</h3>
-            <p>At Mint Mobile, I own the ecommerce portfolio and directly manage four product managers. I align customer problems, commercial outcomes, operating dependencies, and team accountability before the roadmap becomes a queue of page requests.</p>
+          <article class="coh-story-card is-leadership" data-coh-reveal>
+            <span>01 / Portfolio leadership</span>
+            <h3>I lead the portfolio, not just the page.</h3>
+            <p>At Mint Mobile, I lead multiple product managers across acquisition, cart and checkout, activation, devices, and post-purchase growth. I align customer needs, commercial outcomes, operating dependencies, and ownership before work enters the roadmap.</p>
           </article>
           <article class="coh-story-card is-system" data-coh-reveal>
-            <span>02 / Growth operating model</span>
+            <span>02 / Evidence to release</span>
             <h3>I give every roadmap decision evidence and a guardrail.</h3>
             <p>Instrumentation, experimentation, quality thresholds, and explicit ownership turn isolated launches into a system that compounds learning.</p>
             <header class="coh-loop-header">
@@ -216,9 +214,9 @@ const description = site.description;
             <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
           </article>
           <article class="coh-story-card" data-coh-reveal>
-            <span>03 / AI as a multiplier</span>
-            <h3>I use AI to improve execution—not replace product judgment.</h3>
-            <p>I apply retrieval, evaluation, tools, and human approval where they shorten the path from evidence to a safe release. The customer and business outcome stays primary.</p>
+            <span>03 / AI-assisted execution</span>
+            <h3>I use AI to accelerate judgment—not replace it.</h3>
+            <p>Retrieval, evaluation, tools, and human approval shorten the path from evidence to a safe release while customer and business outcomes stay primary.</p>
           </article>
         </div>
       </div>
@@ -252,7 +250,7 @@ const description = site.description;
       <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal>
         <header class="coh-experience-heading">
           <p>Career depth</p>
-          <h2 id="coh-experience-title">Senior Product Manager.<br /><em>Mint Mobile, Jul 2020—Present.</em></h2>
+          <h2 id="coh-experience-title">Senior Product Manager.</h2>
           <span>Open a role to inspect its scope, selected systems, capabilities, and linked case studies.</span>
         </header>
 
@@ -314,8 +312,8 @@ const description = site.description;
       <header class="coh-focus-heading" data-coh-reveal>
         <div class="coh-focus-heading-copy">
           <p>02 / What I build</p>
-          <h2>Mint ecommerce growth.<br /><em>From portfolio to launch.</em></h2>
-          <span>Four connected systems for finding value, launching the operating model, and compounding what works.</span>
+          <h2>Product systems built to perform.<br /><em>From growth to reliable operations.</em></h2>
+          <span>Four systems spanning the customer journey, the operating model, and the tools that keep both improving.</span>
         </div>
 
         <a class="coh-focus-cue" href="#focus-system-01">
@@ -360,8 +358,8 @@ const description = site.description;
     <section class="coh-work" id="work" data-coh-section="work">
       <header class="coh-section-heading coh-work-heading" data-coh-reveal>
         <p>03 / Selected work</p>
-        <h2>Six systems.<br /><em>One growth thesis.</em></h2>
-        <span>Growth, Home Internet, eSIM, Mint Kids, device commerce, and production AI—each with role, mandate, shipped work, impact, and evidence context.</span>
+        <h2>Six case studies.<br /><em>One product approach.</em></h2>
+        <span>Make the customer decision clear, build the operating model behind it, and measure what changes.</span>
       </header>
 
       <div class="coh-work-grid">
@@ -427,7 +425,7 @@ const description = site.description;
       <div class="coh-builds" data-coh-reveal>
         <div class="coh-build-intro">
           <p>Public builds</p>
-          <h3>I build what<br />I manage.</h3>
+          <h3>I stay close<br />to the work.</h3>
           <a href={site.contact.github} target="_blank" rel="noopener">View GitHub <span aria-hidden="true">↗</span></a>
         </div>
         {projects.map((project, index) => (
@@ -445,7 +443,7 @@ const description = site.description;
     <section class="coh-contact" id="contact" data-coh-section="contact">
       <div class="coh-contact-shape" aria-hidden="true"></div>
       <p data-coh-reveal>05 / Contact · {locationLabel}</p>
-      <h2 data-coh-reveal>Let’s build commerce<br /><em>that learns and acts.</em></h2>
+      <h2 data-coh-reveal>Let’s make complex products<br /><em>easier to choose and use.</em></h2>
       <div class="coh-contact-actions" data-coh-reveal>
         <a href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
         <a href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↓</span></a>
