@@ -37,6 +37,9 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-build-card').filter({ hasText: 'Stocks Screener' })).toContainText('Private build');
   await expect(page.locator('.coh-build-card').filter({ hasText: 'TradingView MCP' })).toHaveCount(0);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(27);
+  await expect(page.locator('.coh-stack-heading h2')).toHaveText('Tools I use.');
+  await expect(page.locator('.coh-stack-heading > span')).toHaveText('27 public tools across product, design, data, and delivery.');
+  await expect(page.locator('.coh-stack-heading')).not.toContainText('Depth before logo count');
   await expect(page.locator('.coh-tool-grid li:visible')).toHaveCount(10);
   await expect(page.locator('[data-coh-tool-filter]')).toHaveCount(7);
   await expect(page.locator('#coh-tool-count')).toHaveText('10 featured · 27 total');
