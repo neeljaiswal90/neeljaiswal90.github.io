@@ -7,8 +7,8 @@ const contentRoutes = [
     path: '/',
     canonical: canonicalUrl('/'),
     kind: 'home',
-    image: canonicalUrl('/assets/social-card-cohesion.png'),
-    imageAlt: 'Neel Jaiswal with the headline Make complex systems feel obvious, surrounded by playful dimensional forms',
+    image: canonicalUrl('/assets/social-card-live-v3.png'),
+    imageAlt: 'Neel Jaiswal centered over the live portfolio wordmark, impact cards, and colorful dimensional shapes',
   },
   ...workCaseSlugs.map((slug) => ({
     path: `/work/${slug}/`,
