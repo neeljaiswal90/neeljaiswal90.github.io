@@ -639,7 +639,7 @@ img {
 .coh-proof-banner {
   width: min(1320px, 100%);
   display: grid;
-  grid-template-columns: minmax(560px, 2.1fr) repeat(3, minmax(190px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: clamp(120px, 12vw, 190px) auto 0;
   overflow: hidden;
   border-block: 1px solid var(--coh-line);
@@ -657,113 +657,43 @@ img {
 }
 
 .coh-award-panel {
-  min-height: 290px;
+  grid-column: 1 / -1;
+  min-height: 0;
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.42fr) minmax(320px, 0.78fr);
   align-items: center;
   gap: clamp(30px, 3vw, 54px);
-  padding: clamp(38px, 4vw, 66px);
+  padding: clamp(28px, 3vw, 46px);
+  border-bottom: 1px solid var(--coh-line);
   background:
-    radial-gradient(circle at 18% 50%, rgb(98 89 255 / 12%), transparent 25%),
+    radial-gradient(circle at 15% 48%, rgb(126 232 236 / 15%), transparent 30%),
     linear-gradient(135deg, #fbfaff, #f3f0ff);
 }
 
 .coh-award-record {
   position: relative;
-  width: 220px;
-  min-height: 238px;
-  display: grid;
-  align-content: space-between;
-  gap: 18px;
-  padding: 18px;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1440 / 756;
+  display: block;
   overflow: hidden;
-  color: var(--coh-white);
-  background:
-    radial-gradient(circle at 88% 12%, rgb(126 232 236 / 26%), transparent 31%),
-    linear-gradient(145deg, #191820, #0d0d0f 68%);
+  background: #eaf7fa;
   border: 1px solid rgb(13 13 15 / 12%);
-  border-radius: 28px;
-  box-shadow: 0 22px 48px rgb(37 31 88 / 22%);
+  border-radius: 24px;
+  box-shadow: 0 24px 54px rgb(37 31 88 / 18%);
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
 .coh-award-record:hover {
-  transform: translateY(-5px) rotate(-1deg);
-  box-shadow: 0 30px 58px rgb(37 31 88 / 28%);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 64px rgb(37 31 88 / 24%);
 }
 
-.coh-award-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.coh-award-logo {
-  --company-logo-width: 52px;
-  --company-logo-height: 52px;
-  --company-logo-radius: 15px;
-  --company-logo-padding: 6px;
-  --company-logo-shadow: none;
-}
-
-.coh-award-brand > small,
-.coh-award-rank > small {
-  font-size: 8px;
-  font-weight: 850;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.coh-award-brand > small { color: #d9d7e3; }
-
-.coh-award-rank {
-  display: grid;
-  gap: 4px;
-}
-
-.coh-award-rank > small { color: var(--coh-cyan); }
-
-.coh-award-rank > strong {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 68px;
-  letter-spacing: -0.09em;
-  line-height: 0.82;
-}
-
-.coh-award-rank > span {
-  color: #d9d7e3;
-  font-size: 8px;
-  font-weight: 760;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.coh-award-verify {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 8px;
-  padding-top: 12px;
-  border-top: 1px solid rgb(255 255 255 / 17%);
-  color: #c9c7d2;
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.coh-award-verify i {
-  width: 9px;
-  aspect-ratio: 1;
-  background: var(--coh-lime);
-  border-radius: 50%;
-  box-shadow: 0 0 0 6px rgb(201 255 73 / 12%);
-  animation: coh-award-pulse 2.4s ease-in-out infinite;
-}
-
-.coh-award-verify b {
-  color: var(--coh-white);
-  font-size: 13px;
+.coh-award-record img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .coh-award-copy {
@@ -2376,7 +2306,7 @@ html.coh-form-active {
     border-bottom: 1px solid var(--coh-line);
   }
 
-  .coh-proof-stat.is-experience {
+  .coh-proof-stat.is-sample {
     grid-column: 1 / -1;
   }
 
@@ -2728,7 +2658,7 @@ html.coh-form-active {
   }
 
   .coh-proof-stat,
-  .coh-proof-stat.is-experience {
+  .coh-proof-stat.is-sample {
     min-height: 150px;
     grid-column: auto;
     padding: 26px;

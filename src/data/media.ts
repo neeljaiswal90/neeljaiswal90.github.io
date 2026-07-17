@@ -82,6 +82,18 @@ export const media: readonly MediaRecord[] = [
     notes: 'Inventory record only. Do not add an assetPath or reference this chart from production content; cite the public study textually.',
   },
   {
+    id: 'media.evidence.jd_power_award_graphic_2023',
+    title: 'Mint Mobile 2023 J.D. Power purchase-experience award graphic',
+    kind: 'illustration',
+    publishingStatus: 'public',
+    publicAllowed: true,
+    sourceIds: ['src.owner.directives', 'src.jd_power.purchase_2023'],
+    assetPath: '/assets/jd-power-2023-purchase-experience-award.webp',
+    alt: 'Illustrated 2023 J.D. Power U.S. Wireless Purchase Experience award presented to Mint Mobile.',
+    rightsBasis: 'owner-supplied',
+    notes: 'Owner-supplied recognition graphic. The official study link provides the source of record for the ranking.',
+  },
+  {
     id: 'media.achievement.wcg_2007',
     title: 'WCG 2007 medal ceremony',
     kind: 'photo',

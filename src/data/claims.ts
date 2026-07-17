@@ -418,6 +418,16 @@ export const claims: readonly ClaimRecord[] = [
     derivation: '862 - 811 = 51.',
   },
   {
+    id: 'jd_power.study_responses_14519',
+    statement: 'The 2023 J.D. Power U.S. Wireless Purchase Experience studies were based on responses from 14,519 wireless customers across phone, store, website, and mobile-app purchase channels.',
+    publishingStatus: 'published',
+    assertionKind: 'external',
+    sourceIds: ['src.jd_power.purchase_2023'],
+    displayValue: '14,519',
+    displayLabel: 'Customer responses across four purchase channels',
+    metricId: 'jd_power.purchase_study_responses_2023',
+  },
+  {
     id: 'athletics.weightlifting_medals_10_plus',
     statement: 'Neel has won more than ten weightlifting medals across gold, silver, and bronze placements.',
     publishingStatus: 'reference-only',

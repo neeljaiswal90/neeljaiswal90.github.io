@@ -53,9 +53,14 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('[data-coh-tool]:visible')).toHaveCount(10);
   await expect(page.locator('#coh-tool-count')).toHaveText('10 featured · 27 total');
   await expect(page.locator('[data-coh-tool-library]')).not.toHaveAttribute('open', '');
-  await expect(page.locator('.coh-award-record')).toContainText('Mint Mobile');
-  await expect(page.locator('.coh-award-record')).toContainText('#1');
   await expect(page.locator('.coh-award-record')).toHaveAttribute('href', /jdpower\.com/);
+  await expect(page.locator('.coh-award-record img')).toHaveAttribute('src', '/assets/jd-power-2023-purchase-experience-award.webp');
+  await expect(page.locator('.coh-award-record img')).toHaveAttribute('alt', /2023 J\.D\. Power.*Mint Mobile/i);
+  await expect(page.locator('.coh-award-copy h2')).toContainText('#1 in value MVNO purchase experience.');
+  await expect(page.locator('.coh-proof-stat')).toHaveCount(3);
+  await expect(page.locator('.coh-proof-banner')).not.toContainText('Operating range');
+  await expect(page.locator('.coh-proof-stat.is-sample')).toContainText('14,519');
+  await expect(page.locator('.coh-proof-stat.is-sample')).toContainText('Customer responses across four purchase channels');
   await expect(page.locator('.coh-orbit-card')).toHaveCount(6);
   await expect(page.locator('#about .coh-orbit-card')).toHaveCount(6);
   await expect(page.locator('#home .coh-orbit-card')).toHaveCount(0);

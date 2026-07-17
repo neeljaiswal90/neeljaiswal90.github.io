@@ -9,12 +9,12 @@ import { sources } from '../data/sources';
 import { toolFilters, toolProfiles } from '../data/tools';
 import { getPublishedClaim, workCases } from '../data/work';
 
-const experience = getPublishableClaim('profile.experience.years_10_plus');
 const location = getPublishableClaim('profile.location.greater_san_diego');
 const locationLabel = location.displayValue ?? location.displayLabel ?? location.statement;
 const rank = getPublishableClaim('jd_power.purchase_rank_1_value_mvno_2023');
 const score = getPublishableClaim('jd_power.purchase_score_862_1000');
 const aboveAverage = getPublishableClaim('jd_power.above_segment_average_51');
+const studyResponses = getPublishableClaim('jd_power.study_responses_14519');
 const stackCount = getPublishableClaim('stack.public_tool_inventory_27');
 const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purchase_2023');
 if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
@@ -256,30 +256,28 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         </div>
       </div>
 
-      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition" data-coh-snap data-coh-journey data-coh-journey-label="Recognition">
+      <section class="coh-proof-banner" aria-label="J.D. Power 2023 purchase experience recognition" data-coh-snap data-coh-journey data-coh-journey-label="Recognition">
         <div class="coh-award-panel" data-coh-reveal>
           <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
-            <span class="coh-award-brand">
-              <CompanyLogo company="Mint Mobile" class="coh-award-logo" />
-              <small>Mint Mobile</small>
-            </span>
-            <span class="coh-award-rank">
-              <small>2023 purchase experience</small>
-              <strong>{rank.displayValue}</strong>
-              <span>Value MVNO segment</span>
-            </span>
-            <span class="coh-award-verify"><i aria-hidden="true"></i> Verified official result <b aria-hidden="true">↗</b></span>
+            <img
+              src="/assets/jd-power-2023-purchase-experience-award.webp"
+              alt="Illustrated 2023 J.D. Power U.S. Wireless Purchase Experience award presented to Mint Mobile"
+              width="1440"
+              height="756"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <div class="coh-award-copy">
-            <span>Independent commerce signal</span>
-            <h2>Purchase experience ranked highest in its segment.</h2>
-            <p>{rank.statement} Company-level recognition provides market context—not causal credit for one experiment.</p>
+            <span>J.D. Power recognition · 2023</span>
+            <h2>{rank.displayValue} in value MVNO purchase experience.</h2>
+            <p>Mint Mobile ranked highest in its inaugural year of eligibility. The study program drew responses from {studyResponses.displayValue} wireless customers across phone, store, website, and app purchase journeys.</p>
             <a href={jdPowerSource.url} target="_blank" rel="noopener">Official study <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div class="coh-proof-stat" data-coh-reveal><small>Study score</small><strong>{score.displayValue}</strong><span>{score.displayLabel}</span></div>
         <div class="coh-proof-stat" data-coh-reveal><small>Segment delta</small><strong>{aboveAverage.displayValue}</strong><span>{aboveAverage.displayLabel}</span></div>
-        <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
+        <div class="coh-proof-stat is-sample" data-coh-reveal><small>Customer voices</small><strong>{studyResponses.displayValue}</strong><span>{studyResponses.displayLabel}</span></div>
       </section>
 
       <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Career depth">

@@ -79,8 +79,9 @@ export const productionSections: readonly ProductionSectionRecord[] = [
       'jd_power.purchase_rank_1_value_mvno_2023',
       'jd_power.purchase_score_862_1000',
       'jd_power.above_segment_average_51',
+      'jd_power.study_responses_14519',
     ],
-    mediaIds: ['media.profile.headshot'],
+    mediaIds: ['media.profile.headshot', 'media.evidence.jd_power_award_graphic_2023'],
   },
   {
     id: 'experience',
