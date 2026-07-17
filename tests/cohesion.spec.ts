@@ -19,10 +19,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('#home > .coh-identity-header')).toHaveCount(1);
   await expect(page.locator('#home > .coh-topbar')).toHaveCount(1);
   await expect(page.locator('.coh-domain-cloud, .coh-domain-token')).toHaveCount(0);
-  await expect(page.locator('[data-coh-hero-icon]')).toHaveCount(5);
-  for (const capability of ['Product', 'Growth', 'Technology', 'Ecommerce', 'Revenue']) {
-    await expect(page.getByLabel(capability, { exact: true })).toHaveCount(1);
-  }
+  await expect(page.locator('.coh-capability-halo, [data-coh-hero-icon]')).toHaveCount(0);
   await expect(page.locator('.coh-hero-wordmark-track')).toHaveCount(1);
   await expect(page.locator('.coh-hero-wordmark-group')).toHaveCount(2);
   await expect(page.locator('.coh-intro-greeting')).toHaveText('Hi, I’m Neel.');
@@ -157,38 +154,6 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(heroConnection.heroToAbout).toBeLessThanOrEqual(110);
   expect(heroConnection.headerRadius).toBe(0);
   expect(heroConnection.headerShadow).toBe('none');
-
-  const capabilityHalo = await page.evaluate(() => {
-    const hero = document.querySelector('.coh-hero');
-    const portrait = document.querySelector('.coh-portrait-wrap');
-    const icons = [...document.querySelectorAll('[data-coh-hero-icon]')];
-    if (!(hero instanceof HTMLElement) || !(portrait instanceof HTMLElement) || icons.some((icon) => !(icon instanceof HTMLElement))) {
-      throw new Error('Hero capability halo is missing');
-    }
-    const heroRect = hero.getBoundingClientRect();
-    const portraitRect = portrait.getBoundingClientRect();
-    return icons.map((icon) => {
-      const rect = (icon as HTMLElement).getBoundingClientRect();
-      const horizontalGap = Math.max(portraitRect.left - rect.right, rect.left - portraitRect.right, 0);
-      const verticalGap = Math.max(portraitRect.top - rect.bottom, rect.top - portraitRect.bottom, 0);
-      return {
-        withinHero: rect.left >= heroRect.left && rect.right <= heroRect.right && rect.top >= heroRect.top && rect.bottom <= heroRect.bottom,
-        distance: Math.hypot(horizontalGap, verticalGap),
-      };
-    });
-  });
-  for (const icon of capabilityHalo) {
-    expect(icon.withinHero, 'hero capability icons should stay inside the hero').toBe(true);
-    expect(icon.distance, 'hero capability icons should remain close to the portrait').toBeLessThanOrEqual(90);
-  }
-
-  const firstCapability = page.locator('[data-coh-hero-icon]').first();
-  await firstCapability.focus();
-  if (testInfo.project.name === 'mobile-chromium') {
-    await expect(firstCapability.locator('small')).toHaveCSS('display', 'none');
-  } else {
-    await expect(firstCapability.locator('small')).toHaveCSS('visibility', 'visible');
-  }
 
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector('.coh-pill-nav');
@@ -389,6 +354,45 @@ test('hero and global arrows move one component at a time', async ({ page }) => 
   await expect(previous).toBeEnabled();
 });
 
+test('journey arrows traverse every component forward and backward', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const navigation = page.locator('[data-coh-journey-nav]');
+  const previous = navigation.locator('[data-coh-journey-previous]');
+  const next = navigation.locator('[data-coh-journey-next]');
+
+  await page.locator('[data-coh-hero-next]').click({ force: true });
+  await expect(navigation).toHaveAttribute('data-active-index', '1');
+
+  for (let target = 2; target <= 17; target += 1) {
+    await next.click();
+    await expect(navigation).toHaveAttribute('data-active-index', String(target));
+  }
+
+  for (let target = 16; target >= 0; target -= 1) {
+    await previous.click({ force: true });
+    await expect(navigation).toHaveAttribute('data-active-index', String(target));
+  }
+
+  const navigatorDesign = await navigation.evaluate((element) => {
+    const previousButton = element.querySelector('[data-coh-journey-previous]');
+    const nextButton = element.querySelector('[data-coh-journey-next]');
+    if (!(previousButton instanceof HTMLElement) || !(nextButton instanceof HTMLElement)) {
+      throw new Error('Journey navigation buttons are missing');
+    }
+    return {
+      width: element.getBoundingClientRect().width,
+      background: getComputedStyle(element).backgroundColor,
+      previousBackground: getComputedStyle(previousButton).backgroundColor,
+      nextBackground: getComputedStyle(nextButton).backgroundColor,
+    };
+  });
+  expect(navigatorDesign.width).toBeLessThanOrEqual(60);
+  expect(navigatorDesign.background).toBe('rgba(0, 0, 0, 0)');
+  expect(navigatorDesign.previousBackground).not.toBe(navigatorDesign.nextBackground);
+});
+
 test('about metrics remain fully visible beside the story cards', async ({ page }) => {
   await page.setViewportSize({ width: 1584, height: 1136 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -441,6 +445,10 @@ test('portrait demonstrates its flip once and settles on the front', async ({ pa
   await expect(portrait).toHaveAttribute('aria-pressed', 'false');
   await expect(portrait.locator('.coh-portrait-front')).toHaveAttribute('aria-hidden', 'false');
   await expect(portrait.locator('.coh-portrait-back')).toHaveAttribute('aria-hidden', 'true');
+  await expect(portrait.locator('.coh-portrait-back')).toContainText('Senior product leadership');
+  await expect(portrait.locator('.coh-portrait-back')).toContainText('Complex portfolios. Clear decisions. Measurable growth.');
+  await expect(portrait.locator('.coh-portrait-back')).toContainText('Ecommerce · 0-to-1 products · applied AI');
+  await expect(portrait.locator('.coh-portrait-back')).not.toContainText('Product systems that grow.');
 });
 
 test('contact section provides social links, résumé download, and inbox form', async ({ page }) => {

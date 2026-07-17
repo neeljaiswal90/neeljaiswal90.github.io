@@ -39,14 +39,6 @@ const heroCapabilities = [
   },
 ] as const;
 
-const heroCapabilityIcons = [
-  { id: 'product', label: 'Product' },
-  { id: 'growth', label: 'Growth' },
-  { id: 'technology', label: 'Technology' },
-  { id: 'ecommerce', label: 'Ecommerce' },
-  { id: 'revenue', label: 'Revenue' },
-] as const;
-
 const focusAreas = [
   {
     number: '01',
@@ -159,7 +151,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         data-coh-portrait-flip
         data-intro-flip="pending"
         aria-pressed="false"
-        aria-label="Reveal Neel’s leadership focus"
+        aria-label="Reveal Neel’s product leadership approach"
       >
         <span class="coh-portrait-flipper">
           <span class="coh-portrait-face coh-portrait-front" aria-hidden="false">
@@ -167,29 +159,14 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
             <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Ecommerce · growth · AI</small></span>
           </span>
           <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
-            <small>What I build</small>
-            <strong>Product systems that grow.</strong>
-            <span>Ecommerce · 0-to-1 · applied AI</span>
+            <small>Senior product leadership</small>
+            <strong>Complex portfolios. Clear decisions. Measurable growth.</strong>
+            <span>Ecommerce · 0-to-1 products · applied AI</span>
             <b aria-hidden="true">NJ</b>
           </span>
         </span>
       </button>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
-
-      <div class="coh-capability-halo" aria-label="Product capability areas">
-        {heroCapabilityIcons.map((capability) => (
-          <span
-            class={`coh-capability-icon is-${capability.id}`}
-            data-coh-hero-icon={capability.id}
-            role="img"
-            aria-label={capability.label}
-            tabindex="0"
-          >
-            <i aria-hidden="true"></i>
-            <small aria-hidden="true">{capability.label}</small>
-          </span>
-        ))}
-      </div>
 
       <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Core product capabilities and leadership">
         {heroCapabilities.map((capability) => (

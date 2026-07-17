@@ -72,40 +72,65 @@ const heroContinue = document.querySelector<HTMLAnchorElement>('[data-coh-hero-n
 if (journeyNavigation && journeyPrevious && journeyNext && journeyStops.length > 1) {
   let activeJourneyIndex = 0;
   let journeyFrame = 0;
+  let requestedJourneyIndex: number | null = null;
+  let journeySettleTimer = 0;
 
   const stopLabel = (index: number) => journeyStops[index]?.dataset.cohJourneyLabel ?? `Component ${index}`;
-  const stopTop = (index: number) => {
-    const stop = journeyStops[index];
-    if (!stop) return 0;
+  const journeyOffset = () => (window.innerWidth <= 680 ? 86 : 94);
+  const documentTop = (target: HTMLElement) => {
     let top = 0;
-    let element: HTMLElement | null = stop;
+    let element: HTMLElement | null = target;
     while (element) {
       top += element.offsetTop;
       element = element.offsetParent instanceof HTMLElement ? element.offsetParent : null;
     }
     return top;
   };
+  const stopTop = (index: number) => {
+    const stop = journeyStops[index];
+    if (!stop) return 0;
+    if (stop.classList.contains('coh-focus-card') && stop.parentElement instanceof HTMLElement) {
+      const cards = Array.from(stop.parentElement.querySelectorAll<HTMLElement>('.coh-focus-card'));
+      const cardIndex = cards.indexOf(stop);
+      return documentTop(stop.parentElement) + cards
+        .slice(0, Math.max(0, cardIndex))
+        .reduce((top, card) => top + card.offsetHeight, 0);
+    }
+    return documentTop(stop);
+  };
   const nearestJourneyIndex = () => {
-    const readingPosition = window.scrollY + Math.min(220, window.innerHeight * 0.28);
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
+      return journeyStops.length - 1;
+    }
+    const readingPosition = window.scrollY + journeyOffset() + 110;
     let index = 0;
     journeyStops.forEach((_, stopIndex) => {
       if (stopTop(stopIndex) <= readingPosition) index = stopIndex;
     });
     return index;
   };
+  const settleJourneyNavigation = () => {
+    window.clearTimeout(journeySettleTimer);
+    requestedJourneyIndex = null;
+    syncJourneyNavigation();
+  };
   const moveToJourneyStop = (index: number) => {
     const boundedIndex = Math.max(0, Math.min(journeyStops.length - 1, index));
     const stop = journeyStops[boundedIndex];
     if (!stop) return;
-    const headerOffset = window.innerWidth <= 680 ? 86 : 94;
+    requestedJourneyIndex = boundedIndex;
+    activeJourneyIndex = boundedIndex;
+    syncJourneyNavigation();
     window.scrollTo({
-      top: Math.max(0, stopTop(boundedIndex) - headerOffset),
+      top: Math.max(0, stopTop(boundedIndex) - journeyOffset()),
       behavior: reducedMotion ? 'auto' : 'smooth',
     });
+    window.clearTimeout(journeySettleTimer);
+    journeySettleTimer = window.setTimeout(settleJourneyNavigation, reducedMotion ? 0 : 900);
   };
   const syncJourneyNavigation = () => {
     journeyFrame = 0;
-    activeJourneyIndex = nearestJourneyIndex();
+    activeJourneyIndex = requestedJourneyIndex ?? nearestJourneyIndex();
     const heroHasPassed = (journeyStops[0]?.getBoundingClientRect().bottom ?? window.innerHeight) <= 110;
     journeyNavigation.classList.toggle('is-active', heroHasPassed);
     journeyNavigation.setAttribute('aria-hidden', String(!heroHasPassed));
@@ -143,6 +168,8 @@ if (journeyNavigation && journeyPrevious && journeyNext && journeyStops.length >
     event.preventDefault();
     moveToJourneyStop(1);
   });
+  window.addEventListener('wheel', settleJourneyNavigation, { passive: true });
+  window.addEventListener('touchstart', settleJourneyNavigation, { passive: true });
   window.addEventListener('scroll', requestJourneySync, { passive: true });
   window.addEventListener('resize', requestJourneySync, { passive: true });
   syncJourneyNavigation();
@@ -260,11 +287,11 @@ if (portraitFlip) {
     portraitFlip.setAttribute('aria-pressed', String(showBack));
     portraitFlip.setAttribute('aria-label', showBack
       ? 'Show Neel’s portrait'
-      : 'Reveal Neel’s leadership focus');
+      : 'Reveal Neel’s product leadership approach');
     portraitFront?.setAttribute('aria-hidden', String(showBack));
     portraitBack?.setAttribute('aria-hidden', String(!showBack));
     if (portraitStatus) portraitStatus.textContent = showBack
-      ? 'Showing what Neel builds.'
+      ? 'Showing Neel’s product leadership approach.'
       : 'Showing Neel’s portrait.';
   };
 
