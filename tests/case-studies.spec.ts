@@ -32,7 +32,7 @@ const caseStudies = [
   },
   {
     slug: 'mint-kids',
-    title: 'Launch a safer first phone.',
+    title: 'A COPPA-compliant product tailored to kids.',
     company: 'Mint Mobile',
     brand: 'mint-mobile',
     metrics: ['14K', '0.16%'],
