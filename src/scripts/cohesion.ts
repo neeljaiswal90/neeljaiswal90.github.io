@@ -58,6 +58,35 @@ if (hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
+const roleTarget = document.querySelector<HTMLElement>('[data-role-cycle]');
+const roles = ['conversion engines', 'ecommerce growth systems', 'agentic AI workflows', 'AI resolution products'];
+if (roleTarget && !reducedMotion) {
+  let roleIndex = 0;
+  let roleIsChanging = false;
+  window.setInterval(async () => {
+    if (document.hidden || roleIsChanging) return;
+    roleIsChanging = true;
+    const exit = roleTarget.animate(
+      [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-0.55em)' }],
+      { duration: 180, easing: 'ease-in', fill: 'forwards' },
+    );
+    try {
+      await exit.finished;
+      roleIndex = (roleIndex + 1) % roles.length;
+      roleTarget.textContent = roles[roleIndex] ?? roles[0] ?? '';
+      const enter = roleTarget.animate(
+        [{ opacity: 0, transform: 'translateY(0.55em)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { duration: 280, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'forwards' },
+      );
+      await enter.finished;
+    } catch {
+      // The browser may cancel an animation when the page is backgrounded.
+    } finally {
+      roleIsChanging = false;
+    }
+  }, 2600);
+}
+
 const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {

@@ -18,6 +18,9 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-talk')).toHaveAttribute('href', '#contact');
   await expect(page.locator('.coh-hero-wordmark-track')).toHaveCount(1);
   await expect(page.locator('.coh-hero-wordmark-group')).toHaveCount(2);
+  await expect(page.locator('.coh-intro-greeting')).toHaveText('Hi, I’m Neel.');
+  await expect(page.locator('.coh-role-line')).toContainText('I build');
+  await expect(page.locator('[data-role-cycle]')).toHaveText('conversion engines');
   await expect(page.locator('.coh-portrait-flip-hint')).toHaveCount(0);
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
@@ -167,12 +170,13 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   const heroContainment = await page.evaluate(() => {
     const container = document.querySelector('.coh-hero-intro');
     const heading = document.querySelector('.coh-hero-intro h1');
-    const eyebrow = document.querySelector('.coh-hero-eyebrow');
-    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(eyebrow instanceof HTMLElement)) {
+    const greeting = document.querySelector('.coh-intro-greeting');
+    const role = document.querySelector('.coh-role-line');
+    if (!(container instanceof HTMLElement) || !(heading instanceof HTMLElement) || !(greeting instanceof HTMLElement) || !(role instanceof HTMLElement)) {
       throw new Error('Hero positioning elements are missing');
     }
     const containerRect = container.getBoundingClientRect();
-    const measurements = [eyebrow, heading].map((element) => {
+    const measurements = [heading, greeting, role].map((element) => {
       const rect = element.getBoundingClientRect();
       return {
         leftInset: rect.left - containerRect.left,

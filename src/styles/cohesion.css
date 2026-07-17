@@ -221,7 +221,7 @@ img {
   mask-image: linear-gradient(to bottom, transparent 6%, #000 45%, transparent 96%);
 }
 
-.coh-hero-intro {
+.coh-hero-intro.coh-hero-rotator {
   position: absolute;
   z-index: 6;
   top: 25%;
@@ -232,7 +232,7 @@ img {
   transform: translateX(-50%);
 }
 
-.coh-hero-intro h1 {
+.coh-hero-intro.coh-hero-rotator h1 {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
@@ -2134,6 +2134,10 @@ img {
   scale: 1;
 }
 
+.js .coh-work-card[data-coh-reveal] {
+  opacity: 1;
+}
+
 .js .coh-tool-grid [data-coh-reveal] {
   opacity: 1;
   translate: 0 0;
@@ -2836,6 +2840,104 @@ img {
     opacity: 1;
     translate: none;
     scale: none;
+  }
+}
+
+/* Compact identity banner: only the build phrase rotates. */
+.coh-hero-intro.coh-hero-rotator {
+  top: 12.5%;
+  width: min(820px, calc(100% - 48px));
+  padding: 14px 24px;
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid var(--coh-line);
+  border-radius: 999px;
+  box-shadow: 0 18px 42px rgb(49 43 93 / 9%);
+  backdrop-filter: blur(14px);
+}
+
+.coh-hero-intro.coh-hero-rotator h1 {
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  justify-content: center;
+  gap: 0 20px;
+  margin: 0;
+  font: 540 clamp(18px, 1.55vw, 24px)/1.1 "Space Grotesk", sans-serif;
+  letter-spacing: -.04em;
+  white-space: nowrap;
+}
+
+.coh-hero-intro.coh-hero-rotator .coh-intro-greeting,
+.coh-hero-intro.coh-hero-rotator .coh-intro-divider,
+.coh-hero-intro.coh-hero-rotator .coh-role-line {
+  min-width: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+}
+
+.coh-hero-intro.coh-hero-rotator .coh-intro-greeting { text-align: right; }
+
+.coh-hero-intro.coh-hero-rotator .coh-intro-greeting em,
+.coh-hero-intro.coh-hero-rotator .coh-role-line strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.coh-hero-intro.coh-hero-rotator .coh-intro-divider {
+  display: inline;
+  color: var(--coh-ink);
+  font-weight: 650;
+}
+
+.coh-hero-intro.coh-hero-rotator .coh-role-line {
+  display: flex;
+  align-items: baseline;
+  gap: .28em;
+  overflow: hidden;
+  text-align: left;
+}
+
+.coh-role-viewport {
+  min-width: 0;
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.coh-role-viewport strong {
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+  color: var(--coh-violet);
+  text-overflow: clip;
+  white-space: nowrap;
+  will-change: opacity, transform;
+}
+
+@media (max-width: 680px) {
+  .coh-hero-intro.coh-hero-rotator {
+    top: 11.5%;
+    width: calc(100% - 28px);
+    padding: 13px 18px;
+    border-radius: 24px;
+  }
+
+  .coh-hero-intro.coh-hero-rotator h1 {
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 5px 14px;
+    font-size: clamp(17px, 4.8vw, 21px);
+  }
+
+  .coh-hero-intro.coh-hero-rotator .coh-intro-greeting { text-align: right; }
+  .coh-hero-intro.coh-hero-rotator .coh-role-line {
+    grid-column: 1 / -1;
+    justify-content: center;
   }
 }
 
