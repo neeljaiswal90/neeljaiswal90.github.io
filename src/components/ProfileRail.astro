@@ -1,5 +1,8 @@
 ---
 import { site } from '../data/site';
+import { getPublishableClaim } from '../data/claims';
+
+const leadershipClaim = getPublishableClaim('career.mint.product_leadership_team_of_pms');
 ---
 
 <header class="profile-rail" aria-label="Portfolio header" data-controller="theme">
@@ -8,7 +11,7 @@ import { site } from '../data/site';
       <a class="monogram" href="#intro" aria-label="NJ — Neel Jaiswal home">NJ</a>
       <div class="profile-copy">
         <strong class="profile-name">Neel Jaiswal</strong>
-        <span class="profile-role">Product leader · builder</span>
+        <span class="profile-role">{leadershipClaim.displayValue} · builder</span>
       </div>
     </div>
 

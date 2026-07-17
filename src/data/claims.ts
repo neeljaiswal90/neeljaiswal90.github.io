@@ -513,14 +513,14 @@ export const claims: readonly ClaimRecord[] = [
     displayLabel: 'Allianz · Product Owner',
   },
   {
-    id: 'career.mint.product_leadership_multiple_pms',
-    statement: 'Neel leads multiple product managers across the Mint Mobile ecommerce portfolio.',
+    id: 'career.mint.product_leadership_team_of_pms',
+    statement: 'Neel leads a team of product managers across the Mint Mobile ecommerce portfolio.',
     publishingStatus: 'published',
     assertionKind: 'owner-asserted',
     sourceIds: ['src.owner.directives'],
     approvedAt: ownerApproval,
-    displayValue: 'Multiple PMs',
-    displayLabel: 'Portfolio leadership',
+    displayValue: 'Product leader',
+    displayLabel: 'Team of PMs',
     metricId: 'career.mint_product_leadership',
   },
   {

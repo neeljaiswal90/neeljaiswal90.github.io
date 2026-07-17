@@ -72,7 +72,7 @@ export const productionSections: readonly ProductionSectionRecord[] = [
       'profile.location.greater_san_diego',
       'career.mint.role_dates',
       'career.mint.scope',
-      'career.mint.product_leadership_multiple_pms',
+      'career.mint.product_leadership_team_of_pms',
       'growth.core_funnel_conversion_lift_54_7',
       'growth.cart_checkout_conversion_lift_77',
       'commerce.aov_lift_10_flat_conversion',
@@ -91,7 +91,7 @@ export const productionSections: readonly ProductionSectionRecord[] = [
     claimIds: [
       'career.mint.role_dates',
       'career.mint.scope',
-      'career.mint.product_leadership_multiple_pms',
+      'career.mint.product_leadership_team_of_pms',
       'career.inspire.role_dates',
       'career.bestbuy.role_dates',
       'career.target.role_dates',
