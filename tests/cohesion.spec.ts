@@ -167,8 +167,8 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(heroConnection.portraitToProof).toBeGreaterThanOrEqual(0);
   expect(heroConnection.portraitToProof).toBeLessThanOrEqual(120);
   expect(heroConnection.heroToAbout).toBeLessThanOrEqual(110);
-  expect(heroConnection.headerRadius).toBe(0);
-  expect(heroConnection.headerShadow).toBe('none');
+  expect(heroConnection.headerRadius).toBeGreaterThanOrEqual(24);
+  expect(heroConnection.headerShadow).not.toBe('none');
 
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector(window.innerWidth <= 680 ? '.coh-mobile-nav' : '.coh-pill-nav');
@@ -510,7 +510,10 @@ test('portrait demonstrates its flip once and settles on the front', async ({ pa
   await expect(portrait.locator('.coh-portrait-back')).not.toContainText('Product systems that grow.');
 
   const image = portrait.locator('.coh-portrait-front img');
-  await expect(image).toHaveAttribute('src', '/assets/headshot.jpg');
+  await expect(portrait.locator('.coh-portrait-front picture')).toHaveCount(1);
+  await expect(portrait.locator('.coh-portrait-front source[type="image/avif"]')).toHaveAttribute('srcset', /headshot-320\.avif/);
+  await expect(portrait.locator('.coh-portrait-front source[type="image/webp"]')).toHaveAttribute('srcset', /headshot-320\.webp/);
+  await expect(image).toHaveAttribute('src', '/assets/headshot-870.webp');
   await expect(image).toHaveAttribute('width', '870');
   await expect(image).toHaveAttribute('height', '906');
   await expect(image).toHaveCSS('object-position', '52% 50%');

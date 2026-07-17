@@ -65,7 +65,7 @@ export const media: readonly MediaRecord[] = [
     responsive: {
       avif: [160, 320, 640, 870].map((width) => ({ src: `/assets/headshot-${width}.avif`, width })),
       webp: [160, 320, 640, 870].map((width) => ({ src: `/assets/headshot-${width}.webp`, width })),
-      sizes: '(max-width: 760px) 82px, (max-width: 1000px) 140px, (max-width: 1360px) 260px, 330px',
+      sizes: '(max-width: 680px) 250px, (max-width: 1390px) 23vw, 320px',
     },
     alt: 'Portrait of Neel Jaiswal wearing a navy jacket.',
     rightsBasis: 'owner-supplied',

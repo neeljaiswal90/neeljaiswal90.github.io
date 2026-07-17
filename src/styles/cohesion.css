@@ -358,6 +358,12 @@ img {
   background: linear-gradient(150deg, #7971ff, #4b42da);
 }
 
+.coh-portrait-front picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .coh-portrait-front img {
   width: 100%;
   height: 100%;
@@ -4807,6 +4813,48 @@ html {
 
   .coh-about {
     padding-top: 72px;
+  }
+}
+
+/* Keep the rotating landing message centered; the full navigation takes over after scroll. */
+@media (min-width: 681px) {
+  .coh-hero > .coh-identity-header {
+    top: 16px;
+    right: auto;
+    left: 50%;
+    width: min(920px, calc(100% - 48px));
+    height: 64px;
+    background: rgb(255 255 255 / 92%);
+    border: 1px solid rgb(13 13 15 / 11%);
+    border-radius: 999px;
+    box-shadow: 0 18px 44px rgb(31 27 62 / 10%);
+    transform: translateX(-50%);
+  }
+
+  .coh-hero > .coh-identity-header h1 {
+    width: 100%;
+  }
+
+  .js.coh-nav-active .coh-hero > .coh-identity-header {
+    transform: translate(-50%, -120%);
+  }
+}
+
+@media (max-width: 680px) {
+  .coh-hero > .coh-identity-header {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    height: 72px;
+    background: rgb(255 255 255 / 94%);
+    border: 1px solid rgb(13 13 15 / 11%);
+    border-radius: 24px;
+    box-shadow: 0 14px 34px rgb(31 27 62 / 10%);
+  }
+
+  .js.coh-nav-active .coh-hero > .coh-identity-header {
+    transform: translateY(-120%);
   }
 }
 

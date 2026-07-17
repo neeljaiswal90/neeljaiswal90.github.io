@@ -1,8 +1,10 @@
 ---
 import CohesionLayout from '../layouts/CohesionLayout.astro';
 import { getPublishableClaim } from '../data/claims';
+import { getPublishableMedia } from '../data/media';
 import { roles } from '../data/experience';
 import CompanyLogo from '../components/CompanyLogo.astro';
+import ResponsiveMedia from '../components/ResponsiveMedia.astro';
 import { projects } from '../data/projects';
 import { site } from '../data/site';
 import { sources } from '../data/sources';
@@ -11,6 +13,7 @@ import { workCases } from '../data/work';
 
 const location = getPublishableClaim('profile.location.greater_san_diego');
 const locationLabel = location.displayValue ?? location.displayLabel ?? location.statement;
+const headshot = getPublishableMedia('media.profile.headshot');
 const rank = getPublishableClaim('jd_power.purchase_rank_1_value_mvno_2023');
 const score = getPublishableClaim('jd_power.purchase_score_862_1000');
 const aboveAverage = getPublishableClaim('jd_power.above_segment_average_51');
@@ -177,7 +180,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       >
         <span class="coh-portrait-flipper">
           <span class="coh-portrait-face coh-portrait-front" aria-hidden="false">
-            <img src={site.profileImage.path} alt={site.profileImage.alt} width={site.profileImage.width} height={site.profileImage.height} fetchpriority="high" decoding="async" />
+            <ResponsiveMedia media={headshot} width={site.profileImage.width} height={site.profileImage.height} loading="eager" fetchpriority="high" />
             <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Ecommerce · growth · AI</small></span>
           </span>
           <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
