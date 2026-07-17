@@ -16,6 +16,9 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   }
 
   await expect(page.locator('.coh-talk')).toHaveAttribute('href', '#contact');
+  await expect(page.locator('#home > .coh-identity-header')).toHaveCount(1);
+  await expect(page.locator('#home > .coh-topbar')).toHaveCount(1);
+  await expect(page.locator('.coh-domain-cloud, .coh-domain-token')).toHaveCount(0);
   await expect(page.locator('.coh-hero-wordmark-track')).toHaveCount(1);
   await expect(page.locator('.coh-hero-wordmark-group')).toHaveCount(2);
   await expect(page.locator('.coh-intro-greeting')).toHaveText('Hi, I’m Neel.');
@@ -124,6 +127,33 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
     expect(Math.abs(center - heroAlignment.portrait), `${element} should share the portrait center axis`).toBeLessThanOrEqual(2);
   }
 
+  const heroConnection = await page.evaluate(() => {
+    const hero = document.querySelector('.coh-hero');
+    const portrait = document.querySelector('.coh-portrait-wrap');
+    const proof = document.querySelector('.coh-hero-proof');
+    const aboutHeading = document.querySelector('.coh-about-heading');
+    const identity = document.querySelector('.coh-identity-header');
+    if (!(hero instanceof HTMLElement) || !(portrait instanceof HTMLElement) || !(proof instanceof HTMLElement) || !(aboutHeading instanceof HTMLElement) || !(identity instanceof HTMLElement)) {
+      throw new Error('Integrated hero elements are missing');
+    }
+    const heroRect = hero.getBoundingClientRect();
+    const portraitRect = portrait.getBoundingClientRect();
+    const proofRect = proof.getBoundingClientRect();
+    const aboutRect = aboutHeading.getBoundingClientRect();
+    const identityStyle = getComputedStyle(identity);
+    return {
+      portraitToProof: proofRect.top - portraitRect.bottom,
+      heroToAbout: aboutRect.top - heroRect.bottom,
+      headerRadius: Number.parseFloat(identityStyle.borderTopLeftRadius),
+      headerShadow: identityStyle.boxShadow,
+    };
+  });
+  expect(heroConnection.portraitToProof).toBeGreaterThanOrEqual(0);
+  expect(heroConnection.portraitToProof).toBeLessThanOrEqual(120);
+  expect(heroConnection.heroToAbout).toBeLessThanOrEqual(110);
+  expect(heroConnection.headerRadius).toBe(0);
+  expect(heroConnection.headerShadow).toBe('none');
+
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector('.coh-pill-nav');
     const actions = document.querySelector('.coh-hero-actions');
@@ -194,8 +224,8 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
     return { measurements, top: containerRect.top, bottom: containerRect.bottom };
   });
 
-  expect(heroContainment.top).toBeGreaterThanOrEqual(12);
-  expect(heroContainment.bottom).toBeLessThanOrEqual(100);
+  expect(heroContainment.top).toBeGreaterThanOrEqual(0);
+  expect(heroContainment.bottom).toBeLessThanOrEqual(80);
   for (const measurement of heroContainment.measurements) {
     expect(measurement.inlineOverflow, 'hero copy should not overflow its own box').toBeLessThanOrEqual(1);
     expect(measurement.leftInset, 'hero copy should stay inside the left edge').toBeGreaterThanOrEqual(-1);
