@@ -88,6 +88,9 @@ const additionalTools = toolProfiles.filter((tool) => !featuredToolIds.has(tool.
 
 const title = site.title;
 const description = site.description;
+const contactFormAction = `https://formsubmit.co/${site.contact.email}`;
+const contactFormEndpoint = `https://formsubmit.co/ajax/${site.contact.email}`;
+const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
 ---
 
 <CohesionLayout
@@ -445,13 +448,89 @@ const description = site.description;
 
     <section class="coh-contact" id="contact" data-coh-section="contact" data-coh-snap>
       <div class="coh-contact-shape" aria-hidden="true"></div>
-      <p data-coh-reveal>05 / Contact · {locationLabel}</p>
-      <h2 data-coh-reveal>Let’s make complex products<br /><em>easier to choose and use.</em></h2>
-      <div class="coh-contact-actions" data-coh-reveal>
-        <a href={`mailto:${site.contact.email}`}>{site.contact.email} <span aria-hidden="true">↗</span></a>
-        <a href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↓</span></a>
-        <a href={site.contact.linkedin} target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
-        <a href={site.contact.github} target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      <div class="coh-contact-grid">
+        <div class="coh-contact-intro">
+          <p data-coh-reveal>05 / Contact · {locationLabel}</p>
+          <h2 data-coh-reveal>Let’s make complex products<br /><em>easier to choose and use.</em></h2>
+          <p class="coh-contact-lead" data-coh-reveal>
+            Have a growth, commerce, or AI product challenge? Send a note or connect with me directly.
+          </p>
+          <nav class="coh-contact-actions" aria-label="Contact, social, and résumé links" data-coh-reveal>
+            <a class="is-email" href={`mailto:${site.contact.email}`}>
+              <span class="coh-contact-link-mark" aria-hidden="true">@</span>
+              <span><small>Email</small>{site.contact.email}</span>
+              <i aria-hidden="true">↗</i>
+            </a>
+            <a href={site.contact.linkedin} target="_blank" rel="noopener noreferrer">
+              <span class="coh-contact-link-mark" aria-hidden="true">in</span>
+              <span><small>Social</small>LinkedIn</span>
+              <i aria-hidden="true">↗</i>
+            </a>
+            <a href={site.contact.github} target="_blank" rel="noopener noreferrer">
+              <span class="coh-contact-link-mark" aria-hidden="true">GH</span>
+              <span><small>Code</small>GitHub</span>
+              <i aria-hidden="true">↗</i>
+            </a>
+            <a href="/Neelesh_Jaiswal_Resume_Master.pdf" download="Neelesh_Jaiswal_Resume.pdf" type="application/pdf">
+              <span class="coh-contact-link-mark" aria-hidden="true">PDF</span>
+              <span><small>Background</small>Download résumé</span>
+              <i aria-hidden="true">↓</i>
+            </a>
+          </nav>
+        </div>
+
+        <form
+          class="coh-contact-form"
+          action={contactFormAction}
+          method="POST"
+          accept-charset="UTF-8"
+          data-coh-contact-form
+          data-coh-contact-endpoint={contactFormEndpoint}
+          data-coh-reveal
+        >
+          <div class="coh-contact-form-heading">
+            <p>Start a conversation</p>
+            <h3>Tell me what you’re building.</h3>
+          </div>
+
+          <div class="coh-contact-fields">
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@company.com" required />
+            </label>
+            <label class="is-wide">
+              <span>Company <small>Optional</small></span>
+              <input type="text" name="company" autocomplete="organization" placeholder="Where you’re building" />
+            </label>
+            <label class="is-wide">
+              <span>What can I help with?</span>
+              <textarea name="message" rows="5" minlength="20" placeholder="Share the product challenge, opportunity, or role you have in mind." required></textarea>
+            </label>
+          </div>
+
+          <label class="coh-form-trap" aria-hidden="true">
+            Leave this field empty
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" />
+          </label>
+          <input type="hidden" name="_subject" value="New portfolio inquiry from neeljaiswal.com" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value={contactFormNext} />
+
+          <div class="coh-contact-submit">
+            <button type="submit">
+              <span data-coh-contact-submit-label>Send message</span>
+              <i aria-hidden="true">↗</i>
+            </button>
+            <p id="coh-contact-status" role="status" aria-live="polite" data-coh-contact-status>
+              Your message will go directly to my inbox.
+            </p>
+          </div>
+        </form>
       </div>
       <footer>
         <span>Neel Jaiswal · Senior Product Manager, Mint Mobile</span>

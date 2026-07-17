@@ -103,6 +103,56 @@ if (roleTarget && !reducedMotion) {
   }, 2600);
 }
 
+const contactForm = document.querySelector<HTMLFormElement>('[data-coh-contact-form]');
+if (contactForm) {
+  const submitButton = contactForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const submitLabel = contactForm.querySelector<HTMLElement>('[data-coh-contact-submit-label]');
+  const status = contactForm.querySelector<HTMLElement>('[data-coh-contact-status]');
+  const initialLabel = submitLabel?.textContent ?? 'Send message';
+  const returnedFromSubmission = new URLSearchParams(window.location.search).get('contact') === 'sent';
+
+  const setFormState = (state: 'idle' | 'submitting' | 'success' | 'error', message: string) => {
+    contactForm.dataset.state = state;
+    if (status) status.textContent = message;
+    if (submitButton) submitButton.disabled = state === 'submitting';
+    if (submitLabel) submitLabel.textContent = state === 'submitting' ? 'Sending…' : initialLabel;
+  };
+
+  if (returnedFromSubmission) {
+    setFormState('success', 'Thanks — your message is on its way.');
+    window.history.replaceState({}, '', `${window.location.pathname}#contact`);
+  }
+
+  contactForm.addEventListener('focusin', () => root.classList.add('coh-form-active'));
+  contactForm.addEventListener('focusout', () => {
+    window.setTimeout(() => {
+      if (!contactForm.contains(document.activeElement)) root.classList.remove('coh-form-active');
+    }, 0);
+  });
+
+  contactForm.addEventListener('submit', async (event) => {
+    if (!contactForm.reportValidity()) return;
+    const endpoint = contactForm.dataset.cohContactEndpoint;
+    if (!endpoint || !window.fetch) return;
+
+    event.preventDefault();
+    setFormState('submitting', 'Sending your message…');
+
+    try {
+      const response = await window.fetch(endpoint, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) throw new Error(`Contact form returned ${response.status}`);
+      contactForm.reset();
+      setFormState('success', 'Thanks — your message is on its way.');
+    } catch {
+      setFormState('error', 'I couldn’t send that message. Please use the email link beside this form.');
+    }
+  });
+}
+
 const portraitFlip = document.querySelector<HTMLButtonElement>('[data-coh-portrait-flip]');
 const portraitStatus = document.querySelector<HTMLElement>('[data-coh-portrait-status]');
 if (portraitFlip) {

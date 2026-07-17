@@ -43,7 +43,7 @@ export default defineConfig({
     },
     {
       name: 'mobile-chromium',
-      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts', '**/cohesion.spec.ts', '**/ui-integrity.spec.ts'],
+      testMatch: ['**/smoke.spec.ts', '**/case-studies-mobile.spec.ts', '**/cohesion.spec.ts', '**/ui-integrity.spec.ts', '**/mobile-polish.spec.ts'],
       use: {
         ...devices['Pixel 7'],
       },

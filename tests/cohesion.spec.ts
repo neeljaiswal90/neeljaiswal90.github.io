@@ -330,6 +330,32 @@ test('portrait demonstrates its flip once and settles on the front', async ({ pa
   await expect(portrait.locator('.coh-portrait-back')).toHaveAttribute('aria-hidden', 'true');
 });
 
+test('contact section provides social links, résumé download, and inbox form', async ({ page }) => {
+  await page.route('https://formsubmit.co/ajax/**', async (route) => {
+    expect(route.request().method()).toBe('POST');
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
+  });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const contact = page.locator('#contact');
+  await contact.evaluate((section) => section.scrollIntoView({ behavior: 'instant', block: 'start' }));
+  await page.waitForTimeout(850);
+  await expect(contact.getByRole('link', { name: /LinkedIn/i })).toHaveAttribute('href', /linkedin\.com\/in\/neelesh-jaiswal/);
+  await expect(contact.getByRole('link', { name: /GitHub/i })).toHaveAttribute('href', /github\.com\/neeljaiswal90/);
+  await expect(contact.getByRole('link', { name: /Download résumé/i })).toHaveAttribute('download', 'Neelesh_Jaiswal_Resume.pdf');
+
+  const form = contact.locator('[data-coh-contact-form]');
+  await form.getByLabel('Name').fill('Portfolio Visitor');
+  await form.getByLabel('Email').fill('visitor@example.com');
+  await form.getByLabel(/Company/).fill('Example Co');
+  await form.getByLabel('What can I help with?').fill('I would like to discuss a product leadership opportunity.');
+  const submit = form.getByRole('button', { name: 'Send message' });
+  await submit.evaluate((button) => button.scrollIntoView({ behavior: 'instant', block: 'center' }));
+  await submit.click({ force: true });
+  await expect(form.locator('[data-coh-contact-status]')).toHaveText('Thanks — your message is on its way.');
+  await expect(form).toHaveAttribute('data-state', 'success');
+});
+
 test('legacy Cohesion URL preserves section context on the main portfolio', async ({ page }) => {
   await page.goto('/cohesion/#work', { waitUntil: 'domcontentloaded' });
   await expect(page).toHaveURL(/\/#work$/);
