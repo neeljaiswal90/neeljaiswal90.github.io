@@ -3791,3 +3791,189 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; }
 }
+
+/* Hero composition: a tighter header relationship and product-specific signals. */
+.coh-hero {
+  min-height: max(820px, 100svh);
+}
+
+.coh-hero-wordmark,
+.coh-portrait-wrap {
+  top: 39%;
+}
+
+.coh-portrait-wrap {
+  width: clamp(250px, 23vw, 320px);
+}
+
+.coh-portrait-caption {
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  gap: 5px;
+  padding: 14px 16px;
+}
+
+.coh-portrait-caption b { font-size: 14px; }
+.coh-portrait-caption small { font-size: 10px; }
+
+.coh-domain-cloud {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+}
+
+.coh-domain-token {
+  position: absolute;
+  width: clamp(150px, 14vw, 196px);
+  display: grid;
+  gap: 4px;
+  padding: 13px 16px;
+  color: var(--coh-ink);
+  background: rgb(255 255 255 / 88%);
+  border: 1px solid rgb(13 13 15 / 12%);
+  border-left: 4px solid var(--coh-violet);
+  border-radius: 14px;
+  box-shadow: 0 18px 42px rgb(43 36 85 / 10%);
+  backdrop-filter: blur(14px);
+}
+
+.coh-domain-token strong {
+  font: 720 clamp(13px, 1.2vw, 17px)/1 "Space Grotesk", sans-serif;
+  letter-spacing: -.035em;
+}
+
+.coh-domain-token small {
+  color: var(--coh-muted);
+  font-size: 8px;
+  font-weight: 780;
+  letter-spacing: .055em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.coh-domain-token:nth-child(1) { top: 19%; left: 7%; }
+.coh-domain-token:nth-child(2) { top: 34%; left: 3.5%; border-left-color: var(--coh-coral); }
+.coh-domain-token:nth-child(3) { top: 51%; left: 8.5%; border-left-color: #8fc328; }
+.coh-domain-token:nth-child(4) { top: 19%; right: 7%; border-left-color: #45bcc5; }
+.coh-domain-token:nth-child(5) { top: 34%; right: 3.5%; border-left-color: #3478e3; }
+.coh-domain-token:nth-child(6) { top: 51%; right: 8.5%; border-left-color: #f2aa2b; }
+
+.coh-hero-proof {
+  bottom: 10.5%;
+  width: min(980px, calc(100% - 44px));
+  gap: 10px;
+}
+
+.coh-hero-proof > span {
+  min-height: 86px;
+  align-content: center;
+  gap: 5px;
+  padding: 13px 16px;
+}
+
+.coh-hero-proof > span small {
+  order: 0;
+  color: var(--coh-violet);
+  font-size: 8px;
+  letter-spacing: .09em;
+}
+
+.coh-hero-proof > span strong {
+  order: 1;
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.02;
+}
+
+.coh-hero-proof > span em {
+  order: 2;
+  color: var(--coh-muted);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 740;
+  letter-spacing: .035em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.coh-hero-actions { bottom: 2.4%; }
+
+@media (max-width: 900px) {
+  .coh-hero-wordmark,
+  .coh-portrait-wrap { top: 40%; }
+
+  .coh-portrait-wrap { width: clamp(232px, 30vw, 280px); }
+
+  .coh-domain-token { width: 142px; padding: 10px 12px; }
+  .coh-domain-token:nth-child(1),
+  .coh-domain-token:nth-child(3) { left: 3%; }
+  .coh-domain-token:nth-child(4),
+  .coh-domain-token:nth-child(6) { right: 3%; }
+  .coh-domain-token:nth-child(2),
+  .coh-domain-token:nth-child(5) { display: none; }
+
+  .coh-hero-proof {
+    bottom: 10%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .coh-hero { min-height: max(930px, 100svh); }
+
+  .coh-identity-header { top: 14px; }
+
+  .coh-domain-cloud {
+    top: 103px;
+    right: 12px;
+    bottom: auto;
+    left: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .coh-domain-token,
+  .coh-domain-token:nth-child(n) {
+    position: static;
+    width: auto;
+    display: grid;
+    padding: 8px 10px;
+    border-left-width: 3px;
+    box-shadow: 0 9px 22px rgb(43 36 85 / 8%);
+  }
+
+  .coh-domain-token:nth-child(n+5) { display: none; }
+  .coh-domain-token strong { font-size: 11px; }
+  .coh-domain-token small { display: none; }
+
+  .coh-hero-wordmark,
+  .coh-portrait-wrap { top: 39%; }
+
+  .coh-portrait-wrap {
+    width: 224px;
+    height: auto;
+  }
+
+  .coh-hero-proof {
+    bottom: max(154px, calc(env(safe-area-inset-bottom) + 148px));
+    width: calc(100% - 24px);
+    gap: 6px;
+  }
+
+  .coh-hero-proof > span {
+    min-height: 75px;
+    gap: 3px;
+    padding: 9px 10px;
+  }
+
+  .coh-hero-proof > span small { font-size: 7px; }
+  .coh-hero-proof > span strong { font-size: 14px; }
+  .coh-hero-proof > span em { font-size: 6.5px; }
+
+  .coh-hero-actions {
+    bottom: max(94px, calc(env(safe-area-inset-bottom) + 88px));
+  }
+}

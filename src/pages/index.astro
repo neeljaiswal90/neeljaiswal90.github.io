@@ -28,7 +28,25 @@ const heroSignals = [
   { category: 'New-business launch', claim: getPublishableClaim('kids.activations_14k_90_days') },
 ] as const;
 
-const heroProof = heroSignals.slice(0, 4);
+const heroDomains = [
+  { label: 'Growth systems', detail: 'Funnel · lifecycle' },
+  { label: 'Commerce', detail: 'Catalog · checkout' },
+  { label: 'Revenue', detail: 'Conversion · retention' },
+  { label: 'Applied AI', detail: 'Agentic workflows' },
+  { label: 'Technology', detail: 'APIs · data · platforms' },
+  { label: '0-to-1', detail: 'Launch · learn · scale' },
+] as const;
+
+const heroCapabilities = [
+  { eyebrow: 'Skill', title: 'Ecommerce growth', detail: 'Funnel · lifecycle · revenue' },
+  { eyebrow: 'Products shipped', title: 'Core commerce + 0-to-1', detail: 'Checkout · Home Internet · kids mobile' },
+  { eyebrow: 'Technology', title: 'Applied AI + platforms', detail: 'Agentic workflows · APIs · data' },
+  {
+    eyebrow: 'Leadership',
+    title: heroSignals[0].claim.displayValue,
+    detail: `${heroSignals[0].claim.displayLabel} · portfolio ownership`,
+  },
+] as const;
 
 const focusAreas = [
   {
@@ -150,30 +168,33 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
             <span class="coh-portrait-caption"><b>Senior Product Manager</b><small>Ecommerce · growth · AI</small></span>
           </span>
           <span class="coh-portrait-face coh-portrait-back" aria-hidden="true">
-            <small>What I lead</small>
-            <strong>Ecommerce growth, end to end.</strong>
-            <span>{heroSignals[0].claim.displayValue} · acquisition to post-purchase</span>
+            <small>What I build</small>
+            <strong>Product systems that grow.</strong>
+            <span>Ecommerce · 0-to-1 · applied AI</span>
             <b aria-hidden="true">NJ</b>
           </span>
         </span>
       </button>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
 
-      <div class="coh-shape coh-shape-a" data-coh-depth="1" aria-hidden="true"></div>
-      <div class="coh-shape coh-shape-b" data-coh-depth="2" aria-hidden="true"></div>
-      <div class="coh-shape coh-shape-c" data-coh-depth="3" aria-hidden="true"></div>
-      <div class="coh-shape coh-shape-d" data-coh-depth="2" aria-hidden="true"></div>
-      <div class="coh-shape coh-shape-e" data-coh-depth="1" aria-hidden="true"></div>
-      <div class="coh-shape coh-shape-f" data-coh-depth="3" aria-hidden="true"></div>
+      <div class="coh-domain-cloud" aria-label="Product domains">
+        {heroDomains.map((domain) => (
+          <span class="coh-domain-token"><strong>{domain.label}</strong><small>{domain.detail}</small></span>
+        ))}
+      </div>
 
-      <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Selected Mint Mobile portfolio evidence">
-        {heroProof.map((signal) => (
-          <span><strong>{signal.claim.displayValue}</strong><small>{signal.claim.displayLabel}</small></span>
+      <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Core product capabilities and leadership">
+        {heroCapabilities.map((capability) => (
+          <span>
+            <small>{capability.eyebrow}</small>
+            <strong>{capability.title}</strong>
+            <em>{capability.detail}</em>
+          </span>
         ))}
       </div>
 
       <div class="coh-hero-actions">
-        <a class="coh-hero-cta" href="#work">View Mint impact <span aria-hidden="true">↓</span></a>
+        <a class="coh-hero-cta" href="#work">View selected work <span aria-hidden="true">↓</span></a>
         <a class="coh-hero-secondary" href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↗</span></a>
       </div>
       <p class="coh-scroll-note" aria-hidden="true">Scroll to meet Neel</p>
