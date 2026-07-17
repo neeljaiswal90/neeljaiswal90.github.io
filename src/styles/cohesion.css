@@ -5269,7 +5269,7 @@ html.coh-form-active {
 .coh-hero-proof > .coh-hero-capability-item {
   --cap-accent: #594de0;
   --cap-tint: #efedff;
-  --cap-back: #403974;
+  --cap-back: #ebe9fb;
   min-width: 0;
   min-height: 0;
   display: block;
@@ -5285,19 +5285,19 @@ html.coh-form-active {
 .coh-hero-proof > .coh-hero-capability-item:nth-child(2) {
   --cap-accent: #3f6852;
   --cap-tint: #e2ece0;
-  --cap-back: #315a46;
+  --cap-back: #e3eee6;
 }
 
 .coh-hero-proof > .coh-hero-capability-item:nth-child(3) {
   --cap-accent: #35696c;
   --cap-tint: #dfeeee;
-  --cap-back: #284f56;
+  --cap-back: #e2eff0;
 }
 
 .coh-hero-proof > .coh-hero-capability-item:nth-child(4) {
   --cap-accent: #7a4c34;
   --cap-tint: #f0e1d8;
-  --cap-back: #65402f;
+  --cap-back: #f1e5de;
 }
 
 .coh-hero-capability {
@@ -5394,41 +5394,31 @@ html.coh-form-active {
 
 .coh-hero-capability-back {
   display: grid;
-  grid-template-columns: 1fr auto;
   align-content: center;
-  gap: 6px 12px;
+  gap: 7px;
   padding: 18px 20px;
-  color: var(--coh-white);
+  color: var(--coh-ink);
   background: var(--cap-back);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--cap-accent) 26%, var(--coh-line));
   transform: rotateY(180deg);
 }
 
 .coh-hero-capability-back small {
-  grid-column: 1 / -1;
-  color: rgb(255 255 255 / 65%);
+  color: var(--cap-accent);
 }
 
 .coh-hero-capability-back strong {
-  grid-column: 1;
+  color: var(--coh-ink);
   font: 680 17px/1.05 "Space Grotesk", sans-serif;
   letter-spacing: -.035em;
 }
 
 .coh-hero-capability-back em {
-  grid-column: 1;
-  color: rgb(255 255 255 / 82%);
+  color: #45424b;
   font-size: 10px;
   font-style: normal;
+  font-weight: 520;
   line-height: 1.42;
-}
-
-.coh-hero-capability-back > i {
-  grid-row: 2 / span 2;
-  grid-column: 2;
-  align-self: end;
-  font-size: 18px;
-  font-style: normal;
 }
 
 @media (hover: hover) and (pointer: fine) {

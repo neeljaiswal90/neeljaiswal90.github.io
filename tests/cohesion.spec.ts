@@ -29,6 +29,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-hero-capability')).toHaveCount(4);
   await expect(page.locator('.coh-hero-capability-front > i')).toHaveCount(4);
   await expect(page.locator('.coh-hero-capability-back')).toHaveCount(4);
+  await expect(page.locator('.coh-hero-capability-back > i')).toHaveCount(0);
   await expect(page.locator('.coh-hero-capability-back').first()).toContainText('one measurable growth system');
   await expect(page.locator('#home .coh-hero-actions, #home .coh-hero-cta, #home .coh-hero-secondary')).toHaveCount(0);
   await expect(page.locator('#home a[href*="Resume"]')).toHaveCount(0);
@@ -263,6 +264,28 @@ test('hero capability cards reveal their context without clipping', async ({ pag
   for (const face of faces) {
     expect(face.scrollHeight).toBeLessThanOrEqual(face.clientHeight + 1);
     expect(face.scrollWidth).toBeLessThanOrEqual(face.clientWidth + 1);
+  }
+
+  const contrastPairs = await page.locator('.coh-hero-capability-back').evaluateAll((elements) => elements.flatMap((face) => {
+    const background = getComputedStyle(face).backgroundColor;
+    return Array.from(face.querySelectorAll('small, strong, em')).map((copy) => ({
+      background,
+      foreground: getComputedStyle(copy).color,
+    }));
+  }));
+  const luminance = (color: string) => {
+    const channels = color.match(/[\d.]+/g)?.slice(0, 3).map(Number) ?? [];
+    if (channels.length !== 3) throw new Error(`Unable to parse color: ${color}`);
+    const linear = channels.map((channel) => {
+      const value = channel / 255;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return (0.2126 * linear[0]) + (0.7152 * linear[1]) + (0.0722 * linear[2]);
+  };
+  for (const pair of contrastPairs) {
+    const lighter = Math.max(luminance(pair.background), luminance(pair.foreground));
+    const darker = Math.min(luminance(pair.background), luminance(pair.foreground));
+    expect((lighter + 0.05) / (darker + 0.05)).toBeGreaterThanOrEqual(4.5);
   }
 });
 
