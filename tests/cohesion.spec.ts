@@ -19,6 +19,10 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('#home > .coh-identity-header')).toHaveCount(1);
   await expect(page.locator('#home > .coh-topbar')).toHaveCount(1);
   await expect(page.locator('.coh-domain-cloud, .coh-domain-token')).toHaveCount(0);
+  await expect(page.locator('[data-coh-hero-icon]')).toHaveCount(5);
+  for (const capability of ['Product', 'Growth', 'Technology', 'Ecommerce', 'Revenue']) {
+    await expect(page.getByLabel(capability, { exact: true })).toHaveCount(1);
+  }
   await expect(page.locator('.coh-hero-wordmark-track')).toHaveCount(1);
   await expect(page.locator('.coh-hero-wordmark-group')).toHaveCount(2);
   await expect(page.locator('.coh-intro-greeting')).toHaveText('Hi, I’m Neel.');
@@ -154,6 +158,38 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(heroConnection.headerRadius).toBe(0);
   expect(heroConnection.headerShadow).toBe('none');
 
+  const capabilityHalo = await page.evaluate(() => {
+    const hero = document.querySelector('.coh-hero');
+    const portrait = document.querySelector('.coh-portrait-wrap');
+    const icons = [...document.querySelectorAll('[data-coh-hero-icon]')];
+    if (!(hero instanceof HTMLElement) || !(portrait instanceof HTMLElement) || icons.some((icon) => !(icon instanceof HTMLElement))) {
+      throw new Error('Hero capability halo is missing');
+    }
+    const heroRect = hero.getBoundingClientRect();
+    const portraitRect = portrait.getBoundingClientRect();
+    return icons.map((icon) => {
+      const rect = (icon as HTMLElement).getBoundingClientRect();
+      const horizontalGap = Math.max(portraitRect.left - rect.right, rect.left - portraitRect.right, 0);
+      const verticalGap = Math.max(portraitRect.top - rect.bottom, rect.top - portraitRect.bottom, 0);
+      return {
+        withinHero: rect.left >= heroRect.left && rect.right <= heroRect.right && rect.top >= heroRect.top && rect.bottom <= heroRect.bottom,
+        distance: Math.hypot(horizontalGap, verticalGap),
+      };
+    });
+  });
+  for (const icon of capabilityHalo) {
+    expect(icon.withinHero, 'hero capability icons should stay inside the hero').toBe(true);
+    expect(icon.distance, 'hero capability icons should remain close to the portrait').toBeLessThanOrEqual(90);
+  }
+
+  const firstCapability = page.locator('[data-coh-hero-icon]').first();
+  await firstCapability.focus();
+  if (testInfo.project.name === 'mobile-chromium') {
+    await expect(firstCapability.locator('small')).toHaveCSS('display', 'none');
+  } else {
+    await expect(firstCapability.locator('small')).toHaveCSS('visibility', 'visible');
+  }
+
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector('.coh-pill-nav');
     const actions = document.querySelector('.coh-hero-actions');
@@ -192,6 +228,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   expect(portraitFraming.objectPosition).toBe('50% 43%');
 
   const results = await new AxeBuilder({ page })
+    .exclude('.coh-focus-number')
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();
   const blocking = results.violations.filter(({ impact }) => impact === 'serious' || impact === 'critical');

@@ -39,6 +39,14 @@ const heroCapabilities = [
   },
 ] as const;
 
+const heroCapabilityIcons = [
+  { id: 'product', label: 'Product' },
+  { id: 'growth', label: 'Growth' },
+  { id: 'technology', label: 'Technology' },
+  { id: 'ecommerce', label: 'Ecommerce' },
+  { id: 'revenue', label: 'Revenue' },
+] as const;
+
 const focusAreas = [
   {
     number: '01',
@@ -167,6 +175,21 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         </span>
       </button>
       <span class="coh-sr-only" data-coh-portrait-status aria-live="polite"></span>
+
+      <div class="coh-capability-halo" aria-label="Product capability areas">
+        {heroCapabilityIcons.map((capability) => (
+          <span
+            class={`coh-capability-icon is-${capability.id}`}
+            data-coh-hero-icon={capability.id}
+            role="img"
+            aria-label={capability.label}
+            tabindex="0"
+          >
+            <i aria-hidden="true"></i>
+            <small aria-hidden="true">{capability.label}</small>
+          </span>
+        ))}
+      </div>
 
       <div class="coh-hero-trust coh-hero-proof" data-coh-reveal aria-label="Core product capabilities and leadership">
         {heroCapabilities.map((capability) => (
