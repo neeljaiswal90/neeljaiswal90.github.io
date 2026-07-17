@@ -10,6 +10,13 @@ const contentRoutes = [
     image: canonicalUrl('/assets/social-card-live-v4.png'),
     imageAlt: 'Neel Jaiswal with ecommerce growth, 0-to-1 launches, and AI that actually ships',
   },
+  {
+    path: '/work/',
+    canonical: canonicalUrl('/work/'),
+    kind: 'work',
+    image: canonicalUrl('/assets/social-card-live-v4.png'),
+    imageAlt: 'Neel Jaiswal with ecommerce growth, 0-to-1 launches, and AI that actually ships',
+  },
   ...workCaseSlugs.map((slug) => ({
     path: `/work/${slug}/`,
     canonical: canonicalUrl(`/work/${slug}/`),

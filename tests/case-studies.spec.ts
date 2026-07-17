@@ -125,7 +125,7 @@ for (const caseStudy of caseStudies) {
       await expect(metricCells.getByText(metric, { exact: true })).toHaveCount(1);
     }
 
-    await expect(page.locator('a[href="/#work"]')).toHaveCount(3);
+    await expect(page.locator('a[href="/work/"]')).toHaveCount(3);
     await expect(page.locator('.case-brand')).toHaveAttribute('href', '/#home');
     await expect(page.locator('.case-process')).toContainText('Operating system');
     await expect(page.locator('.case-evidence-boundary')).toContainText('Support boundary');
@@ -151,18 +151,38 @@ for (const caseStudy of caseStudies) {
   });
 }
 
+test('selected-work hub keeps case-study detail off the homepage', async ({ page }, testInfo) => {
+  const runtime = attachRuntimeGuards(page, testInfo);
+  const response = await page.goto('/work/', { waitUntil: 'domcontentloaded' });
+
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('.coh-work-index-hero h1')).toHaveText('Six case studies.');
+  await expect(page.locator('.coh-work-card')).toHaveCount(6);
+  await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
+  await expect(page.locator('.coh-work-card[href="/work/growth-system/"]')).toHaveCount(1);
+  await expect(page.locator('.coh-work-index-hero > a')).toHaveAttribute('href', '/');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonicalUrl('/work/'));
+
+  const overflow = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
+  runtime.assertClean();
+});
+
 test('case study returns to selected work', async ({ page }) => {
-  await page.goto('/#work', { waitUntil: 'domcontentloaded' });
-  const card = page.locator('.coh-work .coh-work-card[href="/work/growth-system/"]');
+  await page.goto('/work/', { waitUntil: 'domcontentloaded' });
+  const card = page.locator('.coh-work-card[href="/work/growth-system/"]');
   await expect(card).toHaveCount(1);
   await card.click();
   await expect(page).toHaveURL(/\/work\/growth-system\/$/);
 
   const allWork = page.locator('.case-topbar-back');
-  await expect(allWork).toHaveAttribute('href', '/#work');
+  await expect(allWork).toHaveAttribute('href', '/work/');
   await allWork.click();
-  await expect(page).toHaveURL(/\/#work$/);
-  await expect(page.locator('#work')).toBeVisible();
+  await expect(page).toHaveURL(/\/work\/$/);
+  await expect(page.locator('.coh-work-index-hero')).toBeVisible();
 });
 
 test('case index tracks the active narrative section', async ({ page }) => {

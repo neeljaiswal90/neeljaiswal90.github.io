@@ -27,8 +27,9 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('[data-role-cycle]')).toHaveText('conversion engines');
   await expect(page.locator('.coh-portrait-flip-hint')).toHaveCount(0);
 
-  await expect(page.locator('.coh-work-card')).toHaveCount(6);
-  await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
+  await expect(page.locator('.coh-work-card')).toHaveCount(0);
+  await expect(page.locator('.coh-work-gateway')).toHaveAttribute('href', '/work/');
+  await expect(page.locator('.coh-work-gateway')).toContainText('Growth · 0-to-1 · commerce · AI');
   await expect(page.locator('.coh-build-card')).toHaveCount(6);
   await expect(page.locator('.coh-build-card').filter({ hasText: 'HabitFlow' })).toHaveAttribute('href', 'https://github.com/neeljaiswal90/habitflow');
   await expect(page.locator('.coh-build-card').filter({ hasText: 'Fitness App' })).toHaveAttribute('href', 'https://neeltraining.lovable.app/');
@@ -64,11 +65,14 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   await expect(page.locator('.coh-proof-banner')).not.toContainText('Operating range');
   await expect(page.locator('.coh-proof-stat.is-sample')).toContainText('14,519');
   await expect(page.locator('.coh-proof-stat.is-sample')).toContainText('Customer responses across four purchase channels');
-  await expect(page.locator('.coh-orbit-card')).toHaveCount(6);
-  await expect(page.locator('#about .coh-orbit-card')).toHaveCount(6);
+  await expect(page.locator('.coh-about-card')).toHaveCount(3);
+  await expect(page.locator('#about .coh-focus-metrics > div')).toHaveCount(6);
+  await expect(page.locator('.coh-orbit-card')).toHaveCount(0);
   await expect(page.locator('#home .coh-orbit-card')).toHaveCount(0);
-  await expect(page.locator('.coh-release-loop li')).toHaveCount(4);
-  await expect(page.locator('.coh-loop-header')).toContainText('Human governed');
+  await expect(page.locator('.coh-about-heading h2')).toHaveText('How I lead.');
+  await expect(page.locator('.coh-about-heading > span')).toHaveText('Portfolio ownership, evidence-led decisions, and applied AI.');
+  await expect(page.locator('.coh-focus-heading h2')).toHaveText('Systems built to perform.');
+  await expect(page.locator('.coh-work-heading h2')).toHaveText('Explore the work.');
   await expect(page.locator('.coh-focus-cue')).toContainText('Scroll through four connected systems');
   await expect(page.locator('.coh-focus-cue')).toHaveAttribute('href', '#focus-system-01');
   await expect(page.locator('.coh-focus-cue-steps > i')).toHaveCount(4);
@@ -166,7 +170,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   const interactionLayout = await page.evaluate(() => {
     const nav = document.querySelector('.coh-pill-nav');
     const actions = document.querySelector('.coh-hero-actions');
-    const leadership = document.querySelector('.coh-story-card.is-leadership');
+    const leadership = document.querySelector('.coh-about-card');
     if (!(nav instanceof HTMLElement) || !(actions instanceof HTMLElement) || !(leadership instanceof HTMLElement)) {
       throw new Error('Interaction layout elements are missing');
     }
@@ -315,7 +319,7 @@ test('page uses natural scrolling with curated journey stops', async ({ page }) 
     };
   });
 
-  expect(scrolling.targetCount).toBeGreaterThanOrEqual(18);
+  expect(scrolling.targetCount).toBeGreaterThanOrEqual(13);
   expect(scrolling.type).toBe('none');
   expect(scrolling.alignments.every((alignment) => alignment === 'none')).toBe(true);
   expect(scrolling.wheelPrevented).toBe(false);
@@ -401,27 +405,30 @@ test('journey arrows traverse every component forward and backward', async ({ pa
   expect(navigatorDesign.previousBackground).not.toBe(navigatorDesign.nextBackground);
 });
 
-test('about metrics remain fully visible beside the story cards', async ({ page }) => {
+test('about cards use the guided system-card pattern without clipping evidence', async ({ page }) => {
   await page.setViewportSize({ width: 1584, height: 1136 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const layout = await page.evaluate(() => {
-    const storyCard = document.querySelector('.coh-story-card');
-    const metrics = Array.from(document.querySelectorAll<HTMLElement>('.coh-about-metric'));
-    if (!(storyCard instanceof HTMLElement) || metrics.length !== 6) {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.coh-about-card'));
+    const metrics = Array.from(document.querySelectorAll<HTMLElement>('.coh-about-card .coh-focus-metrics > div'));
+    if (cards.length !== 3 || metrics.length !== 6) {
       throw new Error('About composition is incomplete');
     }
-    const cardRect = storyCard.getBoundingClientRect();
     return {
       viewportWidth: window.innerWidth,
-      cardWidth: cardRect.width,
+      cards: cards.map((card) => ({
+        width: card.getBoundingClientRect().width,
+        position: getComputedStyle(card).position,
+      })),
       metrics: metrics.map((metric) => {
         const rect = metric.getBoundingClientRect();
+        const cardRect = metric.closest('.coh-about-card')?.getBoundingClientRect();
         return {
           left: rect.left,
           right: rect.right,
-          overlapsCard: rect.right > cardRect.left - 8 && rect.left < cardRect.right + 8,
+          insideCard: Boolean(cardRect && rect.left >= cardRect.left && rect.right <= cardRect.right),
           horizontalOverflow: metric.scrollWidth - metric.clientWidth,
           verticalOverflow: metric.scrollHeight - metric.clientHeight,
         };
@@ -429,11 +436,14 @@ test('about metrics remain fully visible beside the story cards', async ({ page 
     };
   });
 
-  expect(layout.cardWidth).toBeLessThanOrEqual(852);
+  for (const card of layout.cards) {
+    expect(card.width).toBeGreaterThan(900);
+    expect(card.position).toBe('sticky');
+  }
   for (const metric of layout.metrics) {
     expect(metric.left).toBeGreaterThanOrEqual(0);
     expect(metric.right).toBeLessThanOrEqual(layout.viewportWidth);
-    expect(metric.overlapsCard).toBe(false);
+    expect(metric.insideCard).toBe(true);
     expect(metric.horizontalOverflow).toBeLessThanOrEqual(1);
     expect(metric.verticalOverflow).toBeLessThanOrEqual(1);
   }

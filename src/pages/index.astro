@@ -7,7 +7,6 @@ import { projects } from '../data/projects';
 import { site } from '../data/site';
 import { sources } from '../data/sources';
 import { toolFilters, toolProfiles } from '../data/tools';
-import { getPublishedClaim, workCases } from '../data/work';
 
 const location = getPublishableClaim('profile.location.greater_san_diego');
 const locationLabel = location.displayValue ?? location.displayLabel ?? location.statement;
@@ -19,14 +18,7 @@ const stackCount = getPublishableClaim('stack.public_tool_inventory_27');
 const jdPowerSource = sources.find((source) => source.id === 'src.jd_power.purchase_2023');
 if (!jdPowerSource?.url) throw new Error('J.D. Power citation URL is missing.');
 
-const heroSignals = [
-  { category: 'People leadership', claim: getPublishableClaim('career.mint.product_leadership_team_of_pms') },
-  { category: 'Core funnel', claim: getPublishableClaim('growth.core_funnel_conversion_lift_54_7') },
-  { category: 'Cart / checkout', claim: getPublishableClaim('growth.cart_checkout_conversion_lift_77') },
-  { category: 'Order economics', claim: getPublishableClaim('commerce.aov_lift_10') },
-  { category: 'Activation choice', claim: getPublishableClaim('esim.default_selection_lift_7') },
-  { category: 'New-business launch', claim: getPublishableClaim('kids.activations_14k_90_days') },
-] as const;
+const leadershipClaim = getPublishableClaim('career.mint.product_leadership_team_of_pms');
 
 const heroCapabilities = [
   { eyebrow: 'Skill', title: 'Ecommerce growth', detail: 'Funnel · lifecycle · revenue' },
@@ -34,8 +26,35 @@ const heroCapabilities = [
   { eyebrow: 'Technology', title: 'Applied AI + platforms', detail: 'Agentic workflows · APIs · data' },
   {
     eyebrow: 'Leadership',
-    title: heroSignals[0].claim.displayValue,
-    detail: `${heroSignals[0].claim.displayLabel} · portfolio ownership`,
+    title: leadershipClaim.displayValue,
+    detail: `${leadershipClaim.displayLabel} · portfolio ownership`,
+  },
+] as const;
+
+const aboutPrinciples = [
+  {
+    number: '01',
+    kicker: 'Portfolio leadership',
+    title: 'Lead the portfolio.',
+    body: 'Align customer needs, commercial outcomes, dependencies, and ownership before work enters the roadmap.',
+    claimIds: ['career.mint.product_leadership_team_of_pms', 'growth.core_funnel_conversion_lift_54_7'],
+    tone: 'violet',
+  },
+  {
+    number: '02',
+    kicker: 'Evidence to release',
+    title: 'Turn evidence into releases.',
+    body: 'Use instrumentation, experiments, guardrails, and clear ownership to ship safely and compound learning.',
+    claimIds: ['growth.cart_checkout_conversion_lift_77', 'commerce.aov_lift_10'],
+    tone: 'lime',
+  },
+  {
+    number: '03',
+    kicker: 'Applied AI',
+    title: 'Use AI with judgment.',
+    body: 'Apply retrieval, evaluation, tools, and human approval where they improve execution without replacing accountability.',
+    claimIds: ['ai.assistant.contacts_self_served_56', 'ai.assistant.csat_3_1_to_4_44'],
+    tone: 'ink',
   },
 ] as const;
 
@@ -78,17 +97,6 @@ const career = roles.map((role) => ({
   ...role,
   period: getPublishableClaim(role.periodClaimId).displayValue,
   summary: getPublishableClaim(role.summaryClaimId).statement,
-}));
-
-const workCards = workCases.filter((workCase) => workCase.featured).map((workCase) => ({
-  ...workCase,
-  metrics: workCase.metricClaimIds.slice(0, 3).map((claimId) => {
-    const claim = getPublishedClaim(claimId);
-    return {
-      value: claim.displayValue ?? claim.displayLabel ?? 'Published',
-      label: claim.displayLabel ?? 'Outcome',
-    };
-  }),
 }));
 
 const featuredToolIds = new Set(['amplitude', 'optimizely', 'figma', 'jira', 'snowflake', 'looker', 'codex', 'github', 'woocommerce', 'datadog']);
@@ -179,7 +187,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       </div>
 
       <div class="coh-hero-actions">
-        <a class="coh-hero-cta" href="#work">View selected work <span aria-hidden="true">↓</span></a>
+        <a class="coh-hero-cta" href="/work/">View selected work <span aria-hidden="true">↗</span></a>
         <a class="coh-hero-secondary" href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↗</span></a>
       </div>
       <a class="coh-hero-journey-next" href="#about" data-coh-hero-next aria-label="Continue to the About section">
@@ -205,55 +213,32 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
     <section class="coh-about" id="about" data-coh-section="about">
       <header class="coh-section-heading coh-about-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="About">
         <p>01 / About</p>
-        <h2>Clear decisions.<br /><em>Measurable outcomes.</em></h2>
-        <span>I lead through portfolio ownership, evidence-led decisions, and AI-assisted execution.</span>
+        <h2>How I lead.</h2>
+        <span>Portfolio ownership, evidence-led decisions, and applied AI.</span>
       </header>
 
-      <div class="coh-about-stage">
-        <div class="coh-about-metrics" aria-label="Selected growth and business impact">
-          {heroSignals.map((signal, index) => (
-            <aside class={`coh-orbit-card coh-about-metric metric-${index + 1}`} data-coh-reveal>
-              <small>{signal.category}</small>
-              <strong>{signal.claim.displayValue}</strong>
-              <span>{signal.claim.displayLabel}</span>
-            </aside>
-          ))}
-        </div>
-
-        <div class="coh-story-cards">
-          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="Portfolio leadership">
-            <article class="coh-story-card is-leadership" data-coh-reveal>
-              <span>01 / Portfolio leadership</span>
-              <h3>I lead the portfolio, not just the page.</h3>
-              <p>At Mint Mobile, I lead a team of product managers across acquisition, cart and checkout, activation, devices, and post-purchase growth. I align customer needs, commercial outcomes, operating dependencies, and ownership before work enters the roadmap.</p>
-            </article>
-          </div>
-          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="Evidence to release">
-            <article class="coh-story-card is-system" data-coh-reveal>
-              <span>02 / Evidence to release</span>
-              <h3>I give every roadmap decision evidence and a guardrail.</h3>
-              <p>Instrumentation, experimentation, quality thresholds, and explicit ownership turn isolated launches into a system that compounds learning.</p>
-              <header class="coh-loop-header">
-                <span>Portfolio operating loop</span>
-                <b><i aria-hidden="true"></i> Human governed</b>
-              </header>
-              <ol class="coh-release-loop">
-                <li><span>01</span><div><small>Evidence</small><strong>Read the system</strong><p>Funnel · intent · service · operations</p></div></li>
-                <li><span>02</span><div><small>Decision</small><strong>Choose the next action</strong><p>Hypothesis · confidence · guardrail</p></div></li>
-                <li><span>03</span><div><small>Human gate</small><strong>Approve consequential change</strong><p>Owner · policy · rollback</p></div></li>
-                <li><span>04</span><div><small>Release</small><strong>Ship, measure, and learn</strong><p>Outcome · exception · next cycle</p></div></li>
-              </ol>
-              <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
-            </article>
-          </div>
-          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="AI-assisted execution">
-            <article class="coh-story-card is-ai" data-coh-reveal>
-              <span>03 / AI-assisted execution</span>
-              <h3>I use AI to accelerate judgment—not replace it.</h3>
-              <p>Retrieval, evaluation, tools, and human approval shorten the path from evidence to a safe release while customer and business outcomes stay primary.</p>
-            </article>
-          </div>
-        </div>
+      <div class="coh-about-stack">
+        {aboutPrinciples.map((principle) => (
+          <article class={`coh-focus-card coh-about-card tone-${principle.tone}`} id={`about-principle-${principle.number}`} data-coh-snap data-coh-journey data-coh-journey-label={principle.kicker}>
+            <span class="coh-focus-number" aria-hidden="true">{principle.number}</span>
+            <div class="coh-focus-copy" data-coh-reveal>
+              <p>{principle.number} / {principle.kicker}</p>
+              <h3>{principle.title}</h3>
+              <span>{principle.body}</span>
+            </div>
+            <div class="coh-focus-metrics" aria-label={`Selected evidence for ${principle.kicker}`}>
+              {principle.claimIds.map((claimId) => {
+                const claim = getPublishableClaim(claimId);
+                return (
+                  <div data-coh-reveal>
+                    <strong>{claim.displayValue ?? 'Published'}</strong>
+                    <span>{claim.displayLabel ?? claim.statement}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </article>
+        ))}
       </div>
 
       <section class="coh-proof-banner" aria-label="J.D. Power 2023 purchase experience recognition" data-coh-snap data-coh-journey data-coh-journey-label="Recognition">
@@ -283,8 +268,8 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Career depth">
         <header class="coh-experience-heading">
           <p>Career depth</p>
-          <h2 id="coh-experience-title">Senior Product Manager.</h2>
-          <span>Open a role to inspect its scope, selected systems, capabilities, and linked case studies.</span>
+          <h2 id="coh-experience-title">Product leadership across industries.</h2>
+          <span>Open a role for scope, systems, and selected work.</span>
         </header>
 
         <div class="coh-experience-list">
@@ -345,8 +330,8 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       <header class="coh-focus-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="What I build">
         <div class="coh-focus-heading-copy">
           <p>02 / What I build</p>
-          <h2>Product systems built to perform.</h2>
-          <span>Four systems spanning the customer journey, the operating model, and the tools that keep both improving.</span>
+          <h2>Systems built to perform.</h2>
+          <span>Four connected systems across growth, launches, platforms, and AI.</span>
         </div>
 
         <a class="coh-focus-cue" href="#focus-system-01">
@@ -392,28 +377,15 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
     <section class="coh-work" id="work" data-coh-section="work">
       <header class="coh-section-heading coh-work-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Selected work">
         <p>03 / Selected work</p>
-        <h2>Six case studies.</h2>
-        <span>Make the customer decision clear, build the operating model behind it, and measure what changes.</span>
+        <h2>Explore the work.</h2>
+        <span>Six case studies across growth, launches, platforms, and AI.</span>
       </header>
 
-      <div class="coh-work-grid" data-coh-journey data-coh-journey-label="Six case studies">
-        {workCards.map((item, index) => (
-          <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal data-coh-snap>
-            <div class="coh-work-meta">
-              <span>{item.sequence} / {item.systemLabel}</span>
-              <span class="coh-work-brand"><CompanyLogo company={item.company} class="coh-work-logo" /><i>{item.company}</i></span>
-            </div>
-            <h3>{item.title}</h3>
-            <p>{item.summary}</p>
-            <div class="coh-work-metrics">
-              {item.metrics.length > 0
-                ? item.metrics.map((metric) => <b>{metric.value}<small>{metric.label}</small></b>)
-                : (item.supportingSignals ?? []).slice(0, 2).map((signal) => <b>{signal.value}<small>{signal.label}</small></b>)}
-            </div>
-            <span class="coh-card-link">Read case study <i aria-hidden="true">↗</i></span>
-          </a>
-        ))}
-      </div>
+      <a class="coh-work-gateway" href="/work/" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Case studies">
+        <span>Selected case studies</span>
+        <strong>Growth · 0-to-1 · commerce · AI</strong>
+        <b>View all six <i aria-hidden="true">↗</i></b>
+      </a>
     </section>
 
     <section class="coh-stack" id="stack" data-coh-section="stack">
@@ -459,7 +431,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       <div class="coh-builds" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Selected builds">
         <div class="coh-build-intro">
           <p>Selected builds</p>
-          <h3>I stay close<br />to the work.</h3>
+          <h3>Products I’ve built.</h3>
           <a href={site.contact.github} target="_blank" rel="noopener">View GitHub <span aria-hidden="true">↗</span></a>
         </div>
         {projects.map((project, index) => project.url ? (
@@ -495,7 +467,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
           <p data-coh-reveal>05 / Contact · {locationLabel}</p>
           <h2 data-coh-reveal>You’re looking to grow your product.<br /><em>Let’s build what’s next.</em></h2>
           <p class="coh-contact-lead" data-coh-reveal>
-            I help teams turn growth, commerce, and AI opportunities into products customers choose and businesses can scale.
+            Growth, commerce, and AI products customers choose and businesses can scale.
           </p>
           <nav class="coh-contact-actions" aria-label="Contact, social, and résumé links" data-coh-reveal>
             <a class="is-email" href={`mailto:${site.contact.email}`}>

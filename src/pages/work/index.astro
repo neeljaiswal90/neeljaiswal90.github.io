@@ -1,0 +1,80 @@
+---
+import CompanyLogo from '../../components/CompanyLogo.astro';
+import { getPublishedClaim, workCases } from '../../data/work';
+import { site } from '../../data/site';
+import CohesionLayout from '../../layouts/CohesionLayout.astro';
+
+const workCards = workCases.filter((workCase) => workCase.featured).map((workCase) => ({
+  ...workCase,
+  metrics: workCase.metricClaimIds.slice(0, 3).map((claimId) => {
+    const claim = getPublishedClaim(claimId);
+    return {
+      value: claim.displayValue ?? claim.displayLabel ?? 'Published',
+      label: claim.displayLabel ?? 'Outcome',
+    };
+  }),
+}));
+
+const title = `Selected Work — ${site.name}`;
+const description = 'Six product case studies spanning ecommerce growth, 0-to-1 launches, commerce platforms, and production AI systems.';
+---
+
+<CohesionLayout
+  title={title}
+  description={description}
+  canonical="/work/"
+  ogImage="/assets/social-card-live-v4.png"
+  ogImageAlt="Neel Jaiswal with ecommerce growth, 0-to-1 launches, and AI that actually ships"
+>
+  <div class="coh-work-index-page">
+    <header class="coh-work-index-topbar" aria-label="Selected work navigation">
+      <a class="coh-work-index-brand" href="/" aria-label="Neel Jaiswal portfolio home">
+        <b>NJ</b>
+        <span>Neel Jaiswal<small>Senior Product Manager</small></span>
+      </a>
+      <nav aria-label="Portfolio links">
+        <a href="/">Home</a>
+        <a href="/#about">About</a>
+        <a href="/#focus">Systems</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <a class="coh-work-index-talk" href="/#contact">Let’s talk <span aria-hidden="true">↘</span></a>
+    </header>
+
+    <main id="cohesion-main" class="coh-work-index-main">
+      <header class="coh-work-index-hero" data-coh-reveal>
+        <p>Selected work</p>
+        <h1>Six case studies.</h1>
+        <span>Growth, 0-to-1 launches, commerce platforms, and applied AI.</span>
+        <a href="/">Back to portfolio <i aria-hidden="true">↙</i></a>
+      </header>
+
+      <section class="coh-work-index-grid" aria-label="Selected product case studies">
+        <div class="coh-work-grid">
+          {workCards.map((item, index) => (
+            <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal>
+              <div class="coh-work-meta">
+                <span>{item.sequence} / {item.systemLabel}</span>
+                <span class="coh-work-brand"><CompanyLogo company={item.company} class="coh-work-logo" /><i>{item.company}</i></span>
+              </div>
+              <h2>{item.title}</h2>
+              <p>{item.summary}</p>
+              <div class="coh-work-metrics">
+                {item.metrics.length > 0
+                  ? item.metrics.map((metric) => <b>{metric.value}<small>{metric.label}</small></b>)
+                  : (item.supportingSignals ?? []).slice(0, 2).map((signal) => <b>{signal.value}<small>{signal.label}</small></b>)}
+              </div>
+              <span class="coh-card-link">Read case study <i aria-hidden="true">↗</i></span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="coh-work-index-cta" aria-labelledby="work-index-cta-title">
+        <p>Start a conversation</p>
+        <h2 id="work-index-cta-title">You’re looking to grow your product.</h2>
+        <a href="/#contact">Let’s talk <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+  </div>
+</CohesionLayout>
