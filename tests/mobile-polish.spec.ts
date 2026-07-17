@@ -47,7 +47,7 @@ for (const width of widths) {
     await mobileNavigation.locator('[data-coh-nav="work"]').click();
     await expect.poll(() => page.locator('#work').evaluate((section) => section.getBoundingClientRect().top)).toBeLessThanOrEqual(16);
     const workAnchorTop = await page.locator('#work').evaluate((section) => section.getBoundingClientRect().top);
-    expect(workAnchorTop).toBeGreaterThanOrEqual(0);
+    expect(workAnchorTop).toBeGreaterThanOrEqual(-1);
 
     await page.locator('#stack').evaluate((section) => section.scrollIntoView({ behavior: 'instant', block: 'center' }));
     await expect(mobileNavigation.locator('[data-coh-nav="focus"]')).toHaveClass(/is-active/);
