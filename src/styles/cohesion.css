@@ -3325,3 +3325,83 @@ html:not(.js) .coh-hero-wordmark-group i {
     display: none;
   }
 }
+
+/* About composition: reserve complete side gutters for every floating metric. */
+@media (min-width: 1181px) {
+  .coh-about-stage {
+    width: min(1380px, 100%);
+    min-height: 1720px;
+    padding: 30px 12px 70px;
+  }
+
+  .coh-about-metric {
+    width: clamp(174px, 12vw, 196px);
+    min-height: 132px;
+    padding: 18px 20px;
+  }
+
+  .coh-about-metric.metric-1 { left: 18px; }
+  .coh-about-metric.metric-2 { right: 18px; }
+  .coh-about-metric.metric-3 { left: 28px; }
+  .coh-about-metric.metric-4 { right: 28px; }
+  .coh-about-metric.metric-5 { left: 18px; }
+  .coh-about-metric.metric-6 { right: 18px; }
+
+  .coh-story-cards {
+    width: min(850px, calc(100% - 500px));
+    gap: clamp(125px, 11vw, 180px);
+  }
+
+  .coh-story-cards .coh-story-card {
+    min-height: min(62svh, 620px);
+    padding: clamp(38px, 4vw, 62px);
+  }
+
+  .coh-story-cards .coh-story-card:nth-child(2) {
+    min-height: min(70svh, 680px);
+  }
+
+  .coh-story-cards h3 {
+    font-size: clamp(38px, 4vw, 64px);
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .coh-about-stage {
+    min-height: 0;
+    padding-block: 0 50px;
+  }
+
+  .coh-about-metrics {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 90px;
+  }
+
+  .coh-about-metric,
+  .coh-about-metric.metric-1,
+  .coh-about-metric.metric-2,
+  .coh-about-metric.metric-3,
+  .coh-about-metric.metric-4,
+  .coh-about-metric.metric-5,
+  .coh-about-metric.metric-6 {
+    position: relative;
+    inset: auto;
+    width: auto;
+    min-height: 132px;
+    transform: none;
+  }
+
+  .coh-story-cards {
+    width: 100%;
+    gap: 90px;
+  }
+
+  .coh-story-cards .coh-story-card,
+  .coh-story-cards .coh-story-card:nth-child(2) {
+    position: static;
+    min-height: 520px;
+  }
+}

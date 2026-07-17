@@ -229,6 +229,44 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
 });
 
+test('about metrics remain fully visible beside the story cards', async ({ page }) => {
+  await page.setViewportSize({ width: 1584, height: 1136 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const layout = await page.evaluate(() => {
+    const storyCard = document.querySelector('.coh-story-card');
+    const metrics = Array.from(document.querySelectorAll<HTMLElement>('.coh-about-metric'));
+    if (!(storyCard instanceof HTMLElement) || metrics.length !== 6) {
+      throw new Error('About composition is incomplete');
+    }
+    const cardRect = storyCard.getBoundingClientRect();
+    return {
+      viewportWidth: window.innerWidth,
+      cardWidth: cardRect.width,
+      metrics: metrics.map((metric) => {
+        const rect = metric.getBoundingClientRect();
+        return {
+          left: rect.left,
+          right: rect.right,
+          overlapsCard: rect.right > cardRect.left - 8 && rect.left < cardRect.right + 8,
+          horizontalOverflow: metric.scrollWidth - metric.clientWidth,
+          verticalOverflow: metric.scrollHeight - metric.clientHeight,
+        };
+      }),
+    };
+  });
+
+  expect(layout.cardWidth).toBeLessThanOrEqual(852);
+  for (const metric of layout.metrics) {
+    expect(metric.left).toBeGreaterThanOrEqual(0);
+    expect(metric.right).toBeLessThanOrEqual(layout.viewportWidth);
+    expect(metric.overlapsCard).toBe(false);
+    expect(metric.horizontalOverflow).toBeLessThanOrEqual(1);
+    expect(metric.verticalOverflow).toBeLessThanOrEqual(1);
+  }
+});
+
 test('portrait demonstrates its flip once and settles on the front', async ({ page }, testInfo) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   const portrait = page.locator('[data-coh-portrait-flip]');
