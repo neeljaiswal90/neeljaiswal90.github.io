@@ -4,8 +4,8 @@ import { projects } from '../data/projects';
 import { getProductionSection } from '../data/site';
 
 const section = getProductionSection('builds');
-const publicRepositoryCount = getPublishableClaim('github.public_repository_count_5');
 const education = getPublishableClaim('education.computer_science_degree');
+const publicRepositoryCount = projects.filter((project) => project.access === 'public-repo').length;
 ---
 
 <section class="chapter builds-section" id="builds" data-section="builds">
@@ -20,7 +20,7 @@ const education = getPublishableClaim('education.computer_science_degree');
   <div class="github-banner reveal">
     <div>
       <span class="github-mark" aria-hidden="true">⌘</span>
-      <p><b>@neeljaiswal90</b><br /><span>{publicRepositoryCount.displayValue} · three featured below</span></p>
+      <p><b>@neeljaiswal90</b><br /><span>{publicRepositoryCount} public repos · {projects.length} selected builds</span></p>
     </div>
     <a href="https://github.com/neeljaiswal90" target="_blank" rel="noopener">View GitHub profile <span aria-hidden="true">↗</span></a>
   </div>
@@ -28,11 +28,12 @@ const education = getPublishableClaim('education.computer_science_degree');
   <div class="build-grid">
     {projects.map((project, index) => {
       const evidence = getPublishableClaim(project.claimId);
-      return (
-        <a class:list={['build-card', 'reveal', { featured: index === 0 }]} href={project.url} target="_blank" rel="noopener" aria-label={`${project.title} on GitHub (opens in a new tab)`}>
+      const status = [evidence.displayLabel, project.defaultBranch].filter(Boolean).join(' · ');
+      return project.url ? (
+        <a class:list={['build-card', 'reveal', { featured: index === 0 }]} href={project.url} target="_blank" rel="noopener" aria-label={`${project.title} — ${project.accessLabel} (opens in a new tab)`}>
           <div class="build-top">
-            <span class:list={['status-dot', index === 0 ? 'live' : 'public']}></span>
-            <span>{evidence.displayLabel} · {project.defaultBranch}</span>
+            <span class:list={['status-dot', project.access === 'live-app' ? 'live' : 'public']}></span>
+            <span>{status}</span>
             <i aria-hidden="true">↗</i>
           </div>
           <h3>{project.title}</h3>
@@ -43,6 +44,21 @@ const education = getPublishableClaim('education.computer_science_degree');
           </div>
           {project.boundary && <small class="build-note">{project.boundary}</small>}
         </a>
+      ) : (
+        <article class:list={['build-card', 'reveal', 'is-private', { featured: index === 0 }]} aria-label={`${project.title} — ${project.accessLabel}`}>
+          <div class="build-top">
+            <span class="status-dot"></span>
+            <span>{status}</span>
+            <i aria-hidden="true">Private</i>
+          </div>
+          <h3>{project.title}</h3>
+          <p>{project.summary}</p>
+          <ul>{project.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
+          <div class="build-meta" aria-label="Technology stack">
+            {project.technologies.map((technology) => <span>{technology}</span>)}
+          </div>
+          {project.boundary && <small class="build-note">{project.boundary}</small>}
+        </article>
       );
     })}
   </div>

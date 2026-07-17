@@ -25,6 +25,13 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
 
   await expect(page.locator('.coh-work-card')).toHaveCount(6);
   await expect(page.locator('.coh-work-card [data-company-brand]')).toHaveCount(6);
+  await expect(page.locator('.coh-build-card')).toHaveCount(6);
+  await expect(page.locator('.coh-build-card').filter({ hasText: 'HabitFlow' })).toHaveAttribute('href', 'https://github.com/neeljaiswal90/habitflow');
+  await expect(page.locator('.coh-build-card').filter({ hasText: 'Fitness App' })).toHaveAttribute('href', 'https://neeltraining.lovable.app/');
+  await expect(page.locator('article.coh-build-card.is-private')).toHaveCount(2);
+  await expect(page.locator('.coh-build-card').filter({ hasText: 'Orderflow' })).toContainText('Private build');
+  await expect(page.locator('.coh-build-card').filter({ hasText: 'Stocks Screener' })).toContainText('Private build');
+  await expect(page.locator('.coh-build-card').filter({ hasText: 'TradingView MCP' })).toHaveCount(0);
   await expect(page.locator('.coh-tool-grid li')).toHaveCount(27);
   await expect(page.locator('.coh-tool-grid li:visible')).toHaveCount(10);
   await expect(page.locator('[data-coh-tool-filter]')).toHaveCount(7);

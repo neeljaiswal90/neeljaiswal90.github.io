@@ -236,11 +236,25 @@ for (const project of projects) {
   if (!buildsSection?.claimIds.includes(project.claimId)) {
     fail(`Project ${project.id} claim ${project.claimId} is not registered in the builds production section.`);
   }
-  if (!/^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(project.url)) {
-    fail(`Project ${project.id} requires a canonical GitHub repository URL.`);
+  if (!['public-repo', 'private-build', 'live-app'].includes(project.access) || !project.accessLabel) {
+    fail(`Project ${project.id} has invalid or missing access metadata.`);
   }
-  if (!project.repository || !project.defaultBranch || project.technologies.length === 0 || project.highlights.length === 0) {
-    fail(`Project ${project.id} is missing repository metadata, technologies, or highlights.`);
+  if (project.access === 'public-repo') {
+    if (!/^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(project.url ?? '')) {
+      fail(`Public project ${project.id} requires a canonical GitHub repository URL.`);
+    }
+    if (!project.repository || !project.defaultBranch) {
+      fail(`Public project ${project.id} requires repository and default-branch metadata.`);
+    }
+  }
+  if (project.access === 'live-app' && !/^https:\/\//.test(project.url ?? '')) {
+    fail(`Live project ${project.id} requires an HTTPS destination.`);
+  }
+  if (project.access === 'private-build' && project.url) {
+    fail(`Private project ${project.id} must not expose an inaccessible destination.`);
+  }
+  if (project.technologies.length === 0 || project.highlights.length === 0) {
+    fail(`Project ${project.id} is missing technologies or highlights.`);
   }
 }
 

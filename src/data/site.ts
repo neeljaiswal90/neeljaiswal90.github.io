@@ -171,9 +171,11 @@ export const productionSections: readonly ProductionSectionRecord[] = [
     navLabel: 'Builds',
     eyebrow: 'Technical builds',
     claimIds: [
-      'github.public_repository_count_5',
       'github.build.quant_futures_app',
-      'github.build.tradingview_mcp_nq',
+      'github.build.habitflow',
+      'build.orderflow',
+      'build.stocks_screener',
+      'build.fitness_app',
       'github.build.gdp_dash',
       'education.computer_science_degree',
     ],

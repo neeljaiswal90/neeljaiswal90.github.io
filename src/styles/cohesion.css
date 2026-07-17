@@ -2023,16 +2023,25 @@ img {
   transition: transform 220ms ease;
 }
 
-.coh-build-card:hover { transform: translateY(-7px); }
+.coh-build-card:is(a):hover { transform: translateY(-7px); }
 .coh-build-card.build-1 { background: var(--coh-lavender); }
 .coh-build-card.build-2 { background: var(--coh-cyan); }
 .coh-build-card.build-3 { background: var(--coh-lime); }
+.coh-build-card.build-4 { background: #ffd8c9; }
+.coh-build-card.build-5 { background: #ffd66b; }
+.coh-build-card.build-6 { background: #b9efe6; }
 
 .coh-build-card h3 { margin-top: 80px; }
 .coh-build-card > p { margin: 0; color: #4d4952; font-size: 12px; line-height: 1.55; }
 .coh-build-card ul { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 0; padding: 0; list-style: none; }
 .coh-build-card li { padding: 7px 9px; background: rgb(255 255 255 / 55%); border-radius: 999px; font-size: 8px; font-weight: 780; }
 .coh-build-card > i { position: absolute; right: 28px; bottom: 23px; font-size: 24px; font-style: normal; }
+.coh-build-card.is-private > i {
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .coh-contact {
   position: relative;

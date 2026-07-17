@@ -457,18 +457,32 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
 
       <div class="coh-builds" data-coh-reveal data-coh-snap>
         <div class="coh-build-intro">
-          <p>Public builds</p>
+          <p>Selected builds</p>
           <h3>I stay close<br />to the work.</h3>
           <a href={site.contact.github} target="_blank" rel="noopener">View GitHub <span aria-hidden="true">↗</span></a>
         </div>
-        {projects.map((project, index) => (
-          <a class={`coh-build-card build-${index + 1}`} href={project.url} target="_blank" rel="noopener">
-            <span>{String(index + 1).padStart(2, '0')} / {project.defaultBranch}</span>
+        {projects.map((project, index) => project.url ? (
+          <a
+            class={`coh-build-card build-${index + 1}`}
+            href={project.url}
+            target="_blank"
+            rel="noopener"
+            aria-label={`${project.title} — ${project.accessLabel} (opens in a new tab)`}
+          >
+            <span>{String(index + 1).padStart(2, '0')} / {project.accessLabel}</span>
             <h3>{project.title}</h3>
             <p>{project.summary}</p>
             <ul>{project.technologies.map((technology) => <li>{technology}</li>)}</ul>
             <i aria-hidden="true">↗</i>
           </a>
+        ) : (
+          <article class={`coh-build-card is-private build-${index + 1}`} aria-label={`${project.title} — ${project.accessLabel}`}>
+            <span>{String(index + 1).padStart(2, '0')} / {project.accessLabel}</span>
+            <h3>{project.title}</h3>
+            <p>{project.summary}</p>
+            <ul>{project.technologies.map((technology) => <li>{technology}</li>)}</ul>
+            <i aria-hidden="true">Private</i>
+          </article>
         ))}
       </div>
     </section>
