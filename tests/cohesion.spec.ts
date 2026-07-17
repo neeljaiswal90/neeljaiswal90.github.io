@@ -190,7 +190,7 @@ test('cohesion is the responsive, accessible, and complete main portfolio', asyn
   });
   expect(portraitFraming.ratio).toBeGreaterThan(1.28);
   expect(portraitFraming.ratio).toBeLessThan(1.5);
-  expect(portraitFraming.objectPosition).toBe('50% 43%');
+  expect(portraitFraming.objectPosition).toBe('52% 50%');
 
   const results = await new AxeBuilder({ page })
     .exclude('.coh-focus-number')
@@ -449,6 +449,12 @@ test('portrait demonstrates its flip once and settles on the front', async ({ pa
   await expect(portrait.locator('.coh-portrait-back')).toContainText('Complex portfolios. Clear decisions. Measurable growth.');
   await expect(portrait.locator('.coh-portrait-back')).toContainText('Ecommerce · 0-to-1 products · applied AI');
   await expect(portrait.locator('.coh-portrait-back')).not.toContainText('Product systems that grow.');
+
+  const image = portrait.locator('.coh-portrait-front img');
+  await expect(image).toHaveAttribute('src', '/assets/headshot.jpg');
+  await expect(image).toHaveAttribute('width', '870');
+  await expect(image).toHaveAttribute('height', '906');
+  await expect(image).toHaveCSS('object-position', '52% 50%');
 });
 
 test('contact section provides social links, résumé download, and inbox form', async ({ page }) => {
@@ -461,6 +467,8 @@ test('contact section provides social links, résumé download, and inbox form',
   const contact = page.locator('#contact');
   await contact.evaluate((section) => section.scrollIntoView({ behavior: 'instant', block: 'start' }));
   await page.waitForTimeout(850);
+  await expect(contact.getByRole('heading', { level: 2 })).toContainText('You’re looking to grow your product.');
+  await expect(contact.getByRole('heading', { level: 2 })).toContainText('Let’s build what’s next.');
   await expect(contact.getByRole('link', { name: /LinkedIn/i })).toHaveAttribute('href', /linkedin\.com\/in\/neelesh-jaiswal/);
   await expect(contact.getByRole('link', { name: /GitHub/i })).toHaveAttribute('href', /github\.com\/neeljaiswal90/);
   await expect(contact.getByRole('link', { name: /Download résumé/i })).toHaveAttribute('download', 'Neelesh_Jaiswal_Resume.pdf');

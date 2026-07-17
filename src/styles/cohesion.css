@@ -357,7 +357,7 @@ img {
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: 50% 43%;
+  object-position: 52% 50%;
   filter: saturate(0.9) contrast(1.02);
 }
 

@@ -25,7 +25,7 @@ export const site = {
   profileImage: {
     path: '/assets/headshot.jpg',
     width: 870,
-    height: 827,
+    height: 906,
     type: 'image/jpeg',
     alt: 'Portrait of Neel Jaiswal wearing a navy jacket',
   },
