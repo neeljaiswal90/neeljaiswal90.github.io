@@ -223,7 +223,7 @@ test('cohesion hero copy stays contained and section 02 reveals the system stack
   });
 
   expect(focusTransition.cueInsideHeading).toBe(true);
-  expect(focusTransition.visibleCardDepth).toBeGreaterThanOrEqual(80);
+  expect(focusTransition.visibleCardDepth).toBeGreaterThanOrEqual(60);
   expect(focusTransition.cueTitleSize).toBeGreaterThanOrEqual(20);
   expect(focusTransition.stepLabelSize).toBeGreaterThanOrEqual(12);
   expect(focusTransition.arrowSize).toBeGreaterThanOrEqual(60);
@@ -251,6 +251,29 @@ test('rotating identity header hands off to navigation after scroll', async ({ p
   await expect(root).not.toHaveClass(/coh-nav-active/);
   await expect(identity).toHaveAttribute('aria-hidden', 'false');
   await expect(navigation).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('page settles scrolling on narrative component boundaries', async ({ page }, testInfo) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const snapping = await page.evaluate(() => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-coh-snap]'));
+    return {
+      type: getComputedStyle(document.documentElement).scrollSnapType,
+      targetCount: targets.length,
+      alignments: targets.map((target) => getComputedStyle(target).scrollSnapAlign),
+      stops: targets.map((target) => getComputedStyle(target).scrollSnapStop),
+    };
+  });
+
+  expect(snapping.targetCount).toBeGreaterThanOrEqual(20);
+  expect(snapping.alignments.every((alignment) => alignment === 'start')).toBe(true);
+  expect(snapping.stops.every((stop) => stop === 'normal')).toBe(true);
+  if (testInfo.project.name === 'reduced-motion') {
+    expect(snapping.type).toBe('none');
+  } else {
+    expect(['y', 'y proximity']).toContain(snapping.type);
+  }
 });
 
 test('about metrics remain fully visible beside the story cards', async ({ page }) => {

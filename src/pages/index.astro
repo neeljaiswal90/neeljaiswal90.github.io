@@ -177,7 +177,7 @@ const description = site.description;
     </section>
 
     <section class="coh-about" id="about" data-coh-section="about">
-      <header class="coh-section-heading coh-about-heading" data-coh-reveal>
+      <header class="coh-section-heading coh-about-heading" data-coh-reveal data-coh-snap>
         <p>01 / About</p>
         <h2>Clear decisions.<br /><em>Measurable outcomes.</em></h2>
         <span>I lead through portfolio ownership, evidence-led decisions, and AI-assisted execution.</span>
@@ -195,12 +195,12 @@ const description = site.description;
         </div>
 
         <div class="coh-story-cards">
-          <article class="coh-story-card is-leadership" data-coh-reveal>
+          <article class="coh-story-card is-leadership" data-coh-reveal data-coh-snap>
             <span>01 / Portfolio leadership</span>
             <h3>I lead the portfolio, not just the page.</h3>
             <p>At Mint Mobile, I lead a team of product managers across acquisition, cart and checkout, activation, devices, and post-purchase growth. I align customer needs, commercial outcomes, operating dependencies, and ownership before work enters the roadmap.</p>
           </article>
-          <article class="coh-story-card is-system" data-coh-reveal>
+          <article class="coh-story-card is-system" data-coh-reveal data-coh-snap>
             <span>02 / Evidence to release</span>
             <h3>I give every roadmap decision evidence and a guardrail.</h3>
             <p>Instrumentation, experimentation, quality thresholds, and explicit ownership turn isolated launches into a system that compounds learning.</p>
@@ -216,7 +216,7 @@ const description = site.description;
             </ol>
             <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
           </article>
-          <article class="coh-story-card" data-coh-reveal>
+          <article class="coh-story-card" data-coh-reveal data-coh-snap>
             <span>03 / AI-assisted execution</span>
             <h3>I use AI to accelerate judgment—not replace it.</h3>
             <p>Retrieval, evaluation, tools, and human approval shorten the path from evidence to a safe release while customer and business outcomes stay primary.</p>
@@ -224,7 +224,7 @@ const description = site.description;
         </div>
       </div>
 
-      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition">
+      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition" data-coh-snap>
         <div class="coh-award-panel" data-coh-reveal>
           <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
             <span class="coh-award-brand">
@@ -250,7 +250,7 @@ const description = site.description;
         <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
       </section>
 
-      <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal>
+      <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal data-coh-snap>
         <header class="coh-experience-heading">
           <p>Career depth</p>
           <h2 id="coh-experience-title">Senior Product Manager.</h2>
@@ -312,7 +312,7 @@ const description = site.description;
     </section>
 
     <section class="coh-focus" id="focus" data-coh-section="focus">
-      <header class="coh-focus-heading" data-coh-reveal>
+      <header class="coh-focus-heading" data-coh-reveal data-coh-snap>
         <div class="coh-focus-heading-copy">
           <p>02 / What I build</p>
           <h2>Product systems built to perform.</h2>
@@ -335,7 +335,7 @@ const description = site.description;
 
       <div class="coh-focus-stack">
         {focusAreas.map((area) => (
-          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`}>
+          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`} data-coh-snap>
             <span class="coh-focus-number" aria-hidden="true">{area.number}</span>
             <div class="coh-focus-copy" data-coh-reveal>
               <p>{area.number} / {area.kicker}</p>
@@ -359,7 +359,7 @@ const description = site.description;
     </section>
 
     <section class="coh-work" id="work" data-coh-section="work">
-      <header class="coh-section-heading coh-work-heading" data-coh-reveal>
+      <header class="coh-section-heading coh-work-heading" data-coh-reveal data-coh-snap>
         <p>03 / Selected work</p>
         <h2>Six case studies.</h2>
         <span>Make the customer decision clear, build the operating model behind it, and measure what changes.</span>
@@ -367,7 +367,7 @@ const description = site.description;
 
       <div class="coh-work-grid">
         {workCards.map((item, index) => (
-          <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal>
+          <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal data-coh-snap>
             <div class="coh-work-meta">
               <span>{item.sequence} / {item.systemLabel}</span>
               <span class="coh-work-brand"><CompanyLogo company={item.company} class="coh-work-logo" /><i>{item.company}</i></span>
@@ -386,13 +386,13 @@ const description = site.description;
     </section>
 
     <section class="coh-stack" id="stack" data-coh-section="stack">
-      <header class="coh-stack-heading" data-coh-reveal>
+      <header class="coh-stack-heading" data-coh-reveal data-coh-snap>
         <p>04 / Stack</p>
         <h2>A focused operating stack.<br /><em>Depth before logo count.</em></h2>
         <span>Ten core tools support product decisions and delivery. The full {stackCount.displayValue} inventory is available on demand.</span>
       </header>
 
-      <div class="coh-tool-stage">
+      <div class="coh-tool-stage" data-coh-snap>
         <div class="coh-tool-toolbar" data-coh-reveal>
           <div class="coh-tool-filters" role="group" aria-label="Filter the public tool inventory">
             {toolFilters.map((filter, index) => (
@@ -425,7 +425,7 @@ const description = site.description;
         </details>
       </div>
 
-      <div class="coh-builds" data-coh-reveal>
+      <div class="coh-builds" data-coh-reveal data-coh-snap>
         <div class="coh-build-intro">
           <p>Public builds</p>
           <h3>I stay close<br />to the work.</h3>
@@ -443,7 +443,7 @@ const description = site.description;
       </div>
     </section>
 
-    <section class="coh-contact" id="contact" data-coh-section="contact">
+    <section class="coh-contact" id="contact" data-coh-section="contact" data-coh-snap>
       <div class="coh-contact-shape" aria-hidden="true"></div>
       <p data-coh-reveal>05 / Contact · {locationLabel}</p>
       <h2 data-coh-reveal>Let’s make complex products<br /><em>easier to choose and use.</em></h2>

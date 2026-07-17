@@ -3553,3 +3553,22 @@ html:not(.js) .coh-identity-header { display: none; }
     transition-duration: 0.01ms;
   }
 }
+
+/* Settle each narrative component into the header-safe reading position. */
+html {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 100px;
+}
+
+[data-coh-snap] {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+@media (max-width: 680px) {
+  html { scroll-padding-top: 92px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+}
