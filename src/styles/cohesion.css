@@ -1609,10 +1609,6 @@ img {
   z-index: 2;
 }
 
-.coh-focus-float-nav {
-  display: none;
-}
-
 .coh-focus-card {
   position: sticky;
   top: 0;
@@ -1632,73 +1628,6 @@ img {
 .coh-focus-card.tone-ink { color: var(--coh-white); background: #121216; }
 .coh-focus-card.tone-lime { color: var(--coh-ink); background: var(--coh-lime); }
 .coh-focus-card.tone-coral { color: var(--coh-ink); background: var(--coh-coral); }
-
-@media (min-width: 901px) {
-  .coh-focus-float-nav {
-    position: fixed;
-    z-index: 40;
-    top: 50%;
-    right: clamp(20px, 2.7vw, 46px);
-    display: grid;
-    justify-items: center;
-    gap: 8px;
-    padding: 9px;
-    color: var(--coh-white);
-    background: rgb(13 13 15 / 78%);
-    border: 1px solid rgb(255 255 255 / 18%);
-    border-radius: 999px;
-    box-shadow: 0 18px 52px rgb(0 0 0 / 26%);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    translate: 18px -50%;
-    backdrop-filter: blur(16px);
-    transition: opacity 180ms ease, translate 220ms ease, visibility 0s linear 220ms;
-  }
-
-  .coh-focus-float-nav.is-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    translate: 0 -50%;
-    transition-delay: 0s;
-  }
-
-  .coh-focus-float-nav button {
-    width: 48px;
-    aspect-ratio: 1;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    color: var(--coh-ink);
-    background: var(--coh-cyan);
-    border: 0;
-    border-radius: 50%;
-    font: 700 20px/1 "Space Grotesk", sans-serif;
-    cursor: pointer;
-    transition: background 160ms ease, scale 160ms ease;
-  }
-
-  .coh-focus-float-nav button:hover {
-    background: var(--coh-lime);
-    scale: 1.06;
-  }
-
-  .coh-focus-float-nav button:focus-visible {
-    outline: 3px solid var(--coh-white);
-    outline-offset: 3px;
-  }
-
-  .coh-focus-nav-progress {
-    min-width: 42px;
-    padding: 4px 0;
-    color: #d8d5df;
-    font-size: 9px;
-    font-weight: 850;
-    letter-spacing: .08em;
-    text-align: center;
-  }
-}
 
 .coh-focus-number {
   font-family: "Space Grotesk", sans-serif;
@@ -4331,6 +4260,215 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .coh-capability-icon,
   .coh-capability-icon small {
+    transition: none;
+  }
+}
+
+/* A single journey navigator replaces scroll traps and section-specific controls. */
+html,
+html.coh-form-active {
+  scroll-snap-type: none;
+}
+
+[data-coh-snap] {
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+}
+
+[data-coh-journey] {
+  scroll-margin-top: 94px;
+}
+
+.coh-hero-journey-next {
+  position: absolute;
+  z-index: 14;
+  right: clamp(24px, 4vw, 64px);
+  bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 7px 7px 15px;
+  color: var(--coh-ink);
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid rgb(13 13 15 / 12%);
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgb(43 36 85 / 16%);
+  font-size: 9px;
+  font-weight: 820;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: translate 180ms ease, box-shadow 180ms ease;
+}
+
+.coh-hero-journey-next i {
+  width: 42px;
+  aspect-ratio: 1;
+  display: grid;
+  color: var(--coh-ink);
+  background: var(--coh-cyan);
+  border-radius: 50%;
+  font-size: 18px;
+  font-style: normal;
+  place-items: center;
+}
+
+.coh-hero-journey-next:hover,
+.coh-hero-journey-next:focus-visible {
+  box-shadow: 0 18px 42px rgb(43 36 85 / 22%);
+  outline: 3px solid rgb(89 77 224 / 22%);
+  outline-offset: 3px;
+  translate: 0 -3px;
+}
+
+.coh-journey-nav {
+  position: fixed;
+  z-index: 90;
+  top: 50%;
+  right: clamp(14px, 2.2vw, 34px);
+  width: 64px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 9px;
+  color: var(--coh-white);
+  background: rgb(13 13 15 / 86%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  box-shadow: 0 18px 52px rgb(0 0 0 / 26%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  translate: 20px -50%;
+  backdrop-filter: blur(16px) saturate(140%);
+  transition: opacity 180ms ease, translate 220ms ease, visibility 0s linear 220ms;
+}
+
+.coh-journey-nav.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  translate: 0 -50%;
+  transition-delay: 0s;
+}
+
+.coh-journey-nav button {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  padding: 0;
+  color: var(--coh-ink);
+  background: var(--coh-cyan);
+  border: 0;
+  border-radius: 50%;
+  font: 760 20px/1 "Space Grotesk", sans-serif;
+  cursor: pointer;
+  place-items: center;
+  transition: background 160ms ease, scale 160ms ease, opacity 160ms ease;
+}
+
+.coh-journey-nav button:hover:not(:disabled) {
+  background: var(--coh-lime);
+  scale: 1.06;
+}
+
+.coh-journey-nav button:focus-visible {
+  outline: 3px solid var(--coh-white);
+  outline-offset: 3px;
+}
+
+.coh-journey-nav button:disabled {
+  cursor: default;
+  opacity: .34;
+}
+
+.coh-journey-status {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  padding: 2px 0;
+  text-align: center;
+}
+
+.coh-journey-status small,
+.coh-journey-status i {
+  color: #b8b5c3;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 820;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.coh-journey-status small,
+.coh-journey-status b {
+  display: none;
+}
+
+@media (min-width: 681px) {
+  .coh-story-step {
+    min-height: max(680px, 84svh);
+  }
+
+  .coh-focus-card {
+    min-height: max(720px, 90svh);
+  }
+}
+
+@media (max-width: 680px) {
+  [data-coh-journey] {
+    scroll-margin-top: 86px;
+  }
+
+  .coh-hero-journey-next {
+    right: 14px;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    padding-left: 12px;
+  }
+
+  .coh-hero-journey-next i {
+    width: 38px;
+    font-size: 16px;
+  }
+
+  .coh-journey-nav {
+    top: 50%;
+    right: 10px;
+    width: 56px;
+    gap: 6px;
+    padding: 7px 5px;
+    border-radius: 999px;
+    translate: 16px -50%;
+  }
+
+  .coh-journey-nav.is-active {
+    translate: 0 -50%;
+  }
+
+  .coh-journey-nav button {
+    width: 44px;
+    font-size: 18px;
+  }
+
+  .coh-journey-status {
+    gap: 0;
+    padding: 2px 0;
+  }
+
+  .coh-journey-status small,
+  .coh-journey-status b {
+    display: none;
+  }
+
+  .coh-journey-status i {
+    font-size: 6.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coh-hero-journey-next,
+  .coh-journey-nav,
+  .coh-journey-nav button {
     transition: none;
   }
 }

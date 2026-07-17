@@ -61,151 +61,91 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 updateScroll();
 
-const storyRail = document.querySelector<HTMLElement>('.coh-story-cards');
-const storySteps = Array.from(document.querySelectorAll<HTMLElement>('.coh-story-step'));
-if (storyRail && storySteps.length > 1 && !reducedMotion) {
-  const steppedScroll = window.matchMedia('(min-width: 681px)');
-  let storyScrollLocked = false;
-  let storyScrollTimer = 0;
+const journeyNavigation = document.querySelector<HTMLElement>('[data-coh-journey-nav]');
+const journeyPrevious = journeyNavigation?.querySelector<HTMLButtonElement>('[data-coh-journey-previous]');
+const journeyNext = journeyNavigation?.querySelector<HTMLButtonElement>('[data-coh-journey-next]');
+const journeyLabel = journeyNavigation?.querySelector<HTMLElement>('[data-coh-journey-label]');
+const journeyProgress = journeyNavigation?.querySelector<HTMLElement>('[data-coh-journey-progress]');
+const journeyStops = Array.from(document.querySelectorAll<HTMLElement>('[data-coh-journey]'));
+const heroContinue = document.querySelector<HTMLAnchorElement>('[data-coh-hero-next]');
 
-  const storyAnchor = () => 100;
-  const nearestStoryStep = () => {
-    const anchor = storyAnchor();
-    const distances = storySteps.map((step) => Math.abs(step.getBoundingClientRect().top - anchor));
-    return distances.indexOf(Math.min(...distances));
-  };
-  const releaseStoryScroll = () => {
-    window.clearTimeout(storyScrollTimer);
-    storyScrollTimer = window.setTimeout(() => {
-      storyScrollLocked = false;
-    }, 700);
-  };
-  const moveToStoryStep = (index: number) => {
-    const step = storySteps[index];
-    if (!step) return;
-    const top = step.getBoundingClientRect().top + window.scrollY - storyAnchor();
-    window.scrollTo({ top, behavior: 'smooth' });
-  };
+if (journeyNavigation && journeyPrevious && journeyNext && journeyStops.length > 1) {
+  let activeJourneyIndex = 0;
+  let journeyFrame = 0;
 
-  window.addEventListener('wheel', (event) => {
-    if (!steppedScroll.matches || Math.abs(event.deltaY) < 4) return;
-    const railRect = storyRail.getBoundingClientRect();
-    const anchor = storyAnchor();
-    const railIsActive = railRect.top <= anchor + 100 && railRect.bottom >= anchor + window.innerHeight * 0.55;
-    if (!railIsActive) return;
-
-    const currentIndex = nearestStoryStep();
-    const direction = event.deltaY > 0 ? 1 : -1;
-    const nextIndex = currentIndex + direction;
-    const leavingRail = nextIndex < 0 || nextIndex >= storySteps.length;
-    if (leavingRail) return;
-
-    event.preventDefault();
-    releaseStoryScroll();
-    if (storyScrollLocked) return;
-    storyScrollLocked = true;
-    moveToStoryStep(nextIndex);
-  }, { passive: false });
-}
-
-const focusSection = document.querySelector<HTMLElement>('#focus');
-const focusHeading = focusSection?.querySelector<HTMLElement>('.coh-focus-heading');
-const focusStack = focusSection?.querySelector<HTMLElement>('.coh-focus-stack');
-const focusCards = focusSection
-  ? Array.from(focusSection.querySelectorAll<HTMLElement>('.coh-focus-card'))
-  : [];
-const focusNavigation = focusSection?.querySelector<HTMLElement>('[data-coh-focus-nav]');
-const focusPrevious = focusNavigation?.querySelector<HTMLButtonElement>('[data-coh-focus-previous]');
-const focusNext = focusNavigation?.querySelector<HTMLButtonElement>('[data-coh-focus-next]');
-const focusProgress = focusNavigation?.querySelector<HTMLElement>('[data-coh-focus-progress]');
-const workSection = document.querySelector<HTMLElement>('#work');
-
-if (focusSection && focusHeading && focusStack && focusCards.length > 1 && focusNavigation && focusPrevious && focusNext) {
-  const desktopFocusNavigation = window.matchMedia('(min-width: 901px)');
-  let focusScrollLocked = false;
-  let focusScrollTimer = 0;
-  let activeFocusIndex = 0;
-  let focusNavigationFrame = 0;
-
-  const focusAnchor = () => 96;
-  const focusStackTop = () => focusStack.getBoundingClientRect().top + window.scrollY;
-  const focusCardTop = (index: number) => focusStackTop() + (focusCards[index]?.offsetTop ?? 0);
-  const nearestFocusCard = () => {
-    const readingPosition = window.scrollY + focusAnchor();
-    const distances = focusCards.map((_, index) => Math.abs(focusCardTop(index) - readingPosition));
-    return distances.indexOf(Math.min(...distances));
-  };
-  const scrollToElement = (element: HTMLElement) => {
-    const top = element.getBoundingClientRect().top + window.scrollY - focusAnchor();
-    window.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' });
-  };
-  const moveToFocusCard = (index: number) => {
-    const card = focusCards[index];
-    if (!card) return;
-    window.scrollTo({ top: focusCardTop(index) - focusAnchor(), behavior: reducedMotion ? 'auto' : 'smooth' });
-  };
-  const releaseFocusScroll = () => {
-    window.clearTimeout(focusScrollTimer);
-    focusScrollTimer = window.setTimeout(() => {
-      focusScrollLocked = false;
-    }, 700);
-  };
-  const syncFocusNavigation = () => {
-    focusNavigationFrame = 0;
-    const stackRect = focusStack.getBoundingClientRect();
-    const isActive = desktopFocusNavigation.matches
-      && stackRect.top <= window.innerHeight * 0.58
-      && stackRect.bottom >= window.innerHeight * 0.42;
-    activeFocusIndex = nearestFocusCard();
-    focusNavigation.classList.toggle('is-active', isActive);
-    focusNavigation.setAttribute('aria-hidden', String(!isActive));
-    focusNavigation.toggleAttribute('inert', !isActive);
-    if (focusProgress) {
-      focusProgress.textContent = `${String(activeFocusIndex + 1).padStart(2, '0')} / ${String(focusCards.length).padStart(2, '0')}`;
+  const stopLabel = (index: number) => journeyStops[index]?.dataset.cohJourneyLabel ?? `Component ${index}`;
+  const stopTop = (index: number) => {
+    const stop = journeyStops[index];
+    if (!stop) return 0;
+    let top = 0;
+    let element: HTMLElement | null = stop;
+    while (element) {
+      top += element.offsetTop;
+      element = element.offsetParent instanceof HTMLElement ? element.offsetParent : null;
     }
-    const previousTitle = focusCards[activeFocusIndex - 1]?.querySelector('h3')?.textContent?.trim();
-    const nextTitle = focusCards[activeFocusIndex + 1]?.querySelector('h3')?.textContent?.trim();
-    focusPrevious.setAttribute('aria-label', previousTitle ? `Previous system: ${previousTitle}` : 'Back to the What I build introduction');
-    focusNext.setAttribute('aria-label', nextTitle ? `Next system: ${nextTitle}` : 'Continue to selected work');
+    return top;
   };
-  const requestFocusNavigationSync = () => {
-    if (focusNavigationFrame) return;
-    focusNavigationFrame = window.requestAnimationFrame(syncFocusNavigation);
+  const nearestJourneyIndex = () => {
+    const readingPosition = window.scrollY + Math.min(220, window.innerHeight * 0.28);
+    let index = 0;
+    journeyStops.forEach((_, stopIndex) => {
+      if (stopTop(stopIndex) <= readingPosition) index = stopIndex;
+    });
+    return index;
+  };
+  const moveToJourneyStop = (index: number) => {
+    const boundedIndex = Math.max(0, Math.min(journeyStops.length - 1, index));
+    const stop = journeyStops[boundedIndex];
+    if (!stop) return;
+    const headerOffset = window.innerWidth <= 680 ? 86 : 94;
+    window.scrollTo({
+      top: Math.max(0, stopTop(boundedIndex) - headerOffset),
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
+  };
+  const syncJourneyNavigation = () => {
+    journeyFrame = 0;
+    activeJourneyIndex = nearestJourneyIndex();
+    const heroHasPassed = (journeyStops[0]?.getBoundingClientRect().bottom ?? window.innerHeight) <= 110;
+    journeyNavigation.classList.toggle('is-active', heroHasPassed);
+    journeyNavigation.setAttribute('aria-hidden', String(!heroHasPassed));
+    journeyNavigation.toggleAttribute('inert', !heroHasPassed);
+    journeyNavigation.dataset.activeIndex = String(activeJourneyIndex);
+
+    const totalAfterHero = journeyStops.length - 1;
+    const displayIndex = Math.max(1, activeJourneyIndex);
+    if (journeyLabel) journeyLabel.textContent = stopLabel(activeJourneyIndex);
+    if (journeyProgress) {
+      journeyProgress.textContent = `${String(displayIndex).padStart(2, '0')} / ${String(totalAfterHero).padStart(2, '0')}`;
+    }
+
+    journeyPrevious.disabled = activeJourneyIndex <= 0;
+    journeyNext.disabled = activeJourneyIndex >= journeyStops.length - 1;
+    const previousLabel = activeJourneyIndex > 0
+      ? `Previous component: ${stopLabel(activeJourneyIndex - 1)}`
+      : 'Already at the beginning';
+    const nextLabel = activeJourneyIndex < journeyStops.length - 1
+      ? `Next component: ${stopLabel(activeJourneyIndex + 1)}`
+      : 'End of the portfolio journey';
+    journeyPrevious.setAttribute('aria-label', previousLabel);
+    journeyPrevious.title = previousLabel;
+    journeyNext.setAttribute('aria-label', nextLabel);
+    journeyNext.title = nextLabel;
+  };
+  const requestJourneySync = () => {
+    if (journeyFrame) return;
+    journeyFrame = window.requestAnimationFrame(syncJourneyNavigation);
   };
 
-  focusPrevious.addEventListener('click', () => {
-    const previousIndex = activeFocusIndex - 1;
-    if (previousIndex >= 0) moveToFocusCard(previousIndex);
-    else scrollToElement(focusHeading);
-  });
-  focusNext.addEventListener('click', () => {
-    const nextIndex = activeFocusIndex + 1;
-    if (nextIndex < focusCards.length) moveToFocusCard(nextIndex);
-    else if (workSection) scrollToElement(workSection);
-  });
-
-  window.addEventListener('wheel', (event) => {
-    if (!desktopFocusNavigation.matches || reducedMotion || Math.abs(event.deltaY) < 4) return;
-    const stackRect = focusStack.getBoundingClientRect();
-    const anchor = focusAnchor();
-    const stackIsActive = stackRect.top <= anchor + 100 && stackRect.bottom >= anchor + window.innerHeight * 0.55;
-    if (!stackIsActive) return;
-
-    const currentIndex = nearestFocusCard();
-    const direction = event.deltaY > 0 ? 1 : -1;
-    const nextIndex = currentIndex + direction;
-    if (nextIndex < 0 || nextIndex >= focusCards.length) return;
-
+  journeyPrevious.addEventListener('click', () => moveToJourneyStop(activeJourneyIndex - 1));
+  journeyNext.addEventListener('click', () => moveToJourneyStop(activeJourneyIndex + 1));
+  heroContinue?.addEventListener('click', (event) => {
     event.preventDefault();
-    releaseFocusScroll();
-    if (focusScrollLocked) return;
-    focusScrollLocked = true;
-    moveToFocusCard(nextIndex);
-  }, { passive: false });
-
-  window.addEventListener('scroll', requestFocusNavigationSync, { passive: true });
-  desktopFocusNavigation.addEventListener('change', requestFocusNavigationSync);
-  syncFocusNavigation();
+    moveToJourneyStop(1);
+  });
+  window.addEventListener('scroll', requestJourneySync, { passive: true });
+  window.addEventListener('resize', requestJourneySync, { passive: true });
+  syncJourneyNavigation();
 }
 
 const hero = document.querySelector<HTMLElement>('.coh-hero');

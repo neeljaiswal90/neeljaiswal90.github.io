@@ -117,7 +117,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
   ogImageAlt="Neel Jaiswal with ecommerce growth, 0-to-1 launches, and AI that actually ships"
 >
   <main id="cohesion-main">
-    <section class="coh-hero" id="home" data-coh-section="home">
+    <section class="coh-hero" id="home" data-coh-section="home" data-coh-journey data-coh-journey-label="Home">
   <header class="coh-identity-header" data-coh-identity-header>
     <h1 aria-label="Hi, I’m Neel. I build conversion engines, ecommerce growth systems, agentic AI workflows, and AI resolution products.">
       <span class="coh-intro-greeting">Hi, I’m <em>Neel.</em></span>
@@ -205,11 +205,28 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         <a class="coh-hero-cta" href="#work">View selected work <span aria-hidden="true">↓</span></a>
         <a class="coh-hero-secondary" href="/Neelesh_Jaiswal_Resume_Master.pdf">Résumé <span aria-hidden="true">↗</span></a>
       </div>
-      <p class="coh-scroll-note" aria-hidden="true">Scroll to meet Neel</p>
+      <a class="coh-hero-journey-next" href="#about" data-coh-hero-next aria-label="Continue to the About section">
+        <span>Continue</span>
+        <i aria-hidden="true">↓</i>
+      </a>
     </section>
 
+    <nav class="coh-journey-nav" data-coh-journey-nav aria-label="Navigate the portfolio journey" aria-hidden="true" inert>
+      <button type="button" data-coh-journey-previous aria-label="Previous component">
+        <span aria-hidden="true">↑</span>
+      </button>
+      <span class="coh-journey-status" aria-live="polite">
+        <small>Journey</small>
+        <b data-coh-journey-label>About</b>
+        <i data-coh-journey-progress>01 / 17</i>
+      </span>
+      <button type="button" data-coh-journey-next aria-label="Next component">
+        <span aria-hidden="true">↓</span>
+      </button>
+    </nav>
+
     <section class="coh-about" id="about" data-coh-section="about">
-      <header class="coh-section-heading coh-about-heading" data-coh-reveal data-coh-snap>
+      <header class="coh-section-heading coh-about-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="About">
         <p>01 / About</p>
         <h2>Clear decisions.<br /><em>Measurable outcomes.</em></h2>
         <span>I lead through portfolio ownership, evidence-led decisions, and AI-assisted execution.</span>
@@ -227,14 +244,14 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         </div>
 
         <div class="coh-story-cards">
-          <div class="coh-story-step" data-coh-snap>
+          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="Portfolio leadership">
             <article class="coh-story-card is-leadership" data-coh-reveal>
               <span>01 / Portfolio leadership</span>
               <h3>I lead the portfolio, not just the page.</h3>
               <p>At Mint Mobile, I lead a team of product managers across acquisition, cart and checkout, activation, devices, and post-purchase growth. I align customer needs, commercial outcomes, operating dependencies, and ownership before work enters the roadmap.</p>
             </article>
           </div>
-          <div class="coh-story-step" data-coh-snap>
+          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="Evidence to release">
             <article class="coh-story-card is-system" data-coh-reveal>
               <span>02 / Evidence to release</span>
               <h3>I give every roadmap decision evidence and a guardrail.</h3>
@@ -252,7 +269,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
               <footer class="coh-loop-footer"><span><i aria-hidden="true"></i> Feedback active</span><b>Release → evidence</b></footer>
             </article>
           </div>
-          <div class="coh-story-step" data-coh-snap>
+          <div class="coh-story-step" data-coh-snap data-coh-journey data-coh-journey-label="AI-assisted execution">
             <article class="coh-story-card is-ai" data-coh-reveal>
               <span>03 / AI-assisted execution</span>
               <h3>I use AI to accelerate judgment—not replace it.</h3>
@@ -262,7 +279,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         </div>
       </div>
 
-      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition" data-coh-snap>
+      <section class="coh-proof-banner" aria-label="Experience and independent purchase experience recognition" data-coh-snap data-coh-journey data-coh-journey-label="Recognition">
         <div class="coh-award-panel" data-coh-reveal>
           <a class="coh-award-record" href={jdPowerSource.url} target="_blank" rel="noopener" aria-label="Read the official J.D. Power 2023 purchase experience study">
             <span class="coh-award-brand">
@@ -288,7 +305,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         <div class="coh-proof-stat is-experience" data-coh-reveal><small>Operating range</small><strong>{experience.displayValue}</strong><span>Ecommerce growth · agentic AI · enabling platforms</span></div>
       </section>
 
-      <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal data-coh-snap>
+      <section class="coh-experience-deck" aria-labelledby="coh-experience-title" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Career depth">
         <header class="coh-experience-heading">
           <p>Career depth</p>
           <h2 id="coh-experience-title">Senior Product Manager.</h2>
@@ -350,7 +367,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
     </section>
 
     <section class="coh-focus" id="focus" data-coh-section="focus">
-      <header class="coh-focus-heading" data-coh-reveal data-coh-snap>
+      <header class="coh-focus-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="What I build">
         <div class="coh-focus-heading-copy">
           <p>02 / What I build</p>
           <h2>Product systems built to perform.</h2>
@@ -373,7 +390,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
 
       <div class="coh-focus-stack">
         {focusAreas.map((area) => (
-          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`}>
+          <article class={`coh-focus-card tone-${area.tone}`} id={`focus-system-${area.number}`} data-coh-journey data-coh-journey-label={`${area.number} · ${area.kicker}`}>
             <span class="coh-focus-number" aria-hidden="true">{area.number}</span>
             <div class="coh-focus-copy" data-coh-reveal>
               <p>{area.number} / {area.kicker}</p>
@@ -395,25 +412,16 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         ))}
       </div>
 
-      <nav class="coh-focus-float-nav" data-coh-focus-nav aria-label="Navigate What I build systems" aria-hidden="true" inert>
-        <button type="button" data-coh-focus-previous aria-label="Previous system">
-          <span aria-hidden="true">↑</span>
-        </button>
-        <span class="coh-focus-nav-progress" data-coh-focus-progress aria-live="polite">01 / 04</span>
-        <button type="button" data-coh-focus-next aria-label="Next system">
-          <span aria-hidden="true">↓</span>
-        </button>
-      </nav>
     </section>
 
     <section class="coh-work" id="work" data-coh-section="work">
-      <header class="coh-section-heading coh-work-heading" data-coh-reveal data-coh-snap>
+      <header class="coh-section-heading coh-work-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Selected work">
         <p>03 / Selected work</p>
         <h2>Six case studies.</h2>
         <span>Make the customer decision clear, build the operating model behind it, and measure what changes.</span>
       </header>
 
-      <div class="coh-work-grid">
+      <div class="coh-work-grid" data-coh-journey data-coh-journey-label="Six case studies">
         {workCards.map((item, index) => (
           <a class={`coh-work-card work-tone-${(index % 6) + 1}`} href={`/work/${item.slug}/`} data-coh-tilt data-coh-reveal data-coh-snap>
             <div class="coh-work-meta">
@@ -434,13 +442,13 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
     </section>
 
     <section class="coh-stack" id="stack" data-coh-section="stack">
-      <header class="coh-stack-heading" data-coh-reveal data-coh-snap>
+      <header class="coh-stack-heading" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Operating stack">
         <p>04 / Stack</p>
         <h2>A focused operating stack.<br /><em>Depth before logo count.</em></h2>
         <span>Ten core tools support product decisions and delivery. The full {stackCount.displayValue} inventory is available on demand.</span>
       </header>
 
-      <div class="coh-tool-stage" data-coh-snap>
+      <div class="coh-tool-stage" data-coh-snap data-coh-journey data-coh-journey-label="Tools">
         <div class="coh-tool-toolbar" data-coh-reveal>
           <div class="coh-tool-filters" role="group" aria-label="Filter the public tool inventory">
             {toolFilters.map((filter, index) => (
@@ -473,7 +481,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
         </details>
       </div>
 
-      <div class="coh-builds" data-coh-reveal data-coh-snap>
+      <div class="coh-builds" data-coh-reveal data-coh-snap data-coh-journey data-coh-journey-label="Selected builds">
         <div class="coh-build-intro">
           <p>Selected builds</p>
           <h3>I stay close<br />to the work.</h3>
@@ -505,7 +513,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
       </div>
     </section>
 
-    <section class="coh-contact" id="contact" data-coh-section="contact" data-coh-snap>
+    <section class="coh-contact" id="contact" data-coh-section="contact" data-coh-snap data-coh-journey data-coh-journey-label="Contact">
       <div class="coh-contact-shape" aria-hidden="true"></div>
       <div class="coh-contact-grid">
         <div class="coh-contact-intro">
