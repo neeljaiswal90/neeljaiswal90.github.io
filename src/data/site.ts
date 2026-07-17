@@ -30,11 +30,11 @@ export const site = {
     alt: 'Portrait of Neel Jaiswal wearing a navy jacket',
   },
   socialImage: {
-    path: '/assets/social-card-live-v3.png',
+    path: '/assets/social-card-live-v4.png',
     width: 1200,
     height: 630,
     type: 'image/png',
-    alt: 'Neel Jaiswal centered over the live portfolio wordmark, impact cards, and colorful dimensional shapes',
+    alt: 'Neel Jaiswal with ecommerce growth, 0-to-1 launches, and AI that actually ships',
   },
   themeStorageKey: 'neel-portfolio-theme',
   themes: ['studio', 'cinema', 'navy'] as const,
