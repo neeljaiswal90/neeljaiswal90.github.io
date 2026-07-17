@@ -268,12 +268,42 @@ test('page settles scrolling on narrative component boundaries', async ({ page }
 
   expect(snapping.targetCount).toBeGreaterThanOrEqual(20);
   expect(snapping.alignments.every((alignment) => alignment === 'start')).toBe(true);
-  expect(snapping.stops.every((stop) => stop === 'normal')).toBe(true);
+  const storyStops = await page.locator('.coh-story-step').evaluateAll((steps) => steps.map((step) => getComputedStyle(step).scrollSnapStop));
+  expect(storyStops).toEqual(['always', 'always', 'always']);
+  expect(snapping.stops.every((stop) => stop === 'normal' || stop === 'always')).toBe(true);
   if (testInfo.project.name === 'reduced-motion') {
     expect(snapping.type).toBe('none');
   } else {
     expect(['y', 'y proximity']).toContain(snapping.type);
   }
+});
+
+test('about story rail advances one card per scroll gesture', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop-chromium', 'Desktop wheel behavior');
+  await page.setViewportSize({ width: 1060, height: 768 });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  const steps = page.locator('.coh-story-step');
+  await expect(steps).toHaveCount(3);
+  await steps.first().evaluate((step) => {
+    const top = step.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top, behavior: 'instant' });
+  });
+  await page.waitForTimeout(450);
+
+  await page.mouse.wheel(0, 2_400);
+  await page.waitForTimeout(900);
+
+  const getNearestStep = () => steps.evaluateAll((items) => {
+    const anchor = 100;
+    const distances = items.map((item) => Math.abs(item.getBoundingClientRect().top - anchor));
+    return distances.indexOf(Math.min(...distances));
+  });
+  expect(await getNearestStep()).toBe(1);
+
+  await page.mouse.wheel(0, 2_400);
+  await page.waitForTimeout(900);
+  expect(await getNearestStep()).toBe(2);
 });
 
 test('about metrics remain fully visible beside the story cards', async ({ page }) => {

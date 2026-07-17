@@ -61,6 +61,53 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 updateScroll();
 
+const storyRail = document.querySelector<HTMLElement>('.coh-story-cards');
+const storySteps = Array.from(document.querySelectorAll<HTMLElement>('.coh-story-step'));
+if (storyRail && storySteps.length > 1 && !reducedMotion) {
+  const steppedScroll = window.matchMedia('(min-width: 681px)');
+  let storyScrollLocked = false;
+  let storyScrollTimer = 0;
+
+  const storyAnchor = () => 100;
+  const nearestStoryStep = () => {
+    const anchor = storyAnchor();
+    const distances = storySteps.map((step) => Math.abs(step.getBoundingClientRect().top - anchor));
+    return distances.indexOf(Math.min(...distances));
+  };
+  const releaseStoryScroll = () => {
+    window.clearTimeout(storyScrollTimer);
+    storyScrollTimer = window.setTimeout(() => {
+      storyScrollLocked = false;
+    }, 700);
+  };
+  const moveToStoryStep = (index: number) => {
+    const step = storySteps[index];
+    if (!step) return;
+    const top = step.getBoundingClientRect().top + window.scrollY - storyAnchor();
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  window.addEventListener('wheel', (event) => {
+    if (!steppedScroll.matches || Math.abs(event.deltaY) < 4) return;
+    const railRect = storyRail.getBoundingClientRect();
+    const anchor = storyAnchor();
+    const railIsActive = railRect.top <= anchor + 100 && railRect.bottom >= anchor + window.innerHeight * 0.55;
+    if (!railIsActive) return;
+
+    const currentIndex = nearestStoryStep();
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const nextIndex = currentIndex + direction;
+    const leavingRail = nextIndex < 0 || nextIndex >= storySteps.length;
+    if (leavingRail) return;
+
+    event.preventDefault();
+    releaseStoryScroll();
+    if (storyScrollLocked) return;
+    storyScrollLocked = true;
+    moveToStoryStep(nextIndex);
+  }, { passive: false });
+}
+
 const hero = document.querySelector<HTMLElement>('.coh-hero');
 if (hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
   hero.addEventListener('pointermove', (event) => {

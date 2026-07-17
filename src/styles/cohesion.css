@@ -3977,3 +3977,71 @@ html {
     bottom: max(94px, calc(env(safe-area-inset-bottom) + 88px));
   }
 }
+
+/* About story rail: each card owns one scroll stop and one sticky reading frame. */
+.coh-story-cards {
+  gap: 0;
+}
+
+.coh-story-step {
+  position: relative;
+  min-height: max(720px, 92svh);
+  scroll-margin-top: 100px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.coh-story-step:nth-child(1) { z-index: 1; }
+.coh-story-step:nth-child(2) { z-index: 2; }
+.coh-story-step:nth-child(3) { z-index: 3; }
+
+.coh-story-cards .coh-story-step .coh-story-card {
+  position: sticky;
+  top: clamp(96px, 10vh, 118px);
+  width: 100%;
+  min-height: min(68svh, 650px);
+  box-shadow: 0 34px 86px rgb(43 36 85 / 13%);
+}
+
+.coh-story-cards .coh-story-card.is-system {
+  min-height: min(74svh, 720px);
+  background: #f7f6ff;
+  border-color: #e9e6ff;
+}
+
+.coh-story-cards .coh-story-card.is-ai {
+  background: #f4fadf;
+  border-color: #e8f3c6;
+}
+
+@media (max-width: 900px) {
+  .coh-story-step {
+    min-height: max(650px, 88svh);
+  }
+
+  .coh-story-cards .coh-story-step .coh-story-card {
+    position: sticky;
+    top: 92px;
+    min-height: min(68svh, 620px);
+  }
+
+  .coh-story-cards .coh-story-card.is-system {
+    min-height: min(76svh, 680px);
+  }
+}
+
+@media (max-width: 680px) {
+  .coh-story-cards { gap: 64px; }
+
+  .coh-story-step {
+    min-height: 0;
+    scroll-margin-top: 92px;
+  }
+
+  .coh-story-cards .coh-story-step .coh-story-card,
+  .coh-story-cards .coh-story-card.is-system {
+    position: static;
+    top: auto;
+    min-height: 0;
+  }
+}
