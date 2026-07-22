@@ -98,7 +98,14 @@ if (mode === '--write') {
   } catch {
     throw new Error('Missing vercel.json. Run npm run security:sync and commit the result.');
   }
-  if (actual !== expected) {
+  let actualConfig;
+  try {
+    actualConfig = JSON.parse(actual);
+  } catch {
+    throw new Error('vercel.json is not valid JSON. Run npm run security:sync and commit the result.');
+  }
+  const expectedConfig = JSON.parse(expected);
+  if (JSON.stringify(actualConfig) !== JSON.stringify(expectedConfig)) {
     throw new Error('vercel.json does not match the generated pages. Run npm run security:sync and commit the result.');
   }
   console.log('Security headers and inline-script hashes match the production build.');
