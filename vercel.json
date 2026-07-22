@@ -1,0 +1,51 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.neeljaiswal.com"
+        }
+      ],
+      "destination": "https://neeljaiswal.com/:path*",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'sha256-++XOot8RNOETo4Lj4FuNqQ8L0Ftls1RlmQMqDfuxVZA=' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=' 'sha256-0vVtU0vl7r39yLe1YQoMXXoHIGa0zVjmau131u3mh3w=' 'sha256-1pwdZxcZLLqK3t2p6VMx0ZfuoHBjSOokbArsvjkZUVY=' 'sha256-CV0C+td5qByTqPsrTpS2C+AGHR3f8u8kJxmUFtJyBms=' 'sha256-KTDB8rTaDAhryOu4sz4YNsxL3LvBhv1z1xpnUtQlMZk=' 'sha256-YQhN7WRHMwGtADukSMHHKIi2udpEtkGuKlvK+rr7rD8=' 'sha256-ar0AuOBK7Jj2sWKmXq/SZUFWMa4Ej9obJKE9jQIS/1o=' 'sha256-dKxqdXlQgImDG/v1fkjVaFTdflx9M+DsMhQ+E3QDyW0=' 'sha256-eXidOylrXv69a/W+tjpWvZMHUZEY/p//OjX6N3NRQNQ=' 'sha256-i3ehRbfQ6+XBMgbgY0UR2XT0X9OPRxtFb2J6w2uJZSE=' 'sha256-kRQ/adUXtk5Gzhu4ipkhZX82rRQGgyG3mKG/wzDqiHs=' 'sha256-qH52EBPlreItgoW5wpOI7Ab/dEnFzvBFb9l9jJQiQzc='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains"
+        },
+        {
+          "key": "X-Permitted-Cross-Domain-Policies",
+          "value": "none"
+        }
+      ]
+    }
+  ]
+}

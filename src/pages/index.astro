@@ -142,9 +142,7 @@ const additionalTools = toolProfiles.filter((tool) => !featuredToolIds.has(tool.
 
 const title = site.title;
 const description = site.description;
-const contactFormAction = `https://formsubmit.co/${site.contact.email}`;
-const contactFormEndpoint = `https://formsubmit.co/ajax/${site.contact.email}`;
-const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
+const contactFormEndpoint = '/api/contact';
 ---
 
 <CohesionLayout
@@ -609,7 +607,7 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
 
         <form
           class="coh-contact-form"
-          action={contactFormAction}
+          action={contactFormEndpoint}
           method="POST"
           accept-charset="UTF-8"
           data-coh-contact-form
@@ -624,19 +622,19 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
           <div class="coh-contact-fields">
             <label>
               <span>Name</span>
-              <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
+              <input type="text" name="name" autocomplete="name" placeholder="Your name" minlength="2" maxlength="120" required />
             </label>
             <label>
               <span>Email</span>
-              <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@company.com" required />
+              <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@company.com" maxlength="254" required />
             </label>
             <label class="is-wide">
               <span>Company <small>Optional</small></span>
-              <input type="text" name="company" autocomplete="organization" placeholder="Where you’re building" />
+              <input type="text" name="company" autocomplete="organization" placeholder="Where you’re building" maxlength="160" />
             </label>
             <label class="is-wide">
               <span>What can I help with?</span>
-              <textarea name="message" rows="5" minlength="20" placeholder="Share the product challenge, opportunity, or role you have in mind." required></textarea>
+              <textarea name="message" rows="5" minlength="20" maxlength="5000" placeholder="Share the product challenge, opportunity, or role you have in mind." required></textarea>
             </label>
           </div>
 
@@ -644,11 +642,6 @@ const contactFormNext = `${site.canonicalOrigin}/?contact=sent#contact`;
             Leave this field empty
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" />
           </label>
-          <input type="hidden" name="_subject" value="New portfolio inquiry from neeljaiswal.com" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value={contactFormNext} />
-
           <div class="coh-contact-submit">
             <button type="submit">
               <span data-coh-contact-submit-label>Send message</span>

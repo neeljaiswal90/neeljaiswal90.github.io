@@ -280,7 +280,7 @@ test('hero capability cards reveal their context without clipping', async ({ pag
       const value = channel / 255;
       return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
     });
-    return (0.2126 * linear[0]) + (0.7152 * linear[1]) + (0.0722 * linear[2]);
+    return (0.2126 * (linear[0] ?? 0)) + (0.7152 * (linear[1] ?? 0)) + (0.0722 * (linear[2] ?? 0));
   };
   for (const pair of contrastPairs) {
     const lighter = Math.max(luminance(pair.background), luminance(pair.foreground));
@@ -592,8 +592,14 @@ test('portrait demonstrates its flip once and settles on the front', async ({ pa
 });
 
 test('contact section provides social links, résumé download, and inbox form', async ({ page }) => {
-  await page.route('https://formsubmit.co/ajax/**', async (route) => {
+  await page.route('**/api/contact', async (route) => {
     expect(route.request().method()).toBe('POST');
+    expect(route.request().headers()['content-type']).toContain('application/json');
+    expect(route.request().postDataJSON()).toMatchObject({
+      name: 'Portfolio Visitor',
+      email: 'visitor@example.com',
+      company: 'Example Co',
+    });
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
@@ -608,6 +614,8 @@ test('contact section provides social links, résumé download, and inbox form',
   await expect(contact.getByRole('link', { name: /Download résumé/i })).toHaveAttribute('download', 'Neelesh_Jaiswal_Resume.pdf');
 
   const form = contact.locator('[data-coh-contact-form]');
+  await expect(form).toHaveAttribute('action', '/api/contact');
+  await expect(form).toHaveAttribute('data-coh-contact-endpoint', '/api/contact');
   await form.getByLabel('Name').fill('Portfolio Visitor');
   await form.getByLabel('Email').fill('visitor@example.com');
   await form.getByLabel(/Company/).fill('Example Co');

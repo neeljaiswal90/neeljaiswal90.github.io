@@ -225,7 +225,7 @@ if (contactForm) {
   const submitLabel = contactForm.querySelector<HTMLElement>('[data-coh-contact-submit-label]');
   const status = contactForm.querySelector<HTMLElement>('[data-coh-contact-status]');
   const initialLabel = submitLabel?.textContent ?? 'Send message';
-  const returnedFromSubmission = new URLSearchParams(window.location.search).get('contact') === 'sent';
+  const returnedFromSubmission = new URLSearchParams(window.location.search).get('contact');
 
   const setFormState = (state: 'idle' | 'submitting' | 'success' | 'error', message: string) => {
     contactForm.dataset.state = state;
@@ -234,8 +234,11 @@ if (contactForm) {
     if (submitLabel) submitLabel.textContent = state === 'submitting' ? 'Sending…' : initialLabel;
   };
 
-  if (returnedFromSubmission) {
+  if (returnedFromSubmission === 'sent') {
     setFormState('success', 'Thanks — your message is on its way.');
+    window.history.replaceState({}, '', `${window.location.pathname}#contact`);
+  } else if (returnedFromSubmission === 'error') {
+    setFormState('error', 'Please check the form and try again, or use the email link beside it.');
     window.history.replaceState({}, '', `${window.location.pathname}#contact`);
   }
 
@@ -257,8 +260,11 @@ if (contactForm) {
     try {
       const response = await window.fetch(endpoint, {
         method: 'POST',
-        body: new FormData(contactForm),
-        headers: { Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(contactForm).entries())),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       });
       if (!response.ok) throw new Error(`Contact form returned ${response.status}`);
       contactForm.reset();
