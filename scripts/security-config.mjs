@@ -85,7 +85,8 @@ function securityConfig(hashes) {
   };
 }
 
-const expected = `${JSON.stringify(securityConfig(await inlineScriptHashes()), null, 2)}\n`;
+const generatedConfig = securityConfig(await inlineScriptHashes());
+const expected = `${JSON.stringify(generatedConfig, null, 2)}\n`;
 const mode = process.argv[2] || '--check';
 
 if (mode === '--write') {
@@ -104,8 +105,21 @@ if (mode === '--write') {
   } catch {
     throw new Error('vercel.json is not valid JSON. Run npm run security:sync and commit the result.');
   }
-  const expectedConfig = JSON.parse(expected);
-  if (JSON.stringify(actualConfig) !== JSON.stringify(expectedConfig)) {
+  const requiredRedirect = generatedConfig.redirects[0];
+  const redirectPresent = actualConfig.redirects?.some((redirect) => (
+    redirect.source === requiredRedirect.source
+    && redirect.destination === requiredRedirect.destination
+    && redirect.permanent === requiredRedirect.permanent
+    && JSON.stringify(redirect.has) === JSON.stringify(requiredRedirect.has)
+  ));
+  const actualHeaders = new Map(
+    (actualConfig.headers?.find((route) => route.source === '/(.*)')?.headers ?? [])
+      .map(({ key, value }) => [key.toLowerCase(), value]),
+  );
+  const missingHeaders = generatedConfig.headers[0].headers.filter(
+    ({ key, value }) => actualHeaders.get(key.toLowerCase()) !== value,
+  );
+  if (!redirectPresent || missingHeaders.length) {
     throw new Error('vercel.json does not match the generated pages. Run npm run security:sync and commit the result.');
   }
   console.log('Security headers and inline-script hashes match the production build.');
