@@ -98,7 +98,7 @@ const isPortfolioHome = portfolioPage ?? canonicalHref === homeHref;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="studio">
+<html lang="en" data-theme="studio" data-theme-storage-key={site.themeStorageKey}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -127,17 +127,7 @@ const isPortfolioHome = portfolioPage ?? canonicalHref === homeHref;
   <meta name="twitter:image" content={imageHref}>
   <meta name="twitter:image:alt" content={site.socialImage.alt}>
   <script id="structured-data" is:inline type="application/ld+json" set:html={structuredDataJson}></script>
-  <script is:inline define:vars={{ themeStorageKey: site.themeStorageKey }}>
-    document.documentElement.classList.add('js');
-    try {
-      const theme = localStorage.getItem(themeStorageKey);
-      const colors = { studio: '#f6f7fb', cinema: '#1a1715', navy: '#0b1220' };
-      if (theme && Object.prototype.hasOwnProperty.call(colors, theme)) {
-        document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', colors[theme]);
-      }
-    } catch { /* Storage is optional; Studio remains the default. */ }
-  </script>
+  <script is:inline src="/scripts/theme-init.js"></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='32' font-weight='800' text-anchor='middle' fill='%23d6aa52'%3ENJ%3C/text%3E%3C/svg%3E">
 </head>
 <body class:list={{ 'portfolio-page': isPortfolioHome }}>

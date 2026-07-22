@@ -13,9 +13,7 @@ const destination = '/';
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={canonicalUrl(destination)} />
     <meta http-equiv="refresh" content={`0;url=${destination}`} />
-    <script is:inline>
-      window.location.replace(`/${window.location.hash}`);
-    </script>
+    <script is:inline src="/scripts/cohesion-redirect.js"></script>
   </head>
   <body>
     <p>This portfolio has moved to <a href={destination}>the main site</a>.</p>

@@ -26,6 +26,8 @@ async function inlineScriptHashes() {
     const scripts = html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi);
     for (const match of scripts) {
       if (/\bsrc\s*=/i.test(match[1])) continue;
+      const type = match[1].match(/\btype\s*=\s*["']([^"']+)["']/i)?.[1]?.toLowerCase();
+      if (type && type !== 'module' && !type.includes('javascript') && !type.includes('ecmascript')) continue;
       const content = match[2];
       if (!content) continue;
       const digest = createHash('sha256').update(content).digest('base64');
@@ -44,7 +46,7 @@ function securityConfig(hashes) {
     "frame-src 'none'",
     "frame-ancestors 'none'",
     "form-action 'self'",
-    `script-src 'self' ${hashes.join(' ')}`,
+    `script-src 'self'${hashes.length ? ` ${hashes.join(' ')}` : ''}`,
     "script-src-attr 'none'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
